@@ -6,6 +6,7 @@ let
   rustToolchain = with pkgs; [
     # rustc
     # cargo
+    # rustup
   ];
 
   tauriRuntimeDeps = with pkgs; [
