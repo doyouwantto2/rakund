@@ -11,8 +11,6 @@ pub async fn play_midi_note(
     config: State<'_, SplendidConfig>,
     _app: AppHandle,
 ) -> Result<(), String> {
-    let midi_num = midi_num;
-
     let key_data = config
         .keys
         .get(&midi_num.to_string())

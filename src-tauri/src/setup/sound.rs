@@ -35,10 +35,9 @@ pub fn start_stream() -> AudioHandle {
         .build_output_stream(
             &config.into(),
             move |output: &mut [f32], _| {
-                // 1. Lock only once per buffer to get mutable access
                 let mut voices = match voices_clone.try_lock() {
                     Ok(guard) => guard,
-                    Err(_) => return, // Skip this frame if locked to avoid audio glitches
+                    Err(_) => return,
                 };
 
                 let num_voices = voices.len() as f32;
@@ -51,19 +50,16 @@ pub fn start_stream() -> AudioHandle {
                 for frame in output.iter_mut() {
                     let mut mixed: f32 = 0.0;
 
-                    // 2. Iterate directly over the original Vec
                     for v in voices.iter_mut() {
                         let pos = v.playhead as usize;
 
                         if pos < v.data.len() && v.volume > 0.0005 {
-                            // Linear Interpolation (optional, but makes pitch shifting sound better)
                             mixed += v.data[pos] * v.volume;
 
                             v.playhead += v.pitch_ratio;
 
                             if v.is_releasing {
-                                // This is your ~2 second fade out logic
-                                v.volume *= 0.99995;
+                                v.volume *= 0.999999;
                             }
                         }
                     }
@@ -72,7 +68,6 @@ pub fn start_stream() -> AudioHandle {
                     *frame = final_sample.clamp(-1.0, 1.0);
                 }
 
-                // 3. Cleanup finished voices efficiently
                 voices.retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.0005);
             },
             |err| eprintln!("Audio error: {err}"),
