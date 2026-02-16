@@ -3,7 +3,6 @@ import { invoke } from "@tauri-apps/api/core";
 
 export default function Piano() {
   const [activeNotes, setActiveNotes] = createSignal(new Set<number>());
-  // PP is now your default
   const [selectedLayer, setSelectedLayer] = createSignal("PP");
 
   const layers = ["MP", "PP", "MF", "FF"];
@@ -43,7 +42,6 @@ export default function Piano() {
 
   return (
     <div class="h-screen bg-black text-white flex flex-col overflow-hidden select-none font-sans">
-      {/* HEADER SECTION - Now minimal */}
       <div class="p-6 flex items-center justify-between border-b border-zinc-800 bg-zinc-950">
         <div class="flex items-center gap-8">
           <h1 class="text-2xl tracking-tighter uppercase font-black italic text-emerald-500">
@@ -69,12 +67,10 @@ export default function Piano() {
         </div>
       </div>
 
-      {/* PIANO SECTION */}
       <div class="flex-1 flex flex-col justify-end bg-zinc-900 p-8">
         <div class="overflow-x-auto pb-8 custom-scrollbar">
           <div class="relative flex mx-auto h-[350px]" style={{ width: `${whiteKeys.length * 44}px` }}>
 
-            {/* White Keys */}
             <For each={Array.from({ length: 88 }, (_, i) => i + 21).filter(m => !isBlack(m))}>{(midi) => (
               <button
                 onMouseDown={() => noteOn(midi)}
@@ -90,7 +86,6 @@ export default function Piano() {
               </button>
             )}</For>
 
-            {/* Black Keys */}
             <For each={Array.from({ length: 88 }, (_, i) => i + 21).filter(m => isBlack(m))}>{(midi) => {
               const whiteIndex = Array.from({ length: midi - 21 }, (_, i) => i + 21).filter(m => !isBlack(m)).length;
               return (
