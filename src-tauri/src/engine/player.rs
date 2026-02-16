@@ -1,4 +1,4 @@
-use crate::setup::audio::Voice;
+use crate::setup::sound::Voice;
 use std::sync::{Arc, Mutex};
 
 pub fn play_sound(active_voices: &Arc<Mutex<Vec<Voice>>>, data: Arc<Vec<f32>>) {
