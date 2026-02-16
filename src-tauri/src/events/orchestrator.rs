@@ -74,5 +74,6 @@ pub async fn set_sustain(
     if let Ok(mut sustain) = handle.is_sustained.lock() {
         *sustain = active;
     }
+    println!("Sustain is now: {}", active);
     Ok(())
 }

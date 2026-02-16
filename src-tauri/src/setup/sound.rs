@@ -19,8 +19,12 @@ pub struct AudioHandle {
 
 pub fn start_stream() -> AudioHandle {
     let host = cpal::default_host();
-    let device = host.default_output_device().expect("No output device");
-    let config = device.default_output_config().expect("No config");
+    let device = host
+        .default_output_device()
+        .expect("No output device found");
+    let config = device
+        .default_output_config()
+        .expect("Failed to get config");
 
     let active_voices = Arc::new(Mutex::new(Vec::<Voice>::new()));
     let is_sustained = Arc::new(Mutex::new(false));
@@ -38,9 +42,9 @@ pub fn start_stream() -> AudioHandle {
                     (voices.clone(), pedal)
                 };
 
-                let num_voices: f32 = voices_snapshot.len() as f32;
+                let num_voices = voices_snapshot.len() as f32;
                 let gain_reduction = if num_voices > 1.0 {
-                    1.0 / (num_voices.sqrt())
+                    1.0 / num_voices.sqrt()
                 } else {
                     1.0
                 };
@@ -50,21 +54,30 @@ pub fn start_stream() -> AudioHandle {
 
                     for v in &mut voices_snapshot {
                         let pos = v.playhead as usize;
+
                         if pos < v.data.len() && v.volume > 0.001 {
                             mixed += v.data[pos] * v.volume;
                             v.playhead += v.pitch_ratio;
 
+                            // --- IMPROVED LOGIC ---
+                            // If the key is released AND the pedal is NOT active, kill the sound quickly.
                             if v.is_releasing && !pedal_active {
-                                v.volume *= 0.99;
+                                // 0.94 = Instant dampening (Damper hits string)
+                                v.volume *= 0.94;
+                            }
+                            // If key is released but pedal IS active, let it ring!
+                            else if v.is_releasing && pedal_active {
+                                // 0.9998 = The "Glance" (Infinite ring until pedal off)
+                                v.volume *= 0.9998;
                             }
                         }
                     }
-
-                    let final_sample: f32 = mixed * gain_reduction * 0.8;
-                    *frame = final_sample.clamp(-1.0, 1.0);
+                    *frame = (mixed * gain_reduction * 0.8).clamp(-1.0, 1.0);
                 }
 
                 if let Ok(mut voices) = voices_clone.lock() {
+                    voices_snapshot
+                        .retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.001);
                     *voices = voices_snapshot;
                 }
             },
