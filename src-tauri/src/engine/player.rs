@@ -3,6 +3,13 @@ use std::sync::{Arc, Mutex};
 
 pub fn play_sound(active_voices: &Arc<Mutex<Vec<Voice>>>, data: Arc<Vec<f32>>) {
     if let Ok(mut voices) = active_voices.lock() {
-        voices.push(Voice { data, playhead: 0 });
+        voices.push(Voice {
+            data,
+            playhead: 0.0,
+            pitch_ratio: 1.0,
+            midi_note: 0,
+            is_releasing: false,
+            volume: 1.0,
+        });
     }
 }
