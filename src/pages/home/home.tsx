@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
 
-function App() {
+export default function Home() {
   const [status, setStatus] = createSignal("Ready to play");
 
   // Logic to trigger the Rust command
@@ -56,4 +56,3 @@ function App() {
   );
 }
 
-export default App;
