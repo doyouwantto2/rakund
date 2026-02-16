@@ -30,21 +30,20 @@ pub fn start_stream() -> AudioHandle {
     let is_sustained = Arc::new(Mutex::new(false));
 
     let voices_clone = Arc::clone(&active_voices);
-    let sustain_clone = Arc::clone(&is_sustained);
 
     let stream = device
         .build_output_stream(
             &config.into(),
             move |output: &mut [f32], _| {
-                let (mut voices_snapshot, pedal_active) = {
-                    let pedal = *sustain_clone.lock().unwrap();
-                    let voices = voices_clone.lock().unwrap();
-                    (voices.clone(), pedal)
+                // 1. Lock only once per buffer to get mutable access
+                let mut voices = match voices_clone.try_lock() {
+                    Ok(guard) => guard,
+                    Err(_) => return, // Skip this frame if locked to avoid audio glitches
                 };
 
-                let num_voices = voices_snapshot.len() as f32;
+                let num_voices = voices.len() as f32;
                 let gain_reduction = if num_voices > 1.0 {
-                    1.0 / num_voices.sqrt()
+                    1.0 / (num_voices.sqrt() * 1.2)
                 } else {
                     1.0
                 };
@@ -52,34 +51,29 @@ pub fn start_stream() -> AudioHandle {
                 for frame in output.iter_mut() {
                     let mut mixed: f32 = 0.0;
 
-                    for v in &mut voices_snapshot {
+                    // 2. Iterate directly over the original Vec
+                    for v in voices.iter_mut() {
                         let pos = v.playhead as usize;
 
-                        if pos < v.data.len() && v.volume > 0.001 {
+                        if pos < v.data.len() && v.volume > 0.0005 {
+                            // Linear Interpolation (optional, but makes pitch shifting sound better)
                             mixed += v.data[pos] * v.volume;
+
                             v.playhead += v.pitch_ratio;
 
-                            // --- IMPROVED LOGIC ---
-                            // If the key is released AND the pedal is NOT active, kill the sound quickly.
-                            if v.is_releasing && !pedal_active {
-                                // 0.94 = Instant dampening (Damper hits string)
-                                v.volume *= 0.94;
-                            }
-                            // If key is released but pedal IS active, let it ring!
-                            else if v.is_releasing && pedal_active {
-                                // 0.9998 = The "Glance" (Infinite ring until pedal off)
-                                v.volume *= 0.9998;
+                            if v.is_releasing {
+                                // This is your ~2 second fade out logic
+                                v.volume *= 0.99995;
                             }
                         }
                     }
-                    *frame = (mixed * gain_reduction * 0.8).clamp(-1.0, 1.0);
+
+                    let final_sample = mixed * gain_reduction * 0.7;
+                    *frame = final_sample.clamp(-1.0, 1.0);
                 }
 
-                if let Ok(mut voices) = voices_clone.lock() {
-                    voices_snapshot
-                        .retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.001);
-                    *voices = voices_snapshot;
-                }
+                // 3. Cleanup finished voices efficiently
+                voices.retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.0005);
             },
             |err| eprintln!("Audio error: {err}"),
             None,

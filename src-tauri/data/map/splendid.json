@@ -1,1962 +1,2825 @@
 {
-  "description": "SFZ format v2 with ARIA extensions Splendid Grand Piano Public Domain by AKAI converted by kinwie string resonance by P.Eastman half-pedalling added by P.Eastman The following are to implement half pe...",
-  "metadata": {
-    "instrumentName": "splendid",
-    "fileExtension": "flac",
-    "keyCount": 88,
-    "midiCc": {
-      "7": "Vol",
-      "10": "Pan",
-      "64": "Sus.Pedal",
-      "70": "Resonance",
-      "72": "Release",
-      "99": "Veltrack"
-    },
-    "samplePath": "Samples/",
-    "type": "Splendid Grand Piano",
-    "publicDomain": true,
-    "halfPedaling": true,
-    "stringResonance": true
-  },
+  "instrument": "Splendid Grand Piano",
+  "layers": [
+    "PP",
+    "MP",
+    "MF",
+    "FF"
+  ],
   "keys": {
     "21": {
-      "midiNote": 21,
-      "noteName": "A0",
+      "note": "A0",
+      "midi_note": 21,
+      "lokey": 21,
+      "hikey": 21,
       "samples": [
         {
-          "file": "PP A0.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 22
-          },
-          "velocityRange": "FF"
+          "file": "PP B-1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B-1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B-1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B-1.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 24
-          },
-          "velocityRange": "FF",
-          "label": "01"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "22": {
-      "midiNote": 22,
-      "noteName": "A#0",
+      "note": "A#0",
+      "midi_note": 22,
+      "lokey": 22,
+      "hikey": 22,
       "samples": [
         {
-          "file": "PP A0.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 22
-          },
-          "velocityRange": "FF"
+          "file": "PP B-1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B-1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B-1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B-1.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 24
-          },
-          "velocityRange": "FF",
-          "label": "01"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "23": {
-      "midiNote": 23,
-      "noteName": "B0",
+      "note": "B0",
+      "midi_note": 23,
+      "lokey": 23,
+      "hikey": 23,
       "samples": [
         {
-          "file": "PP B0.flac",
-          "keyRange": {
-            "low": 23,
-            "high": 23
-          },
-          "velocityRange": "FF"
+          "file": "PP B-1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B-1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B-1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B-1.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 24
-          },
-          "velocityRange": "FF",
-          "label": "01"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "24": {
-      "midiNote": 24,
-      "noteName": "C1",
+      "note": "C1",
+      "midi_note": 24,
+      "lokey": 24,
+      "hikey": 24,
       "samples": [
         {
-          "file": "PP C#1.flac",
-          "keyRange": {
-            "low": 24,
-            "high": 25
-          },
-          "velocityRange": "FF"
+          "file": "PP B-1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B-1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B-1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B-1.flac",
-          "keyRange": {
-            "low": 21,
-            "high": 24
-          },
-          "velocityRange": "FF",
-          "label": "01"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "25": {
-      "midiNote": 25,
-      "noteName": "C#1",
+      "note": "C#1",
+      "midi_note": 25,
+      "lokey": 25,
+      "hikey": 25,
       "samples": [
         {
-          "file": "PP C#1.flac",
-          "keyRange": {
-            "low": 24,
-            "high": 25
-          },
-          "velocityRange": "FF"
+          "file": "PP D#0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D#0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D#0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D#0.flac",
-          "keyRange": {
-            "low": 25,
-            "high": 27
-          },
-          "velocityRange": "FF",
-          "label": "02"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "26": {
-      "midiNote": 26,
-      "noteName": "D1",
+      "note": "D1",
+      "midi_note": 26,
+      "lokey": 26,
+      "hikey": 26,
       "samples": [
         {
-          "file": "PP D1.flac",
-          "keyRange": {
-            "low": 26,
-            "high": 27
-          },
-          "velocityRange": "FF"
+          "file": "PP D#0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D#0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D#0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D#0.flac",
-          "keyRange": {
-            "low": 25,
-            "high": 27
-          },
-          "velocityRange": "FF",
-          "label": "02"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "27": {
-      "midiNote": 27,
-      "noteName": "D#1",
+      "note": "D#1",
+      "midi_note": 27,
+      "lokey": 27,
+      "hikey": 27,
       "samples": [
         {
-          "file": "PP D1.flac",
-          "keyRange": {
-            "low": 26,
-            "high": 27
-          },
-          "velocityRange": "FF"
+          "file": "PP D#0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D#0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D#0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D#0.flac",
-          "keyRange": {
-            "low": 25,
-            "high": 27
-          },
-          "velocityRange": "FF",
-          "label": "02"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "28": {
-      "midiNote": 28,
-      "noteName": "E1",
+      "note": "E1",
+      "midi_note": 28,
+      "lokey": 28,
+      "hikey": 28,
       "samples": [
         {
-          "file": "PP E1.flac",
-          "keyRange": {
-            "low": 28,
-            "high": 28
-          },
-          "velocityRange": "FF"
+          "file": "PP F0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F0.flac",
-          "keyRange": {
-            "low": 28,
-            "high": 30
-          },
-          "velocityRange": "FF",
-          "label": "03"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "29": {
-      "midiNote": 29,
-      "noteName": "F1",
+      "note": "F1",
+      "midi_note": 29,
+      "lokey": 29,
+      "hikey": 29,
       "samples": [
         {
-          "file": "PP F1.flac",
-          "keyRange": {
-            "low": 29,
-            "high": 29
-          },
-          "velocityRange": "FF"
+          "file": "PP F0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F0.flac",
-          "keyRange": {
-            "low": 28,
-            "high": 30
-          },
-          "velocityRange": "FF",
-          "label": "03"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "30": {
-      "midiNote": 30,
-      "noteName": "F#1",
+      "note": "F#1",
+      "midi_note": 30,
+      "lokey": 30,
+      "hikey": 30,
       "samples": [
         {
-          "file": "PP G1.flac",
-          "keyRange": {
-            "low": 30,
-            "high": 32
-          },
-          "velocityRange": "FF"
+          "file": "PP F0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F0.flac",
-          "keyRange": {
-            "low": 28,
-            "high": 30
-          },
-          "velocityRange": "FF",
-          "label": "03"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "31": {
-      "midiNote": 31,
-      "noteName": "G1",
+      "note": "G1",
+      "midi_note": 31,
+      "lokey": 31,
+      "hikey": 31,
       "samples": [
         {
-          "file": "PP G1.flac",
-          "keyRange": {
-            "low": 30,
-            "high": 32
-          },
-          "velocityRange": "FF"
+          "file": "PP G0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G0.flac",
-          "keyRange": {
-            "low": 31,
-            "high": 32
-          },
-          "velocityRange": "FF",
-          "label": "04"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "32": {
-      "midiNote": 32,
-      "noteName": "G#1",
+      "note": "G#1",
+      "midi_note": 32,
+      "lokey": 32,
+      "hikey": 32,
       "samples": [
         {
-          "file": "PP G1.flac",
-          "keyRange": {
-            "low": 30,
-            "high": 32
-          },
-          "velocityRange": "FF"
+          "file": "PP G0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G0.flac",
-          "keyRange": {
-            "low": 31,
-            "high": 32
-          },
-          "velocityRange": "FF",
-          "label": "04"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "33": {
-      "midiNote": 33,
-      "noteName": "A1",
+      "note": "A1",
+      "midi_note": 33,
+      "lokey": 33,
+      "hikey": 33,
       "samples": [
         {
-          "file": "PP A1.flac",
-          "keyRange": {
-            "low": 33,
-            "high": 34
-          },
-          "velocityRange": "FF"
+          "file": "PP A0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A0.flac",
-          "keyRange": {
-            "low": 33,
-            "high": 34
-          },
-          "velocityRange": "FF",
-          "label": "05"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "34": {
-      "midiNote": 34,
-      "noteName": "A#1",
+      "note": "A#1",
+      "midi_note": 34,
+      "lokey": 34,
+      "hikey": 34,
       "samples": [
         {
-          "file": "PP A1.flac",
-          "keyRange": {
-            "low": 33,
-            "high": 34
-          },
-          "velocityRange": "FF"
+          "file": "PP A0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A0.flac",
-          "keyRange": {
-            "low": 33,
-            "high": 34
-          },
-          "velocityRange": "FF",
-          "label": "05"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "35": {
-      "midiNote": 35,
-      "noteName": "B1",
+      "note": "B1",
+      "midi_note": 35,
+      "lokey": 35,
+      "hikey": 35,
       "samples": [
         {
-          "file": "PP B1.flac",
-          "keyRange": {
-            "low": 35,
-            "high": 35
-          },
-          "velocityRange": "FF"
+          "file": "PP B0.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B0.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B0.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B0.flac",
-          "keyRange": {
-            "low": 35,
-            "high": 35
-          },
-          "velocityRange": "FF",
-          "label": "06"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "36": {
-      "midiNote": 36,
-      "noteName": "C2",
+      "note": "C2",
+      "midi_note": 36,
+      "lokey": 36,
+      "hikey": 36,
       "samples": [
         {
-          "file": "PP C2.flac",
-          "keyRange": {
-            "low": 36,
-            "high": 37
-          },
-          "velocityRange": "FF"
+          "file": "PP C#1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C#1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C#1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C#1.flac",
-          "keyRange": {
-            "low": 36,
-            "high": 37
-          },
-          "velocityRange": "FF",
-          "label": "07"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "37": {
-      "midiNote": 37,
-      "noteName": "C#2",
+      "note": "C#2",
+      "midi_note": 37,
+      "lokey": 37,
+      "hikey": 37,
       "samples": [
         {
-          "file": "PP C2.flac",
-          "keyRange": {
-            "low": 36,
-            "high": 37
-          },
-          "velocityRange": "FF"
+          "file": "PP C#1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C#1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C#1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C#1.flac",
-          "keyRange": {
-            "low": 36,
-            "high": 37
-          },
-          "velocityRange": "FF",
-          "label": "07"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "38": {
-      "midiNote": 38,
-      "noteName": "D2",
+      "note": "D2",
+      "midi_note": 38,
+      "lokey": 38,
+      "hikey": 38,
       "samples": [
         {
-          "file": "PP D2.flac",
-          "keyRange": {
-            "low": 38,
-            "high": 38
-          },
-          "velocityRange": "FF"
+          "file": "PP D1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF D1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D1.flac",
-          "keyRange": {
-            "low": 38,
-            "high": 39
-          },
-          "velocityRange": "FF",
-          "label": "08"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "39": {
-      "midiNote": 39,
-      "noteName": "D#2",
+      "note": "D#2",
+      "midi_note": 39,
+      "lokey": 39,
+      "hikey": 39,
       "samples": [
         {
-          "file": "PP E2.flac",
-          "keyRange": {
-            "low": 39,
-            "high": 40
-          },
-          "velocityRange": "FF"
+          "file": "PP D1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF D1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D1.flac",
-          "keyRange": {
-            "low": 38,
-            "high": 39
-          },
-          "velocityRange": "FF",
-          "label": "08"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "40": {
-      "midiNote": 40,
-      "noteName": "E2",
+      "note": "E2",
+      "midi_note": 40,
+      "lokey": 40,
+      "hikey": 40,
       "samples": [
         {
-          "file": "PP E2.flac",
-          "keyRange": {
-            "low": 39,
-            "high": 40
-          },
-          "velocityRange": "FF"
+          "file": "PP E1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF E1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E1.flac",
-          "keyRange": {
-            "low": 40,
-            "high": 40
-          },
-          "velocityRange": "FF",
-          "label": "09"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "41": {
-      "midiNote": 41,
-      "noteName": "F2",
+      "note": "F2",
+      "midi_note": 41,
+      "lokey": 41,
+      "hikey": 41,
       "samples": [
         {
-          "file": "PP F2.flac",
-          "keyRange": {
-            "low": 41,
-            "high": 42
-          },
-          "velocityRange": "FF"
+          "file": "PP F1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF F1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F1.flac",
-          "keyRange": {
-            "low": 41,
-            "high": 41
-          },
-          "velocityRange": "FF",
-          "label": "10"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "42": {
-      "midiNote": 42,
-      "noteName": "F#2",
+      "note": "F#2",
+      "midi_note": 42,
+      "lokey": 42,
+      "hikey": 42,
       "samples": [
         {
-          "file": "PP F2.flac",
-          "keyRange": {
-            "low": 41,
-            "high": 42
-          },
-          "velocityRange": "FF"
+          "file": "PP G1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G1.flac",
-          "keyRange": {
-            "low": 42,
-            "high": 44
-          },
-          "velocityRange": "FF",
-          "label": "11"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "43": {
-      "midiNote": 43,
-      "noteName": "G2",
+      "note": "G2",
+      "midi_note": 43,
+      "lokey": 43,
+      "hikey": 43,
       "samples": [
         {
-          "file": "PP G2.flac",
-          "keyRange": {
-            "low": 43,
-            "high": 43
-          },
-          "velocityRange": "FF"
+          "file": "PP G1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G1.flac",
-          "keyRange": {
-            "low": 42,
-            "high": 44
-          },
-          "velocityRange": "FF",
-          "label": "11"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "44": {
-      "midiNote": 44,
-      "noteName": "G#2",
+      "note": "G#2",
+      "midi_note": 44,
+      "lokey": 44,
+      "hikey": 44,
       "samples": [
         {
-          "file": "PP G#2.flac",
-          "keyRange": {
-            "low": 44,
-            "high": 44
-          },
-          "velocityRange": "FF"
+          "file": "PP G1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G1.flac",
-          "keyRange": {
-            "low": 42,
-            "high": 44
-          },
-          "velocityRange": "FF",
-          "label": "11"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "45": {
-      "midiNote": 45,
-      "noteName": "A2",
+      "note": "A2",
+      "midi_note": 45,
+      "lokey": 45,
+      "hikey": 45,
       "samples": [
         {
-          "file": "PP A2.flac",
-          "keyRange": {
-            "low": 45,
-            "high": 45
-          },
-          "velocityRange": "FF"
+          "file": "PP A1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF A1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A1.flac",
-          "keyRange": {
-            "low": 45,
-            "high": 46
-          },
-          "velocityRange": "FF",
-          "label": "12"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "46": {
-      "midiNote": 46,
-      "noteName": "A#2",
+      "note": "A#2",
+      "midi_note": 46,
+      "lokey": 46,
+      "hikey": 46,
       "samples": [
         {
-          "file": "PP A#2.flac",
-          "keyRange": {
-            "low": 46,
-            "high": 46
-          },
-          "velocityRange": "FF"
+          "file": "PP A1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF A1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A1.flac",
-          "keyRange": {
-            "low": 45,
-            "high": 46
-          },
-          "velocityRange": "FF",
-          "label": "12"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "47": {
-      "midiNote": 47,
-      "noteName": "B2",
+      "note": "B2",
+      "midi_note": 47,
+      "lokey": 47,
+      "hikey": 47,
       "samples": [
         {
-          "file": "PP B2.flac",
-          "keyRange": {
-            "low": 47,
-            "high": 47
-          },
-          "velocityRange": "FF"
+          "file": "PP B1.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B1.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF B1.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B1.flac",
-          "keyRange": {
-            "low": 47,
-            "high": 47
-          },
-          "velocityRange": "FF",
-          "label": "13"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "48": {
-      "midiNote": 48,
-      "noteName": "C3",
+      "note": "C3",
+      "midi_note": 48,
+      "lokey": 48,
+      "hikey": 48,
       "samples": [
         {
-          "file": "PP C3.flac",
-          "keyRange": {
-            "low": 48,
-            "high": 49
-          },
-          "velocityRange": "FF"
+          "file": "PP C2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C2.flac",
-          "keyRange": {
-            "low": 48,
-            "high": 49
-          },
-          "velocityRange": "FF",
-          "label": "14"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "49": {
-      "midiNote": 49,
-      "noteName": "C#3",
+      "note": "C#3",
+      "midi_note": 49,
+      "lokey": 49,
+      "hikey": 49,
       "samples": [
         {
-          "file": "PP C3.flac",
-          "keyRange": {
-            "low": 48,
-            "high": 49
-          },
-          "velocityRange": "FF"
+          "file": "PP C2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C2.flac",
-          "keyRange": {
-            "low": 48,
-            "high": 49
-          },
-          "velocityRange": "FF",
-          "label": "14"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "50": {
-      "midiNote": 50,
-      "noteName": "D3",
+      "note": "D3",
+      "midi_note": 50,
+      "lokey": 50,
+      "hikey": 50,
       "samples": [
         {
-          "file": "PP D3.flac",
-          "keyRange": {
-            "low": 50,
-            "high": 51
-          },
-          "velocityRange": "FF"
+          "file": "PP D2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF D2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D2.flac",
-          "keyRange": {
-            "low": 50,
-            "high": 50
-          },
-          "velocityRange": "FF",
-          "label": "15"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "51": {
-      "midiNote": 51,
-      "noteName": "D#3",
+      "note": "D#3",
+      "midi_note": 51,
+      "lokey": 51,
+      "hikey": 51,
       "samples": [
         {
-          "file": "PP D3.flac",
-          "keyRange": {
-            "low": 50,
-            "high": 51
-          },
-          "velocityRange": "FF"
+          "file": "PP E2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF E2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E2.flac",
-          "keyRange": {
-            "low": 51,
-            "high": 52
-          },
-          "velocityRange": "FF",
-          "label": "16"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "52": {
-      "midiNote": 52,
-      "noteName": "E3",
+      "note": "E3",
+      "midi_note": 52,
+      "lokey": 52,
+      "hikey": 52,
       "samples": [
         {
-          "file": "PP E3.flac",
-          "keyRange": {
-            "low": 52,
-            "high": 52
-          },
-          "velocityRange": "FF"
+          "file": "PP E2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF E2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E2.flac",
-          "keyRange": {
-            "low": 51,
-            "high": 52
-          },
-          "velocityRange": "FF",
-          "label": "16"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "53": {
-      "midiNote": 53,
-      "noteName": "F3",
+      "note": "F3",
+      "midi_note": 53,
+      "lokey": 53,
+      "hikey": 53,
       "samples": [
         {
-          "file": "PP F3.flac",
-          "keyRange": {
-            "low": 53,
-            "high": 54
-          },
-          "velocityRange": "FF"
+          "file": "PP F2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF F2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F2.flac",
-          "keyRange": {
-            "low": 53,
-            "high": 54
-          },
-          "velocityRange": "FF",
-          "label": "17"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "54": {
-      "midiNote": 54,
-      "noteName": "F#3",
+      "note": "F#3",
+      "midi_note": 54,
+      "lokey": 54,
+      "hikey": 54,
       "samples": [
         {
-          "file": "PP F3.flac",
-          "keyRange": {
-            "low": 53,
-            "high": 54
-          },
-          "velocityRange": "FF"
+          "file": "PP F2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF F2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F2.flac",
-          "keyRange": {
-            "low": 53,
-            "high": 54
-          },
-          "velocityRange": "FF",
-          "label": "17"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "55": {
-      "midiNote": 55,
-      "noteName": "G3",
+      "note": "G3",
+      "midi_note": 55,
+      "lokey": 55,
+      "hikey": 55,
       "samples": [
         {
-          "file": "PP G3.flac",
-          "keyRange": {
-            "low": 55,
-            "high": 56
-          },
-          "velocityRange": "FF"
+          "file": "PP G2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G2.flac",
-          "keyRange": {
-            "low": 55,
-            "high": 55
-          },
-          "velocityRange": "FF",
-          "label": "18"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "56": {
-      "midiNote": 56,
-      "noteName": "G#3",
+      "note": "G#3",
+      "midi_note": 56,
+      "lokey": 56,
+      "hikey": 56,
       "samples": [
         {
-          "file": "PP G3.flac",
-          "keyRange": {
-            "low": 55,
-            "high": 56
-          },
-          "velocityRange": "FF"
+          "file": "PP G#2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G#2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G#2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G#2.flac",
-          "keyRange": {
-            "low": 56,
-            "high": 56
-          },
-          "velocityRange": "FF",
-          "label": "19"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "57": {
-      "midiNote": 57,
-      "noteName": "A3",
+      "note": "A3",
+      "midi_note": 57,
+      "lokey": 57,
+      "hikey": 57,
       "samples": [
         {
-          "file": "PP A3.flac",
-          "keyRange": {
-            "low": 57,
-            "high": 57
-          },
-          "velocityRange": "FF"
+          "file": "PP A2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF A2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A2.flac",
-          "keyRange": {
-            "low": 57,
-            "high": 57
-          },
-          "velocityRange": "FF",
-          "label": "20"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "58": {
-      "midiNote": 58,
-      "noteName": "A#3",
+      "note": "A#3",
+      "midi_note": 58,
+      "lokey": 58,
+      "hikey": 58,
       "samples": [
         {
-          "file": "PP B3.flac",
-          "keyRange": {
-            "low": 58,
-            "high": 59
-          },
-          "velocityRange": "FF"
+          "file": "PP A#2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A#2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF A#2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A#2.flac",
-          "keyRange": {
-            "low": 58,
-            "high": 58
-          },
-          "velocityRange": "FF",
-          "label": "21"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "59": {
-      "midiNote": 59,
-      "noteName": "B3",
+      "note": "B3",
+      "midi_note": 59,
+      "lokey": 59,
+      "hikey": 59,
       "samples": [
         {
-          "file": "PP B3.flac",
-          "keyRange": {
-            "low": 58,
-            "high": 59
-          },
-          "velocityRange": "FF"
+          "file": "PP B2.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B2.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF B2.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B2.flac",
-          "keyRange": {
-            "low": 59,
-            "high": 59
-          },
-          "velocityRange": "FF",
-          "label": "22"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "60": {
-      "midiNote": 60,
-      "noteName": "C4",
+      "note": "C4",
+      "midi_note": 60,
+      "lokey": 60,
+      "hikey": 60,
       "samples": [
         {
-          "file": "PP C4.flac",
-          "keyRange": {
-            "low": 60,
-            "high": 61
-          },
-          "velocityRange": "FF"
+          "file": "PP C3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C3.flac",
-          "keyRange": {
-            "low": 60,
-            "high": 61
-          },
-          "velocityRange": "FF",
-          "label": "23"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "61": {
-      "midiNote": 61,
-      "noteName": "C#4",
+      "note": "C#4",
+      "midi_note": 61,
+      "lokey": 61,
+      "hikey": 61,
       "samples": [
         {
-          "file": "PP C4.flac",
-          "keyRange": {
-            "low": 60,
-            "high": 61
-          },
-          "velocityRange": "FF"
+          "file": "PP C3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C3.flac",
-          "keyRange": {
-            "low": 60,
-            "high": 61
-          },
-          "velocityRange": "FF",
-          "label": "23"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "62": {
-      "midiNote": 62,
-      "noteName": "D4",
+      "note": "D4",
+      "midi_note": 62,
+      "lokey": 62,
+      "hikey": 62,
       "samples": [
         {
-          "file": "PP D4.flac",
-          "keyRange": {
-            "low": 62,
-            "high": 63
-          },
-          "velocityRange": "FF"
+          "file": "PP D3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF D3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D3.flac",
-          "keyRange": {
-            "low": 62,
-            "high": 63
-          },
-          "velocityRange": "FF",
-          "label": "24"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "63": {
-      "midiNote": 63,
-      "noteName": "D#4",
+      "note": "D#4",
+      "midi_note": 63,
+      "lokey": 63,
+      "hikey": 63,
       "samples": [
         {
-          "file": "PP D4.flac",
-          "keyRange": {
-            "low": 62,
-            "high": 63
-          },
-          "velocityRange": "FF"
+          "file": "PP D3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF D3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D3.flac",
-          "keyRange": {
-            "low": 62,
-            "high": 63
-          },
-          "velocityRange": "FF",
-          "label": "24"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "64": {
-      "midiNote": 64,
-      "noteName": "E4",
+      "note": "E4",
+      "midi_note": 64,
+      "lokey": 64,
+      "hikey": 64,
       "samples": [
         {
-          "file": "PP E4.flac",
-          "keyRange": {
-            "low": 64,
-            "high": 64
-          },
-          "velocityRange": "FF"
+          "file": "PP E3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF E3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E3.flac",
-          "keyRange": {
-            "low": 64,
-            "high": 64
-          },
-          "velocityRange": "FF",
-          "label": "25"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "65": {
-      "midiNote": 65,
-      "noteName": "F4",
+      "note": "F4",
+      "midi_note": 65,
+      "lokey": 65,
+      "hikey": 65,
       "samples": [
         {
-          "file": "PP F4.flac",
-          "keyRange": {
-            "low": 65,
-            "high": 66
-          },
-          "velocityRange": "FF"
+          "file": "PP F3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF F3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F3.flac",
-          "keyRange": {
-            "low": 65,
-            "high": 66
-          },
-          "velocityRange": "FF",
-          "label": "26"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "66": {
-      "midiNote": 66,
-      "noteName": "F#4",
+      "note": "F#4",
+      "midi_note": 66,
+      "lokey": 66,
+      "hikey": 66,
       "samples": [
         {
-          "file": "PP F4.flac",
-          "keyRange": {
-            "low": 65,
-            "high": 66
-          },
-          "velocityRange": "FF"
+          "file": "PP F3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF F3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F3.flac",
-          "keyRange": {
-            "low": 65,
-            "high": 66
-          },
-          "velocityRange": "FF",
-          "label": "26"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "67": {
-      "midiNote": 67,
-      "noteName": "G4",
+      "note": "G4",
+      "midi_note": 67,
+      "lokey": 67,
+      "hikey": 67,
       "samples": [
         {
-          "file": "PP G4.flac",
-          "keyRange": {
-            "low": 67,
-            "high": 67
-          },
-          "velocityRange": "FF"
+          "file": "PP G3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G3.flac",
-          "keyRange": {
-            "low": 67,
-            "high": 68
-          },
-          "velocityRange": "FF",
-          "label": "27"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "68": {
-      "midiNote": 68,
-      "noteName": "G#4",
+      "note": "G#4",
+      "midi_note": 68,
+      "lokey": 68,
+      "hikey": 68,
       "samples": [
         {
-          "file": "PP G#4.flac",
-          "keyRange": {
-            "low": 68,
-            "high": 68
-          },
-          "velocityRange": "FF"
+          "file": "PP G3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF G3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G3.flac",
-          "keyRange": {
-            "low": 67,
-            "high": 68
-          },
-          "velocityRange": "FF",
-          "label": "27"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "69": {
-      "midiNote": 69,
-      "noteName": "A4",
+      "note": "A4",
+      "midi_note": 69,
+      "lokey": 69,
+      "hikey": 69,
       "samples": [
         {
-          "file": "PP A4.flac",
-          "keyRange": {
-            "low": 69,
-            "high": 69
-          },
-          "velocityRange": "FF"
+          "file": "PP A3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF A3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A3.flac",
-          "keyRange": {
-            "low": 69,
-            "high": 69
-          },
-          "velocityRange": "FF",
-          "label": "28"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "70": {
-      "midiNote": 70,
-      "noteName": "A#4",
+      "note": "A#4",
+      "midi_note": 70,
+      "lokey": 70,
+      "hikey": 70,
       "samples": [
         {
-          "file": "PP A#4.flac",
-          "keyRange": {
-            "low": 70,
-            "high": 70
-          },
-          "velocityRange": "FF"
+          "file": "PP B3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF B3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B3.flac",
-          "keyRange": {
-            "low": 70,
-            "high": 71
-          },
-          "velocityRange": "FF",
-          "label": "29"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "71": {
-      "midiNote": 71,
-      "noteName": "B4",
+      "note": "B4",
+      "midi_note": 71,
+      "lokey": 71,
+      "hikey": 71,
       "samples": [
         {
-          "file": "PP B4.flac",
-          "keyRange": {
-            "low": 71,
-            "high": 71
-          },
-          "velocityRange": "FF"
+          "file": "PP B3.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B3.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF B3.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B3.flac",
-          "keyRange": {
-            "low": 70,
-            "high": 71
-          },
-          "velocityRange": "FF",
-          "label": "29"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "72": {
-      "midiNote": 72,
-      "noteName": "C5",
+      "note": "C5",
+      "midi_note": 72,
+      "lokey": 72,
+      "hikey": 72,
       "samples": [
         {
-          "file": "PP C#5.flac",
-          "keyRange": {
-            "low": 72,
-            "high": 73
-          },
-          "velocityRange": "FF"
+          "file": "PP C4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C4.flac",
-          "keyRange": {
-            "low": 72,
-            "high": 73
-          },
-          "velocityRange": "FF",
-          "label": "30"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "73": {
-      "midiNote": 73,
-      "noteName": "C#5",
+      "note": "C#5",
+      "midi_note": 73,
+      "lokey": 73,
+      "hikey": 73,
       "samples": [
         {
-          "file": "PP C#5.flac",
-          "keyRange": {
-            "low": 72,
-            "high": 73
-          },
-          "velocityRange": "FF"
+          "file": "PP C4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "MF C4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C4.flac",
-          "keyRange": {
-            "low": 72,
-            "high": 73
-          },
-          "velocityRange": "FF",
-          "label": "30"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "74": {
-      "midiNote": 74,
-      "noteName": "D5",
+      "note": "D5",
+      "midi_note": 74,
+      "lokey": 74,
+      "hikey": 74,
       "samples": [
         {
-          "file": "PP D5.flac",
-          "keyRange": {
-            "low": 74,
-            "high": 74
-          },
-          "velocityRange": "FF"
+          "file": "PP D4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D4.flac",
-          "keyRange": {
-            "low": 74,
-            "high": 75
-          },
-          "velocityRange": "FF",
-          "label": "31"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "75": {
-      "midiNote": 75,
-      "noteName": "D#5",
+      "note": "D#5",
+      "midi_note": 75,
+      "lokey": 75,
+      "hikey": 75,
       "samples": [
         {
-          "file": "PP D#5.flac",
-          "keyRange": {
-            "low": 75,
-            "high": 75
-          },
-          "velocityRange": "FF"
+          "file": "PP D4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D4.flac",
-          "keyRange": {
-            "low": 74,
-            "high": 75
-          },
-          "velocityRange": "FF",
-          "label": "31"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "76": {
-      "midiNote": 76,
-      "noteName": "E5",
+      "note": "E5",
+      "midi_note": 76,
+      "lokey": 76,
+      "hikey": 76,
       "samples": [
         {
-          "file": "PP F5.flac",
-          "keyRange": {
-            "low": 76,
-            "high": 77
-          },
-          "velocityRange": "FF"
+          "file": "PP E4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf E4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E4.flac",
-          "keyRange": {
-            "low": 76,
-            "high": 76
-          },
-          "velocityRange": "FF",
-          "label": "32"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "77": {
-      "midiNote": 77,
-      "noteName": "F5",
+      "note": "F5",
+      "midi_note": 77,
+      "lokey": 77,
+      "hikey": 77,
       "samples": [
         {
-          "file": "PP F5.flac",
-          "keyRange": {
-            "low": 76,
-            "high": 77
-          },
-          "velocityRange": "FF"
+          "file": "PP F4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F4.flac",
-          "keyRange": {
-            "low": 77,
-            "high": 78
-          },
-          "velocityRange": "FF",
-          "label": "33"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "78": {
-      "midiNote": 78,
-      "noteName": "F#5",
+      "note": "F#5",
+      "midi_note": 78,
+      "lokey": 78,
+      "hikey": 78,
       "samples": [
         {
-          "file": "PP F#5.flac",
-          "keyRange": {
-            "low": 78,
-            "high": 78
-          },
-          "velocityRange": "FF"
+          "file": "PP F4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F4.flac",
-          "keyRange": {
-            "low": 77,
-            "high": 78
-          },
-          "velocityRange": "FF",
-          "label": "33"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "79": {
-      "midiNote": 79,
-      "noteName": "G5",
+      "note": "G5",
+      "midi_note": 79,
+      "lokey": 79,
+      "hikey": 79,
       "samples": [
         {
-          "file": "PP G5.flac",
-          "keyRange": {
-            "low": 79,
-            "high": 79
-          },
-          "velocityRange": "FF"
+          "file": "PP G4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G4.flac",
-          "keyRange": {
-            "low": 79,
-            "high": 79
-          },
-          "velocityRange": "FF",
-          "label": "34"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "80": {
-      "midiNote": 80,
-      "noteName": "G#5",
+      "note": "G#5",
+      "midi_note": 80,
+      "lokey": 80,
+      "hikey": 80,
       "samples": [
         {
-          "file": "PP G#5.flac",
-          "keyRange": {
-            "low": 80,
-            "high": 80
-          },
-          "velocityRange": "FF"
+          "file": "PP G#4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G#4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G#4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G#4.flac",
-          "keyRange": {
-            "low": 80,
-            "high": 80
-          },
-          "velocityRange": "FF",
-          "label": "35"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "81": {
-      "midiNote": 81,
-      "noteName": "A5",
+      "note": "A5",
+      "midi_note": 81,
+      "lokey": 81,
+      "hikey": 81,
       "samples": [
         {
-          "file": "PP A5.flac",
-          "keyRange": {
-            "low": 81,
-            "high": 81
-          },
-          "velocityRange": "FF"
+          "file": "PP A4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A4.flac",
-          "keyRange": {
-            "low": 81,
-            "high": 81
-          },
-          "velocityRange": "FF",
-          "label": "36"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "82": {
-      "midiNote": 82,
-      "noteName": "A#5",
+      "note": "A#5",
+      "midi_note": 82,
+      "lokey": 82,
+      "hikey": 82,
       "samples": [
         {
-          "file": "PP A#5.flac",
-          "keyRange": {
-            "low": 82,
-            "high": 82
-          },
-          "velocityRange": "FF"
+          "file": "PP A#4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A#4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A#4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A#4.flac",
-          "keyRange": {
-            "low": 82,
-            "high": 82
-          },
-          "velocityRange": "FF",
-          "label": "37"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "83": {
-      "midiNote": 83,
-      "noteName": "B5",
+      "note": "B5",
+      "midi_note": 83,
+      "lokey": 83,
+      "hikey": 83,
       "samples": [
         {
-          "file": "PP B5.flac",
-          "keyRange": {
-            "low": 83,
-            "high": 83
-          },
-          "velocityRange": "FF"
+          "file": "PP B4.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B4.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf B4.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF B4.flac",
-          "keyRange": {
-            "low": 83,
-            "high": 83
-          },
-          "velocityRange": "FF",
-          "label": "38"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "84": {
-      "midiNote": 84,
-      "noteName": "C6",
+      "note": "C6",
+      "midi_note": 84,
+      "lokey": 84,
+      "hikey": 84,
       "samples": [
         {
-          "file": "PP C6.flac",
-          "keyRange": {
-            "low": 84,
-            "high": 84
-          },
-          "velocityRange": "FF",
-          "tune": "-5"
+          "file": "PP C#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf C#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C#5.flac",
-          "keyRange": {
-            "low": 84,
-            "high": 85
-          },
-          "velocityRange": "FF",
-          "label": "39"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "85": {
-      "midiNote": 85,
-      "noteName": "C#6",
+      "note": "C#6",
+      "midi_note": 85,
+      "lokey": 85,
+      "hikey": 85,
       "samples": [
         {
-          "file": "PP C#6.flac",
-          "keyRange": {
-            "low": 85,
-            "high": 85
-          },
-          "velocityRange": "FF",
-          "tune": "-5"
+          "file": "PP C#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf C#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF C#5.flac",
-          "keyRange": {
-            "low": 84,
-            "high": 85
-          },
-          "velocityRange": "FF",
-          "label": "39"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "86": {
-      "midiNote": 86,
-      "noteName": "D6",
+      "note": "D6",
+      "midi_note": 86,
+      "lokey": 86,
+      "hikey": 86,
       "samples": [
         {
-          "file": "PP D6.flac",
-          "keyRange": {
-            "low": 86,
-            "high": 86
-          },
-          "velocityRange": "FF",
-          "tune": "-10"
+          "file": "PP D5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D5.flac",
-          "keyRange": {
-            "low": 86,
-            "high": 87
-          },
-          "velocityRange": "FF",
-          "label": "40"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "87": {
-      "midiNote": 87,
-      "noteName": "D#6",
+      "note": "D#6",
+      "midi_note": 87,
+      "lokey": 87,
+      "hikey": 87,
       "samples": [
         {
-          "file": "PP D#6.flac",
-          "keyRange": {
-            "low": 87,
-            "high": 87
-          },
-          "velocityRange": "FF",
-          "tune": "-5"
+          "file": "PP D#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF D5.flac",
-          "keyRange": {
-            "low": 86,
-            "high": 87
-          },
-          "velocityRange": "FF",
-          "label": "40"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "88": {
-      "midiNote": 88,
-      "noteName": "E6",
+      "note": "E6",
+      "midi_note": 88,
+      "lokey": 88,
+      "hikey": 88,
       "samples": [
         {
-          "file": "PP E6.flac",
-          "keyRange": {
-            "low": 88,
-            "high": 88
-          },
-          "velocityRange": "FF",
-          "tune": "-10"
+          "file": "PP F5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp E5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf E5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF E5.flac",
-          "keyRange": {
-            "low": 88,
-            "high": 88
-          },
-          "velocityRange": "FF",
-          "label": "41"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "89": {
-      "midiNote": 89,
-      "noteName": "F6",
+      "note": "F6",
+      "midi_note": 89,
+      "lokey": 89,
+      "hikey": 89,
       "samples": [
         {
-          "file": "PP F6.flac",
-          "keyRange": {
-            "low": 89,
-            "high": 89
-          },
-          "velocityRange": "FF",
-          "tune": "-10"
+          "file": "PP F5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F5.flac",
-          "keyRange": {
-            "low": 89,
-            "high": 90
-          },
-          "velocityRange": "FF",
-          "label": "42"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "90": {
-      "midiNote": 90,
-      "noteName": "F#6",
+      "note": "F#6",
+      "midi_note": 90,
+      "lokey": 90,
+      "hikey": 90,
       "samples": [
         {
-          "file": "PP F#6.flac",
-          "keyRange": {
-            "low": 90,
-            "high": 90
-          },
-          "velocityRange": "FF",
-          "tune": "-20"
+          "file": "PP F#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF F5.flac",
-          "keyRange": {
-            "low": 89,
-            "high": 90
-          },
-          "velocityRange": "FF",
-          "label": "42"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "91": {
-      "midiNote": 91,
-      "noteName": "G6",
+      "note": "G6",
+      "midi_note": 91,
+      "lokey": 91,
+      "hikey": 91,
       "samples": [
         {
-          "file": "PP G6.flac",
-          "keyRange": {
-            "low": 91,
-            "high": 91
-          },
-          "velocityRange": "FF",
-          "tune": "-20"
+          "file": "PP G5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G5.flac",
-          "keyRange": {
-            "low": 91,
-            "high": 92
-          },
-          "velocityRange": "FF",
-          "label": "43"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "92": {
-      "midiNote": 92,
-      "noteName": "G#6",
+      "note": "G#6",
+      "midi_note": 92,
+      "lokey": 92,
+      "hikey": 92,
       "samples": [
         {
-          "file": "PP G#6.flac",
-          "keyRange": {
-            "low": 92,
-            "high": 92
-          },
-          "velocityRange": "FF",
-          "tune": "-25"
+          "file": "PP G#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf G#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF G5.flac",
-          "keyRange": {
-            "low": 91,
-            "high": 92
-          },
-          "velocityRange": "FF",
-          "label": "43"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "93": {
-      "midiNote": 93,
-      "noteName": "A6",
+      "note": "A6",
+      "midi_note": 93,
+      "lokey": 93,
+      "hikey": 93,
       "samples": [
         {
-          "file": "PP A6.flac",
-          "keyRange": {
-            "low": 93,
-            "high": 93
-          },
-          "velocityRange": "FF",
-          "tune": "-20"
+          "file": "PP A5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A5.flac",
-          "keyRange": {
-            "low": 93,
-            "high": 94
-          },
-          "velocityRange": "FF",
-          "label": "44"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "94": {
-      "midiNote": 94,
-      "noteName": "A#6",
+      "note": "A#6",
+      "midi_note": 94,
+      "lokey": 94,
+      "hikey": 94,
       "samples": [
         {
-          "file": "PP A#6.flac",
-          "keyRange": {
-            "low": 94,
-            "high": 94
-          },
-          "velocityRange": "FF",
-          "tune": "-25"
+          "file": "PP A#5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A#5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf A#5.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
         },
         {
           "file": "FF A5.flac",
-          "keyRange": {
-            "low": 93,
-            "high": 94
-          },
-          "velocityRange": "FF",
-          "label": "44"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "95": {
-      "midiNote": 95,
-      "noteName": "B6",
+      "note": "B6",
+      "midi_note": 95,
+      "lokey": 95,
+      "hikey": 95,
       "samples": [
         {
-          "file": "PP B6.flac",
-          "keyRange": {
-            "low": 95,
-            "high": 95
-          },
-          "velocityRange": "FF",
-          "tune": "-25"
+          "file": "PP B5.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp B5.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
         },
         {
           "file": "Mf B5.flac",
-          "keyRange": {
-            "low": 95,
-            "high": 95
-          },
-          "velocityRange": "FF",
-          "label": "45"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf B5.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "96": {
-      "midiNote": 96,
-      "noteName": "C7",
+      "note": "C7",
+      "midi_note": 96,
+      "lokey": 96,
+      "hikey": 96,
       "samples": [
         {
-          "file": "PP C7.flac",
-          "keyRange": {
-            "low": 96,
-            "high": 96
-          },
-          "velocityRange": "FF",
-          "tune": "-20"
+          "file": "PP C6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
         },
         {
           "file": "Mf C6.flac",
-          "keyRange": {
-            "low": 96,
-            "high": 97
-          },
-          "velocityRange": "FF",
-          "label": "46"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf C6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "97": {
-      "midiNote": 97,
-      "noteName": "C#7",
+      "note": "C#7",
+      "midi_note": 97,
+      "lokey": 97,
+      "hikey": 97,
       "samples": [
         {
+          "file": "PP C#6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp C#6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf C#6.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
           "file": "Mf C6.flac",
-          "keyRange": {
-            "low": 96,
-            "high": 97
-          },
-          "velocityRange": "FF",
-          "label": "46"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "98": {
-      "midiNote": 98,
-      "noteName": "D7",
+      "note": "D7",
+      "midi_note": 98,
+      "lokey": 98,
+      "hikey": 98,
       "samples": [
         {
+          "file": "PP D6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D6.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
           "file": "Mf C#6.flac",
-          "keyRange": {
-            "low": 98,
-            "high": 98
-          },
-          "velocityRange": "FF",
-          "label": "47"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "99": {
-      "midiNote": 99,
-      "noteName": "D#7",
+      "note": "D#7",
+      "midi_note": 99,
+      "lokey": 99,
+      "hikey": 99,
       "samples": [
         {
+          "file": "PP D#6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp D#6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf D#6.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
           "file": "Mf D6.flac",
-          "keyRange": {
-            "low": 99,
-            "high": 99
-          },
-          "velocityRange": "FF",
-          "label": "48"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "100": {
-      "midiNote": 100,
-      "noteName": "E7",
+      "note": "E7",
+      "midi_note": 100,
+      "lokey": 100,
+      "hikey": 100,
       "samples": [
         {
+          "file": "PP E6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "PP E6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf E6.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
           "file": "Mf D#6.flac",
-          "keyRange": {
-            "low": 100,
-            "high": 100
-          },
-          "velocityRange": "FF",
-          "label": "49"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "101": {
-      "midiNote": 101,
-      "noteName": "F7",
+      "note": "F7",
+      "midi_note": 101,
+      "lokey": 101,
+      "hikey": 101,
       "samples": [
         {
+          "file": "PP F6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
+          "file": "Mf F6.flac",
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
           "file": "Mf E6.flac",
-          "keyRange": {
-            "low": 101,
-            "high": 101
-          },
-          "velocityRange": "FF",
-          "label": "50"
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "102": {
-      "midiNote": 102,
-      "noteName": "F#7",
+      "note": "F#7",
+      "midi_note": 102,
+      "lokey": 102,
+      "hikey": 102,
       "samples": [
         {
+          "file": "PP F#6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp F#6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf F#6.flac",
-          "keyRange": {
-            "low": 102,
-            "high": 102
-          },
-          "velocityRange": "FF",
-          "label": "51"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf F#6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "103": {
-      "midiNote": 103,
-      "noteName": "G7",
+      "note": "G7",
+      "midi_note": 103,
+      "lokey": 103,
+      "hikey": 103,
       "samples": [
         {
+          "file": "PP G6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf G6.flac",
-          "keyRange": {
-            "low": 103,
-            "high": 103
-          },
-          "velocityRange": "FF",
-          "label": "52"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf G6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "104": {
-      "midiNote": 104,
-      "noteName": "G#7",
+      "note": "G#7",
+      "midi_note": 104,
+      "lokey": 104,
+      "hikey": 104,
       "samples": [
         {
+          "file": "PP G#6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp G#6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf G#6.flac",
-          "keyRange": {
-            "low": 104,
-            "high": 104
-          },
-          "velocityRange": "FF",
-          "label": "53"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf G#6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "105": {
-      "midiNote": 105,
-      "noteName": "A7",
+      "note": "A7",
+      "midi_note": 105,
+      "lokey": 105,
+      "hikey": 105,
       "samples": [
         {
+          "file": "PP A6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf A6.flac",
-          "keyRange": {
-            "low": 105,
-            "high": 105
-          },
-          "velocityRange": "FF",
-          "label": "54"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf A6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "106": {
-      "midiNote": 106,
-      "noteName": "A#7",
+      "note": "A#7",
+      "midi_note": 106,
+      "lokey": 106,
+      "hikey": 106,
       "samples": [
         {
+          "file": "PP A#6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "Mp A#6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf A#6.flac",
-          "keyRange": {
-            "low": 106,
-            "high": 106
-          },
-          "velocityRange": "FF",
-          "label": "55"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf A#6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "107": {
-      "midiNote": 107,
-      "noteName": "B7",
+      "note": "B7",
+      "midi_note": 107,
+      "lokey": 107,
+      "hikey": 107,
       "samples": [
         {
+          "file": "PP B6.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "PP B6.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf B6.flac",
-          "keyRange": {
-            "low": 107,
-            "high": 107
-          },
-          "velocityRange": "FF",
-          "label": "56"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf B6.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     },
     "108": {
-      "midiNote": 108,
-      "noteName": "C8",
+      "note": "C8",
+      "midi_note": 108,
+      "lokey": 108,
+      "hikey": 108,
       "samples": [
         {
+          "file": "PP C7.flac",
+          "layer": "PP",
+          "min_vel": 1,
+          "max_vel": 40
+        },
+        {
+          "file": "PP C7.flac",
+          "layer": "MP",
+          "min_vel": 41,
+          "max_vel": 67
+        },
+        {
           "file": "Mf C7.flac",
-          "keyRange": {
-            "low": 108,
-            "high": 108
-          },
-          "velocityRange": "FF",
-          "label": "57"
+          "layer": "MF",
+          "min_vel": 68,
+          "max_vel": 84
+        },
+        {
+          "file": "Mf C7.flac",
+          "layer": "FF",
+          "min_vel": 85,
+          "max_vel": 127
         }
       ]
     }

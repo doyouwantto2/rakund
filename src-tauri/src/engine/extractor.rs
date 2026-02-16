@@ -13,33 +13,61 @@ pub fn get_note_details(
     target_layer: &str,
     app: &AppHandle,
 ) -> Result<ExtractedNote, String> {
-    let search_term = target_layer.to_lowercase();
+    let search = target_layer.to_lowercase();
+
+    println!(
+        "--- 🎹 MIDI Trigger: {} | Layer Search: {} ---",
+        midi_num, search
+    );
 
     let sample_info = key_data
         .samples
         .iter()
-        .find(|s| s.file.to_lowercase().contains(&search_term)) // Case-insensitive match
+        .find(|s| {
+            let found = s.layer.to_lowercase() == search;
+            if found {
+                println!("🎯 Match Found: Layer '{}'", s.layer);
+            }
+            found
+        })
+        .or_else(|| {
+            let ff_fallback = key_data.samples.iter().find(|s| s.layer == "FF");
+            if ff_fallback.is_some() {
+                println!("⚠️ Fallback: Using 'FF' layer");
+            }
+            ff_fallback
+        })
         .unwrap_or_else(|| {
-            key_data
-                .samples
-                .iter()
-                .find(|s| s.file.contains("FF"))
-                .unwrap_or(&key_data.samples[0])
+            println!("🛑 Default: No match, using first sample in list");
+            &key_data.samples[0]
         });
 
-    let pitch_ratio = 2.0f32.powf((midi_num as f32 - key_data.midi_note as f32) / 12.0);
+    let semitone_distance = midi_num as f32 - key_data.midi_note as f32;
+    let pitch_ratio = 2.0f32.powf(semitone_distance / 12.0);
+
+    println!(
+        "⚖️ Pitch Math: {} (Target) - {} (Root) = {} semitones",
+        midi_num, key_data.midi_note, semitone_distance
+    );
+    println!("📈 Calculated Ratio: {:.4}", pitch_ratio);
 
     let path = app
         .path()
-        .app_config_dir()
-        .unwrap()
-        .parent()
-        .unwrap()
-        .join("src-tauri")
-        .join("data")
-        .join("splendid")
-        .join("Samples")
+        .resolve(
+            "data/splendid/Samples",
+            tauri::path::BaseDirectory::Resource,
+        )
+        .map_err(|e| format!("Resource path error: {}", e))?
         .join(&sample_info.file);
+
+    println!("📂 Final File Path: {:?}", path);
+
+    if !path.exists() {
+        println!("❌ FILE NOT FOUND ON DISK!");
+        return Err(format!("File not found: {:?}", path));
+    } else {
+        println!("✅ FILE OK");
+    }
 
     Ok(ExtractedNote {
         final_path: path,
