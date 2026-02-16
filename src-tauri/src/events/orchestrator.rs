@@ -1,24 +1,38 @@
 use crate::engine::extractor;
 use crate::models::SplendidConfig;
 use crate::setup::sound;
-use tauri::State;
+use tauri::{AppHandle, State};
 
 #[tauri::command]
 pub async fn play_midi_note(
     midi_num: u8,
     velocity: u8,
+    layer: String,
     handle: State<'_, sound::AudioHandle>,
     config: State<'_, SplendidConfig>,
-    app: tauri::AppHandle,
+    app: AppHandle,
 ) -> Result<(), String> {
     let key_data = config
         .keys
         .get(&midi_num.to_string())
         .ok_or_else(|| format!("Note {} not found", midi_num))?;
 
-    let details = extractor::get_note_details(midi_num, velocity, key_data, &app)?;
+    let target_layer = if layer == "Auto" {
+        if velocity < 50 {
+            "PP"
+        } else if velocity < 90 {
+            "Mf"
+        } else {
+            "FF"
+        }
+    } else {
+        &layer
+    };
+
+    let details = extractor::get_note_details(midi_num, key_data, target_layer, &app)?;
 
     let filename = details.final_path.file_name().unwrap().to_str().unwrap();
+
     let data = config
         .samples_cache
         .get(filename)
