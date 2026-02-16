@@ -1,2 +1,2 @@
-pub mod audio;
-pub mod sampler;
+pub mod note;
+pub mod orchestrator;

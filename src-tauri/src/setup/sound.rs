@@ -32,14 +32,12 @@ pub fn start_stream() -> AudioHandle {
         .build_output_stream(
             &config.into(),
             move |output: &mut [f32], _| {
-                // Copy voices data to minimize lock time
                 let (mut voices_snapshot, pedal_active) = {
                     let pedal = *sustain_clone.lock().unwrap();
                     let voices = voices_clone.lock().unwrap();
                     (voices.clone(), pedal)
                 };
 
-                // Pre-calculate gain reduction
                 let num_voices: f32 = voices_snapshot.len() as f32;
                 let gain_reduction = if num_voices > 1.0 {
                     1.0 / (num_voices.sqrt())
@@ -50,7 +48,7 @@ pub fn start_stream() -> AudioHandle {
                 // Process all frames without holding locks
                 for frame in output.iter_mut() {
                     let mut mixed: f32 = 0.0;
-                    
+
                     for v in &mut voices_snapshot {
                         let pos = v.playhead as usize;
                         if pos < v.data.len() && v.volume > 0.001 {
@@ -67,7 +65,6 @@ pub fn start_stream() -> AudioHandle {
                     *frame = final_sample.clamp(-1.0, 1.0);
                 }
 
-                // Update the actual voices with modified data
                 if let Ok(mut voices) = voices_clone.lock() {
                     *voices = voices_snapshot;
                 }

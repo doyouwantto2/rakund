@@ -1,5 +1,5 @@
-use crate::events::sampler::SplendidConfig;
-use crate::events::{audio, sampler};
+use crate::events::{note, orchestrator};
+use crate::models::SplendidConfig;
 use crate::setup;
 use std::fs;
 
@@ -11,8 +11,12 @@ pub fn run() {
         .unwrap_or_else(|_| std::path::PathBuf::from("."))
         .join("data/map/splendid.json");
 
-    let config_data = fs::read_to_string(&config_path)
-        .unwrap_or_else(|e| panic!("Failed to load piano configuration from {:?}: {}", config_path, e));
+    let config_data = fs::read_to_string(&config_path).unwrap_or_else(|e| {
+        panic!(
+            "Failed to load piano configuration from {:?}: {}",
+            config_path, e
+        )
+    });
 
     let piano_config: SplendidConfig =
         serde_json::from_str(&config_data).expect("Invalid piano configuration JSON format");
@@ -22,10 +26,10 @@ pub fn run() {
         .manage(audio_handle)
         .manage(piano_config)
         .invoke_handler(tauri::generate_handler![
-            audio::play_note,
-            sampler::play_midi_note,
-            sampler::stop_midi_note,
-            sampler::set_sustain,
+            note::play_note,
+            orchestrator::play_midi_note,
+            orchestrator::stop_midi_note,
+            orchestrator::set_sustain,
         ])
         .run(tauri::generate_context!())
         .expect("Failed to start Raku Grand Piano application");
