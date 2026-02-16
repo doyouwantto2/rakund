@@ -1,2 +1,2 @@
+pub mod audio;
 pub mod init;
-pub mod player;

@@ -1,2 +1,2 @@
-pub mod audio;
-pub mod sound;
+pub mod decoder;
+pub mod player;

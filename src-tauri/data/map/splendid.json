@@ -22,22 +22,22 @@
     "21": {
       "midiNote": 21,
       "noteName": "A0",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A0.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 22
           },
-          "pitchCenter": 33
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B-1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B-1.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 24
           },
-          "pitchCenter": 23,
+          "velocityRange": "FF",
           "label": "01"
         }
       ]
@@ -45,22 +45,22 @@
     "22": {
       "midiNote": 22,
       "noteName": "A#0",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A0.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 22
           },
-          "pitchCenter": 33
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B-1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B-1.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 24
           },
-          "pitchCenter": 23,
+          "velocityRange": "FF",
           "label": "01"
         }
       ]
@@ -68,22 +68,22 @@
     "23": {
       "midiNote": 23,
       "noteName": "B0",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B0.flac",
+          "keyRange": {
+            "low": 23,
+            "high": 23
           },
-          "pitchCenter": 35
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B-1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B-1.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 24
           },
-          "pitchCenter": 23,
+          "velocityRange": "FF",
           "label": "01"
         }
       ]
@@ -91,22 +91,22 @@
     "24": {
       "midiNote": 24,
       "noteName": "C1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C#1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C#1.flac",
+          "keyRange": {
+            "low": 24,
+            "high": 25
           },
-          "pitchCenter": 37
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B-1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B-1.flac",
+          "keyRange": {
+            "low": 21,
+            "high": 24
           },
-          "pitchCenter": 23,
+          "velocityRange": "FF",
           "label": "01"
         }
       ]
@@ -114,22 +114,22 @@
     "25": {
       "midiNote": 25,
       "noteName": "C#1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C#1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C#1.flac",
+          "keyRange": {
+            "low": 24,
+            "high": 25
           },
-          "pitchCenter": 37
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D#0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D#0.flac",
+          "keyRange": {
+            "low": 25,
+            "high": 27
           },
-          "pitchCenter": 27,
+          "velocityRange": "FF",
           "label": "02"
         }
       ]
@@ -137,22 +137,22 @@
     "26": {
       "midiNote": 26,
       "noteName": "D1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D1.flac",
+          "keyRange": {
+            "low": 26,
+            "high": 27
           },
-          "pitchCenter": 38
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D#0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D#0.flac",
+          "keyRange": {
+            "low": 25,
+            "high": 27
           },
-          "pitchCenter": 27,
+          "velocityRange": "FF",
           "label": "02"
         }
       ]
@@ -160,22 +160,22 @@
     "27": {
       "midiNote": 27,
       "noteName": "D#1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D1.flac",
+          "keyRange": {
+            "low": 26,
+            "high": 27
           },
-          "pitchCenter": 38
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D#0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D#0.flac",
+          "keyRange": {
+            "low": 25,
+            "high": 27
           },
-          "pitchCenter": 27,
+          "velocityRange": "FF",
           "label": "02"
         }
       ]
@@ -183,22 +183,22 @@
     "28": {
       "midiNote": 28,
       "noteName": "E1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E1.flac",
+          "keyRange": {
+            "low": 28,
+            "high": 28
           },
-          "pitchCenter": 40
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F0.flac",
+          "keyRange": {
+            "low": 28,
+            "high": 30
           },
-          "pitchCenter": 29,
+          "velocityRange": "FF",
           "label": "03"
         }
       ]
@@ -206,22 +206,22 @@
     "29": {
       "midiNote": 29,
       "noteName": "F1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F1.flac",
+          "keyRange": {
+            "low": 29,
+            "high": 29
           },
-          "pitchCenter": 41
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F0.flac",
+          "keyRange": {
+            "low": 28,
+            "high": 30
           },
-          "pitchCenter": 29,
+          "velocityRange": "FF",
           "label": "03"
         }
       ]
@@ -229,22 +229,22 @@
     "30": {
       "midiNote": 30,
       "noteName": "F#1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G1.flac",
+          "keyRange": {
+            "low": 30,
+            "high": 32
           },
-          "pitchCenter": 43
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F0.flac",
+          "keyRange": {
+            "low": 28,
+            "high": 30
           },
-          "pitchCenter": 29,
+          "velocityRange": "FF",
           "label": "03"
         }
       ]
@@ -252,22 +252,22 @@
     "31": {
       "midiNote": 31,
       "noteName": "G1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G1.flac",
+          "keyRange": {
+            "low": 30,
+            "high": 32
           },
-          "pitchCenter": 43
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G0.flac",
+          "keyRange": {
+            "low": 31,
+            "high": 32
           },
-          "pitchCenter": 31,
+          "velocityRange": "FF",
           "label": "04"
         }
       ]
@@ -275,22 +275,22 @@
     "32": {
       "midiNote": 32,
       "noteName": "G#1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G1.flac",
+          "keyRange": {
+            "low": 30,
+            "high": 32
           },
-          "pitchCenter": 43
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G0.flac",
+          "keyRange": {
+            "low": 31,
+            "high": 32
           },
-          "pitchCenter": 31,
+          "velocityRange": "FF",
           "label": "04"
         }
       ]
@@ -298,22 +298,22 @@
     "33": {
       "midiNote": 33,
       "noteName": "A1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A1.flac",
+          "keyRange": {
+            "low": 33,
+            "high": 34
           },
-          "pitchCenter": 45
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A0.flac",
+          "keyRange": {
+            "low": 33,
+            "high": 34
           },
-          "pitchCenter": 33,
+          "velocityRange": "FF",
           "label": "05"
         }
       ]
@@ -321,22 +321,22 @@
     "34": {
       "midiNote": 34,
       "noteName": "A#1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A1.flac",
+          "keyRange": {
+            "low": 33,
+            "high": 34
           },
-          "pitchCenter": 45
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A0.flac",
+          "keyRange": {
+            "low": 33,
+            "high": 34
           },
-          "pitchCenter": 33,
+          "velocityRange": "FF",
           "label": "05"
         }
       ]
@@ -344,22 +344,22 @@
     "35": {
       "midiNote": 35,
       "noteName": "B1",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B1.flac",
+          "keyRange": {
+            "low": 35,
+            "high": 35
           },
-          "pitchCenter": 47
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B0.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B0.flac",
+          "keyRange": {
+            "low": 35,
+            "high": 35
           },
-          "pitchCenter": 35,
+          "velocityRange": "FF",
           "label": "06"
         }
       ]
@@ -367,22 +367,22 @@
     "36": {
       "midiNote": 36,
       "noteName": "C2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C2.flac",
+          "keyRange": {
+            "low": 36,
+            "high": 37
           },
-          "pitchCenter": 48
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C#1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C#1.flac",
+          "keyRange": {
+            "low": 36,
+            "high": 37
           },
-          "pitchCenter": 37,
+          "velocityRange": "FF",
           "label": "07"
         }
       ]
@@ -390,22 +390,22 @@
     "37": {
       "midiNote": 37,
       "noteName": "C#2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C2.flac",
+          "keyRange": {
+            "low": 36,
+            "high": 37
           },
-          "pitchCenter": 48
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C#1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C#1.flac",
+          "keyRange": {
+            "low": 36,
+            "high": 37
           },
-          "pitchCenter": 37,
+          "velocityRange": "FF",
           "label": "07"
         }
       ]
@@ -413,22 +413,22 @@
     "38": {
       "midiNote": 38,
       "noteName": "D2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D2.flac",
+          "keyRange": {
+            "low": 38,
+            "high": 38
           },
-          "pitchCenter": 50
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D1.flac",
+          "keyRange": {
+            "low": 38,
+            "high": 39
           },
-          "pitchCenter": 38,
+          "velocityRange": "FF",
           "label": "08"
         }
       ]
@@ -436,22 +436,22 @@
     "39": {
       "midiNote": 39,
       "noteName": "D#2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E2.flac",
+          "keyRange": {
+            "low": 39,
+            "high": 40
           },
-          "pitchCenter": 52
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D1.flac",
+          "keyRange": {
+            "low": 38,
+            "high": 39
           },
-          "pitchCenter": 38,
+          "velocityRange": "FF",
           "label": "08"
         }
       ]
@@ -459,22 +459,22 @@
     "40": {
       "midiNote": 40,
       "noteName": "E2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E2.flac",
+          "keyRange": {
+            "low": 39,
+            "high": 40
           },
-          "pitchCenter": 52
+          "velocityRange": "FF"
         },
         {
-          "file": "FF E1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E1.flac",
+          "keyRange": {
+            "low": 40,
+            "high": 40
           },
-          "pitchCenter": 40,
+          "velocityRange": "FF",
           "label": "09"
         }
       ]
@@ -482,22 +482,22 @@
     "41": {
       "midiNote": 41,
       "noteName": "F2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F2.flac",
+          "keyRange": {
+            "low": 41,
+            "high": 42
           },
-          "pitchCenter": 53
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F1.flac",
+          "keyRange": {
+            "low": 41,
+            "high": 41
           },
-          "pitchCenter": 41,
+          "velocityRange": "FF",
           "label": "10"
         }
       ]
@@ -505,22 +505,22 @@
     "42": {
       "midiNote": 42,
       "noteName": "F#2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F2.flac",
+          "keyRange": {
+            "low": 41,
+            "high": 42
           },
-          "pitchCenter": 53
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G1.flac",
+          "keyRange": {
+            "low": 42,
+            "high": 44
           },
-          "pitchCenter": 43,
+          "velocityRange": "FF",
           "label": "11"
         }
       ]
@@ -528,22 +528,22 @@
     "43": {
       "midiNote": 43,
       "noteName": "G2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G2.flac",
+          "keyRange": {
+            "low": 43,
+            "high": 43
           },
-          "pitchCenter": 55
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G1.flac",
+          "keyRange": {
+            "low": 42,
+            "high": 44
           },
-          "pitchCenter": 43,
+          "velocityRange": "FF",
           "label": "11"
         }
       ]
@@ -551,22 +551,22 @@
     "44": {
       "midiNote": 44,
       "noteName": "G#2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G#2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G#2.flac",
+          "keyRange": {
+            "low": 44,
+            "high": 44
           },
-          "pitchCenter": 56
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G1.flac",
+          "keyRange": {
+            "low": 42,
+            "high": 44
           },
-          "pitchCenter": 43,
+          "velocityRange": "FF",
           "label": "11"
         }
       ]
@@ -574,22 +574,22 @@
     "45": {
       "midiNote": 45,
       "noteName": "A2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A2.flac",
+          "keyRange": {
+            "low": 45,
+            "high": 45
           },
-          "pitchCenter": 57
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A1.flac",
+          "keyRange": {
+            "low": 45,
+            "high": 46
           },
-          "pitchCenter": 45,
+          "velocityRange": "FF",
           "label": "12"
         }
       ]
@@ -597,22 +597,22 @@
     "46": {
       "midiNote": 46,
       "noteName": "A#2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A#2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A#2.flac",
+          "keyRange": {
+            "low": 46,
+            "high": 46
           },
-          "pitchCenter": 58
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A1.flac",
+          "keyRange": {
+            "low": 45,
+            "high": 46
           },
-          "pitchCenter": 45,
+          "velocityRange": "FF",
           "label": "12"
         }
       ]
@@ -620,22 +620,22 @@
     "47": {
       "midiNote": 47,
       "noteName": "B2",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B2.flac",
+          "keyRange": {
+            "low": 47,
+            "high": 47
           },
-          "pitchCenter": 59
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B1.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B1.flac",
+          "keyRange": {
+            "low": 47,
+            "high": 47
           },
-          "pitchCenter": 47,
+          "velocityRange": "FF",
           "label": "13"
         }
       ]
@@ -643,22 +643,22 @@
     "48": {
       "midiNote": 48,
       "noteName": "C3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C3.flac",
+          "keyRange": {
+            "low": 48,
+            "high": 49
           },
-          "pitchCenter": 60
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C2.flac",
+          "keyRange": {
+            "low": 48,
+            "high": 49
           },
-          "pitchCenter": 48,
+          "velocityRange": "FF",
           "label": "14"
         }
       ]
@@ -666,22 +666,22 @@
     "49": {
       "midiNote": 49,
       "noteName": "C#3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C3.flac",
+          "keyRange": {
+            "low": 48,
+            "high": 49
           },
-          "pitchCenter": 60
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C2.flac",
+          "keyRange": {
+            "low": 48,
+            "high": 49
           },
-          "pitchCenter": 48,
+          "velocityRange": "FF",
           "label": "14"
         }
       ]
@@ -689,22 +689,22 @@
     "50": {
       "midiNote": 50,
       "noteName": "D3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D3.flac",
+          "keyRange": {
+            "low": 50,
+            "high": 51
           },
-          "pitchCenter": 62
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D2.flac",
+          "keyRange": {
+            "low": 50,
+            "high": 50
           },
-          "pitchCenter": 50,
+          "velocityRange": "FF",
           "label": "15"
         }
       ]
@@ -712,22 +712,22 @@
     "51": {
       "midiNote": 51,
       "noteName": "D#3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D3.flac",
+          "keyRange": {
+            "low": 50,
+            "high": 51
           },
-          "pitchCenter": 62
+          "velocityRange": "FF"
         },
         {
-          "file": "FF E2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E2.flac",
+          "keyRange": {
+            "low": 51,
+            "high": 52
           },
-          "pitchCenter": 52,
+          "velocityRange": "FF",
           "label": "16"
         }
       ]
@@ -735,22 +735,22 @@
     "52": {
       "midiNote": 52,
       "noteName": "E3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E3.flac",
+          "keyRange": {
+            "low": 52,
+            "high": 52
           },
-          "pitchCenter": 64
+          "velocityRange": "FF"
         },
         {
-          "file": "FF E2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E2.flac",
+          "keyRange": {
+            "low": 51,
+            "high": 52
           },
-          "pitchCenter": 52,
+          "velocityRange": "FF",
           "label": "16"
         }
       ]
@@ -758,22 +758,22 @@
     "53": {
       "midiNote": 53,
       "noteName": "F3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F3.flac",
+          "keyRange": {
+            "low": 53,
+            "high": 54
           },
-          "pitchCenter": 65
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F2.flac",
+          "keyRange": {
+            "low": 53,
+            "high": 54
           },
-          "pitchCenter": 53,
+          "velocityRange": "FF",
           "label": "17"
         }
       ]
@@ -781,22 +781,22 @@
     "54": {
       "midiNote": 54,
       "noteName": "F#3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F3.flac",
+          "keyRange": {
+            "low": 53,
+            "high": 54
           },
-          "pitchCenter": 65
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F2.flac",
+          "keyRange": {
+            "low": 53,
+            "high": 54
           },
-          "pitchCenter": 53,
+          "velocityRange": "FF",
           "label": "17"
         }
       ]
@@ -804,22 +804,22 @@
     "55": {
       "midiNote": 55,
       "noteName": "G3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G3.flac",
+          "keyRange": {
+            "low": 55,
+            "high": 56
           },
-          "pitchCenter": 67
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G2.flac",
+          "keyRange": {
+            "low": 55,
+            "high": 55
           },
-          "pitchCenter": 55,
+          "velocityRange": "FF",
           "label": "18"
         }
       ]
@@ -827,22 +827,22 @@
     "56": {
       "midiNote": 56,
       "noteName": "G#3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G3.flac",
+          "keyRange": {
+            "low": 55,
+            "high": 56
           },
-          "pitchCenter": 67
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G#2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G#2.flac",
+          "keyRange": {
+            "low": 56,
+            "high": 56
           },
-          "pitchCenter": 56,
+          "velocityRange": "FF",
           "label": "19"
         }
       ]
@@ -850,22 +850,22 @@
     "57": {
       "midiNote": 57,
       "noteName": "A3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A3.flac",
+          "keyRange": {
+            "low": 57,
+            "high": 57
           },
-          "pitchCenter": 69
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A2.flac",
+          "keyRange": {
+            "low": 57,
+            "high": 57
           },
-          "pitchCenter": 57,
+          "velocityRange": "FF",
           "label": "20"
         }
       ]
@@ -873,22 +873,22 @@
     "58": {
       "midiNote": 58,
       "noteName": "A#3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B3.flac",
+          "keyRange": {
+            "low": 58,
+            "high": 59
           },
-          "pitchCenter": 71
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A#2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A#2.flac",
+          "keyRange": {
+            "low": 58,
+            "high": 58
           },
-          "pitchCenter": 58,
+          "velocityRange": "FF",
           "label": "21"
         }
       ]
@@ -896,22 +896,22 @@
     "59": {
       "midiNote": 59,
       "noteName": "B3",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B3.flac",
+          "keyRange": {
+            "low": 58,
+            "high": 59
           },
-          "pitchCenter": 71
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B2.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B2.flac",
+          "keyRange": {
+            "low": 59,
+            "high": 59
           },
-          "pitchCenter": 59,
+          "velocityRange": "FF",
           "label": "22"
         }
       ]
@@ -919,22 +919,22 @@
     "60": {
       "midiNote": 60,
       "noteName": "C4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C4.flac",
+          "keyRange": {
+            "low": 60,
+            "high": 61
           },
-          "pitchCenter": 72
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C3.flac",
+          "keyRange": {
+            "low": 60,
+            "high": 61
           },
-          "pitchCenter": 60,
+          "velocityRange": "FF",
           "label": "23"
         }
       ]
@@ -942,22 +942,22 @@
     "61": {
       "midiNote": 61,
       "noteName": "C#4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C4.flac",
+          "keyRange": {
+            "low": 60,
+            "high": 61
           },
-          "pitchCenter": 72
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C3.flac",
+          "keyRange": {
+            "low": 60,
+            "high": 61
           },
-          "pitchCenter": 60,
+          "velocityRange": "FF",
           "label": "23"
         }
       ]
@@ -965,22 +965,22 @@
     "62": {
       "midiNote": 62,
       "noteName": "D4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D4.flac",
+          "keyRange": {
+            "low": 62,
+            "high": 63
           },
-          "pitchCenter": 74
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D3.flac",
+          "keyRange": {
+            "low": 62,
+            "high": 63
           },
-          "pitchCenter": 62,
+          "velocityRange": "FF",
           "label": "24"
         }
       ]
@@ -988,22 +988,22 @@
     "63": {
       "midiNote": 63,
       "noteName": "D#4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D4.flac",
+          "keyRange": {
+            "low": 62,
+            "high": 63
           },
-          "pitchCenter": 74
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D3.flac",
+          "keyRange": {
+            "low": 62,
+            "high": 63
           },
-          "pitchCenter": 62,
+          "velocityRange": "FF",
           "label": "24"
         }
       ]
@@ -1011,22 +1011,22 @@
     "64": {
       "midiNote": 64,
       "noteName": "E4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E4.flac",
+          "keyRange": {
+            "low": 64,
+            "high": 64
           },
-          "pitchCenter": 76
+          "velocityRange": "FF"
         },
         {
-          "file": "FF E3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E3.flac",
+          "keyRange": {
+            "low": 64,
+            "high": 64
           },
-          "pitchCenter": 64,
+          "velocityRange": "FF",
           "label": "25"
         }
       ]
@@ -1034,22 +1034,22 @@
     "65": {
       "midiNote": 65,
       "noteName": "F4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F4.flac",
+          "keyRange": {
+            "low": 65,
+            "high": 66
           },
-          "pitchCenter": 77
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F3.flac",
+          "keyRange": {
+            "low": 65,
+            "high": 66
           },
-          "pitchCenter": 65,
+          "velocityRange": "FF",
           "label": "26"
         }
       ]
@@ -1057,22 +1057,22 @@
     "66": {
       "midiNote": 66,
       "noteName": "F#4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F4.flac",
+          "keyRange": {
+            "low": 65,
+            "high": 66
           },
-          "pitchCenter": 77
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F3.flac",
+          "keyRange": {
+            "low": 65,
+            "high": 66
           },
-          "pitchCenter": 65,
+          "velocityRange": "FF",
           "label": "26"
         }
       ]
@@ -1080,22 +1080,22 @@
     "67": {
       "midiNote": 67,
       "noteName": "G4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G4.flac",
+          "keyRange": {
+            "low": 67,
+            "high": 67
           },
-          "pitchCenter": 79
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G3.flac",
+          "keyRange": {
+            "low": 67,
+            "high": 68
           },
-          "pitchCenter": 67,
+          "velocityRange": "FF",
           "label": "27"
         }
       ]
@@ -1103,22 +1103,22 @@
     "68": {
       "midiNote": 68,
       "noteName": "G#4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G#4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G#4.flac",
+          "keyRange": {
+            "low": 68,
+            "high": 68
           },
-          "pitchCenter": 80
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G3.flac",
+          "keyRange": {
+            "low": 67,
+            "high": 68
           },
-          "pitchCenter": 67,
+          "velocityRange": "FF",
           "label": "27"
         }
       ]
@@ -1126,22 +1126,22 @@
     "69": {
       "midiNote": 69,
       "noteName": "A4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A4.flac",
+          "keyRange": {
+            "low": 69,
+            "high": 69
           },
-          "pitchCenter": 81
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A3.flac",
+          "keyRange": {
+            "low": 69,
+            "high": 69
           },
-          "pitchCenter": 69,
+          "velocityRange": "FF",
           "label": "28"
         }
       ]
@@ -1149,22 +1149,22 @@
     "70": {
       "midiNote": 70,
       "noteName": "A#4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A#4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A#4.flac",
+          "keyRange": {
+            "low": 70,
+            "high": 70
           },
-          "pitchCenter": 82
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B3.flac",
+          "keyRange": {
+            "low": 70,
+            "high": 71
           },
-          "pitchCenter": 71,
+          "velocityRange": "FF",
           "label": "29"
         }
       ]
@@ -1172,22 +1172,22 @@
     "71": {
       "midiNote": 71,
       "noteName": "B4",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B4.flac",
+          "keyRange": {
+            "low": 71,
+            "high": 71
           },
-          "pitchCenter": 83
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B3.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B3.flac",
+          "keyRange": {
+            "low": 70,
+            "high": 71
           },
-          "pitchCenter": 71,
+          "velocityRange": "FF",
           "label": "29"
         }
       ]
@@ -1195,22 +1195,22 @@
     "72": {
       "midiNote": 72,
       "noteName": "C5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C#5.flac",
+          "keyRange": {
+            "low": 72,
+            "high": 73
           },
-          "pitchCenter": 85
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C4.flac",
+          "keyRange": {
+            "low": 72,
+            "high": 73
           },
-          "pitchCenter": 72,
+          "velocityRange": "FF",
           "label": "30"
         }
       ]
@@ -1218,22 +1218,22 @@
     "73": {
       "midiNote": 73,
       "noteName": "C#5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C#5.flac",
+          "keyRange": {
+            "low": 72,
+            "high": 73
           },
-          "pitchCenter": 85
+          "velocityRange": "FF"
         },
         {
-          "file": "FF C4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C4.flac",
+          "keyRange": {
+            "low": 72,
+            "high": 73
           },
-          "pitchCenter": 72,
+          "velocityRange": "FF",
           "label": "30"
         }
       ]
@@ -1241,22 +1241,22 @@
     "74": {
       "midiNote": 74,
       "noteName": "D5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D5.flac",
+          "keyRange": {
+            "low": 74,
+            "high": 74
           },
-          "pitchCenter": 86
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D4.flac",
+          "keyRange": {
+            "low": 74,
+            "high": 75
           },
-          "pitchCenter": 74,
+          "velocityRange": "FF",
           "label": "31"
         }
       ]
@@ -1264,22 +1264,22 @@
     "75": {
       "midiNote": 75,
       "noteName": "D#5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D#5.flac",
+          "keyRange": {
+            "low": 75,
+            "high": 75
           },
-          "pitchCenter": 87
+          "velocityRange": "FF"
         },
         {
-          "file": "FF D4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D4.flac",
+          "keyRange": {
+            "low": 74,
+            "high": 75
           },
-          "pitchCenter": 74,
+          "velocityRange": "FF",
           "label": "31"
         }
       ]
@@ -1287,22 +1287,22 @@
     "76": {
       "midiNote": 76,
       "noteName": "E5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F5.flac",
+          "keyRange": {
+            "low": 76,
+            "high": 77
           },
-          "pitchCenter": 89
+          "velocityRange": "FF"
         },
         {
-          "file": "FF E4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E4.flac",
+          "keyRange": {
+            "low": 76,
+            "high": 76
           },
-          "pitchCenter": 76,
+          "velocityRange": "FF",
           "label": "32"
         }
       ]
@@ -1310,22 +1310,22 @@
     "77": {
       "midiNote": 77,
       "noteName": "F5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F5.flac",
+          "keyRange": {
+            "low": 76,
+            "high": 77
           },
-          "pitchCenter": 89
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F4.flac",
+          "keyRange": {
+            "low": 77,
+            "high": 78
           },
-          "pitchCenter": 77,
+          "velocityRange": "FF",
           "label": "33"
         }
       ]
@@ -1333,22 +1333,22 @@
     "78": {
       "midiNote": 78,
       "noteName": "F#5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F#5.flac",
+          "keyRange": {
+            "low": 78,
+            "high": 78
           },
-          "pitchCenter": 90
+          "velocityRange": "FF"
         },
         {
-          "file": "FF F4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F4.flac",
+          "keyRange": {
+            "low": 77,
+            "high": 78
           },
-          "pitchCenter": 77,
+          "velocityRange": "FF",
           "label": "33"
         }
       ]
@@ -1356,22 +1356,22 @@
     "79": {
       "midiNote": 79,
       "noteName": "G5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G5.flac",
+          "keyRange": {
+            "low": 79,
+            "high": 79
           },
-          "pitchCenter": 91
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G4.flac",
+          "keyRange": {
+            "low": 79,
+            "high": 79
           },
-          "pitchCenter": 79,
+          "velocityRange": "FF",
           "label": "34"
         }
       ]
@@ -1379,22 +1379,22 @@
     "80": {
       "midiNote": 80,
       "noteName": "G#5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G#5.flac",
+          "keyRange": {
+            "low": 80,
+            "high": 80
           },
-          "pitchCenter": 92
+          "velocityRange": "FF"
         },
         {
-          "file": "FF G#4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G#4.flac",
+          "keyRange": {
+            "low": 80,
+            "high": 80
           },
-          "pitchCenter": 80,
+          "velocityRange": "FF",
           "label": "35"
         }
       ]
@@ -1402,22 +1402,22 @@
     "81": {
       "midiNote": 81,
       "noteName": "A5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A5.flac",
+          "keyRange": {
+            "low": 81,
+            "high": 81
           },
-          "pitchCenter": 93
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A4.flac",
+          "keyRange": {
+            "low": 81,
+            "high": 81
           },
-          "pitchCenter": 81,
+          "velocityRange": "FF",
           "label": "36"
         }
       ]
@@ -1425,22 +1425,22 @@
     "82": {
       "midiNote": 82,
       "noteName": "A#5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A#5.flac",
+          "keyRange": {
+            "low": 82,
+            "high": 82
           },
-          "pitchCenter": 94
+          "velocityRange": "FF"
         },
         {
-          "file": "FF A#4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A#4.flac",
+          "keyRange": {
+            "low": 82,
+            "high": 82
           },
-          "pitchCenter": 82,
+          "velocityRange": "FF",
           "label": "37"
         }
       ]
@@ -1448,22 +1448,22 @@
     "83": {
       "midiNote": 83,
       "noteName": "B5",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B5.flac",
+          "keyRange": {
+            "low": 83,
+            "high": 83
           },
-          "pitchCenter": 95
+          "velocityRange": "FF"
         },
         {
-          "file": "FF B4.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF B4.flac",
+          "keyRange": {
+            "low": 83,
+            "high": 83
           },
-          "pitchCenter": 83,
+          "velocityRange": "FF",
           "label": "38"
         }
       ]
@@ -1471,23 +1471,23 @@
     "84": {
       "midiNote": 84,
       "noteName": "C6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C6.flac",
+          "keyRange": {
+            "low": 84,
+            "high": 84
           },
-          "pitchCenter": 96,
+          "velocityRange": "FF",
           "tune": "-5"
         },
         {
-          "file": "FF C#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C#5.flac",
+          "keyRange": {
+            "low": 84,
+            "high": 85
           },
-          "pitchCenter": 85,
+          "velocityRange": "FF",
           "label": "39"
         }
       ]
@@ -1495,23 +1495,23 @@
     "85": {
       "midiNote": 85,
       "noteName": "C#6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C#6.flac",
+          "keyRange": {
+            "low": 85,
+            "high": 85
           },
-          "pitchCenter": 97,
+          "velocityRange": "FF",
           "tune": "-5"
         },
         {
-          "file": "FF C#5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF C#5.flac",
+          "keyRange": {
+            "low": 84,
+            "high": 85
           },
-          "pitchCenter": 85,
+          "velocityRange": "FF",
           "label": "39"
         }
       ]
@@ -1519,23 +1519,23 @@
     "86": {
       "midiNote": 86,
       "noteName": "D6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D6.flac",
+          "keyRange": {
+            "low": 86,
+            "high": 86
           },
-          "pitchCenter": 98,
+          "velocityRange": "FF",
           "tune": "-10"
         },
         {
-          "file": "FF D5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D5.flac",
+          "keyRange": {
+            "low": 86,
+            "high": 87
           },
-          "pitchCenter": 86,
+          "velocityRange": "FF",
           "label": "40"
         }
       ]
@@ -1543,23 +1543,23 @@
     "87": {
       "midiNote": 87,
       "noteName": "D#6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP D#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP D#6.flac",
+          "keyRange": {
+            "low": 87,
+            "high": 87
           },
-          "pitchCenter": 99,
+          "velocityRange": "FF",
           "tune": "-5"
         },
         {
-          "file": "FF D5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF D5.flac",
+          "keyRange": {
+            "low": 86,
+            "high": 87
           },
-          "pitchCenter": 86,
+          "velocityRange": "FF",
           "label": "40"
         }
       ]
@@ -1567,23 +1567,23 @@
     "88": {
       "midiNote": 88,
       "noteName": "E6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP E6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP E6.flac",
+          "keyRange": {
+            "low": 88,
+            "high": 88
           },
-          "pitchCenter": 100,
+          "velocityRange": "FF",
           "tune": "-10"
         },
         {
-          "file": "FF E5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF E5.flac",
+          "keyRange": {
+            "low": 88,
+            "high": 88
           },
-          "pitchCenter": 88,
+          "velocityRange": "FF",
           "label": "41"
         }
       ]
@@ -1591,23 +1591,23 @@
     "89": {
       "midiNote": 89,
       "noteName": "F6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F6.flac",
+          "keyRange": {
+            "low": 89,
+            "high": 89
           },
-          "pitchCenter": 101,
+          "velocityRange": "FF",
           "tune": "-10"
         },
         {
-          "file": "FF F5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F5.flac",
+          "keyRange": {
+            "low": 89,
+            "high": 90
           },
-          "pitchCenter": 89,
+          "velocityRange": "FF",
           "label": "42"
         }
       ]
@@ -1615,23 +1615,23 @@
     "90": {
       "midiNote": 90,
       "noteName": "F#6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP F#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP F#6.flac",
+          "keyRange": {
+            "low": 90,
+            "high": 90
           },
-          "pitchCenter": 102,
+          "velocityRange": "FF",
           "tune": "-20"
         },
         {
-          "file": "FF F5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF F5.flac",
+          "keyRange": {
+            "low": 89,
+            "high": 90
           },
-          "pitchCenter": 89,
+          "velocityRange": "FF",
           "label": "42"
         }
       ]
@@ -1639,23 +1639,23 @@
     "91": {
       "midiNote": 91,
       "noteName": "G6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G6.flac",
+          "keyRange": {
+            "low": 91,
+            "high": 91
           },
-          "pitchCenter": 103,
+          "velocityRange": "FF",
           "tune": "-20"
         },
         {
-          "file": "FF G5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G5.flac",
+          "keyRange": {
+            "low": 91,
+            "high": 92
           },
-          "pitchCenter": 91,
+          "velocityRange": "FF",
           "label": "43"
         }
       ]
@@ -1663,23 +1663,23 @@
     "92": {
       "midiNote": 92,
       "noteName": "G#6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP G#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP G#6.flac",
+          "keyRange": {
+            "low": 92,
+            "high": 92
           },
-          "pitchCenter": 104,
+          "velocityRange": "FF",
           "tune": "-25"
         },
         {
-          "file": "FF G5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF G5.flac",
+          "keyRange": {
+            "low": 91,
+            "high": 92
           },
-          "pitchCenter": 91,
+          "velocityRange": "FF",
           "label": "43"
         }
       ]
@@ -1687,23 +1687,23 @@
     "93": {
       "midiNote": 93,
       "noteName": "A6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A6.flac",
+          "keyRange": {
+            "low": 93,
+            "high": 93
           },
-          "pitchCenter": 105,
+          "velocityRange": "FF",
           "tune": "-20"
         },
         {
-          "file": "FF A5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A5.flac",
+          "keyRange": {
+            "low": 93,
+            "high": 94
           },
-          "pitchCenter": 93,
+          "velocityRange": "FF",
           "label": "44"
         }
       ]
@@ -1711,23 +1711,23 @@
     "94": {
       "midiNote": 94,
       "noteName": "A#6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP A#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP A#6.flac",
+          "keyRange": {
+            "low": 94,
+            "high": 94
           },
-          "pitchCenter": 106,
+          "velocityRange": "FF",
           "tune": "-25"
         },
         {
-          "file": "FF A5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "FF A5.flac",
+          "keyRange": {
+            "low": 93,
+            "high": 94
           },
-          "pitchCenter": 93,
+          "velocityRange": "FF",
           "label": "44"
         }
       ]
@@ -1735,23 +1735,23 @@
     "95": {
       "midiNote": 95,
       "noteName": "B6",
-      "layers": [
+      "samples": [
         {
-          "file": "PP B6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP B6.flac",
+          "keyRange": {
+            "low": 95,
+            "high": 95
           },
-          "pitchCenter": 107,
+          "velocityRange": "FF",
           "tune": "-25"
         },
         {
-          "file": "Mf B5.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf B5.flac",
+          "keyRange": {
+            "low": 95,
+            "high": 95
           },
-          "pitchCenter": 95,
+          "velocityRange": "FF",
           "label": "45"
         }
       ]
@@ -1759,23 +1759,23 @@
     "96": {
       "midiNote": 96,
       "noteName": "C7",
-      "layers": [
+      "samples": [
         {
-          "file": "PP C7.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "PP C7.flac",
+          "keyRange": {
+            "low": 96,
+            "high": 96
           },
-          "pitchCenter": 108,
+          "velocityRange": "FF",
           "tune": "-20"
         },
         {
-          "file": "Mf C6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf C6.flac",
+          "keyRange": {
+            "low": 96,
+            "high": 97
           },
-          "pitchCenter": 96,
+          "velocityRange": "FF",
           "label": "46"
         }
       ]
@@ -1783,14 +1783,14 @@
     "97": {
       "midiNote": 97,
       "noteName": "C#7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf C6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf C6.flac",
+          "keyRange": {
+            "low": 96,
+            "high": 97
           },
-          "pitchCenter": 96,
+          "velocityRange": "FF",
           "label": "46"
         }
       ]
@@ -1798,14 +1798,14 @@
     "98": {
       "midiNote": 98,
       "noteName": "D7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf C#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf C#6.flac",
+          "keyRange": {
+            "low": 98,
+            "high": 98
           },
-          "pitchCenter": 97,
+          "velocityRange": "FF",
           "label": "47"
         }
       ]
@@ -1813,14 +1813,14 @@
     "99": {
       "midiNote": 99,
       "noteName": "D#7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf D6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf D6.flac",
+          "keyRange": {
+            "low": 99,
+            "high": 99
           },
-          "pitchCenter": 98,
+          "velocityRange": "FF",
           "label": "48"
         }
       ]
@@ -1828,14 +1828,14 @@
     "100": {
       "midiNote": 100,
       "noteName": "E7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf D#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf D#6.flac",
+          "keyRange": {
+            "low": 100,
+            "high": 100
           },
-          "pitchCenter": 99,
+          "velocityRange": "FF",
           "label": "49"
         }
       ]
@@ -1843,14 +1843,14 @@
     "101": {
       "midiNote": 101,
       "noteName": "F7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf E6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf E6.flac",
+          "keyRange": {
+            "low": 101,
+            "high": 101
           },
-          "pitchCenter": 100,
+          "velocityRange": "FF",
           "label": "50"
         }
       ]
@@ -1858,14 +1858,14 @@
     "102": {
       "midiNote": 102,
       "noteName": "F#7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf F#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf F#6.flac",
+          "keyRange": {
+            "low": 102,
+            "high": 102
           },
-          "pitchCenter": 102,
+          "velocityRange": "FF",
           "label": "51"
         }
       ]
@@ -1873,14 +1873,14 @@
     "103": {
       "midiNote": 103,
       "noteName": "G7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf G6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf G6.flac",
+          "keyRange": {
+            "low": 103,
+            "high": 103
           },
-          "pitchCenter": 103,
+          "velocityRange": "FF",
           "label": "52"
         }
       ]
@@ -1888,14 +1888,14 @@
     "104": {
       "midiNote": 104,
       "noteName": "G#7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf G#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf G#6.flac",
+          "keyRange": {
+            "low": 104,
+            "high": 104
           },
-          "pitchCenter": 104,
+          "velocityRange": "FF",
           "label": "53"
         }
       ]
@@ -1903,14 +1903,14 @@
     "105": {
       "midiNote": 105,
       "noteName": "A7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf A6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf A6.flac",
+          "keyRange": {
+            "low": 105,
+            "high": 105
           },
-          "pitchCenter": 105,
+          "velocityRange": "FF",
           "label": "54"
         }
       ]
@@ -1918,14 +1918,14 @@
     "106": {
       "midiNote": 106,
       "noteName": "A#7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf A#6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf A#6.flac",
+          "keyRange": {
+            "low": 106,
+            "high": 106
           },
-          "pitchCenter": 106,
+          "velocityRange": "FF",
           "label": "55"
         }
       ]
@@ -1933,14 +1933,14 @@
     "107": {
       "midiNote": 107,
       "noteName": "B7",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf B6.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf B6.flac",
+          "keyRange": {
+            "low": 107,
+            "high": 107
           },
-          "pitchCenter": 107,
+          "velocityRange": "FF",
           "label": "56"
         }
       ]
@@ -1948,14 +1948,14 @@
     "108": {
       "midiNote": 108,
       "noteName": "C8",
-      "layers": [
+      "samples": [
         {
-          "file": "Mf C7.$EXT",
-          "velocityRange": {
-            "low": 0,
-            "high": 127
+          "file": "Mf C7.flac",
+          "keyRange": {
+            "low": 108,
+            "high": 108
           },
-          "pitchCenter": 108,
+          "velocityRange": "FF",
           "label": "57"
         }
       ]
