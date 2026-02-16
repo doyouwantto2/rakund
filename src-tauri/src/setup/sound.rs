@@ -45,7 +45,6 @@ pub fn start_stream() -> AudioHandle {
                     1.0
                 };
 
-                // Process all frames without holding locks
                 for frame in output.iter_mut() {
                     let mut mixed: f32 = 0.0;
 
@@ -56,7 +55,7 @@ pub fn start_stream() -> AudioHandle {
                             v.playhead += v.pitch_ratio;
 
                             if v.is_releasing && !pedal_active {
-                                v.volume *= 0.97;
+                                v.volume *= 0.99;
                             }
                         }
                     }

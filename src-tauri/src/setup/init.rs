@@ -1,36 +1,60 @@
-use crate::events::{note, orchestrator};
+use crate::engine::decoder;
+use crate::events::orchestrator;
 use crate::models::SplendidConfig;
 use crate::setup;
+use std::collections::HashMap;
 use std::fs;
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let audio_handle = setup::sound::start_stream();
 
-    let config_path = std::env::current_dir()
-        .unwrap_or_else(|_| std::path::PathBuf::from("."))
-        .join("data/map/splendid.json");
+    let cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
 
-    let config_data = fs::read_to_string(&config_path).unwrap_or_else(|e| {
-        panic!(
-            "Failed to load piano configuration from {:?}: {}",
-            config_path, e
-        )
-    });
+    let config_path = cwd.join("data/map/splendid.json");
 
-    let piano_config: SplendidConfig =
-        serde_json::from_str(&config_data).expect("Invalid piano configuration JSON format");
+    let samples_base = cwd.join("data/splendid/Samples");
+
+    let config_data = fs::read_to_string(&config_path)
+        .expect(&format!("❌ Could not find JSON at {:?}", config_path));
+
+    let mut piano_config: SplendidConfig =
+        serde_json::from_str(&config_data).expect("Invalid JSON");
+
+    println!("📦 Loading samples from: {:?}", samples_base);
+    let mut cache = HashMap::new();
+
+    for key_data in piano_config.keys.values() {
+        for sample in &key_data.samples {
+            if !cache.contains_key(&sample.file) {
+                let sample_path = samples_base.join(&sample.file);
+
+                match decoder::decode_flac(sample_path.to_str().unwrap_or("")) {
+                    Ok(data) => {
+                        cache.insert(sample.file.clone(), data);
+                        println!("  ✅ Loaded: {}", sample.file);
+                    }
+                    Err(e) => {
+                        eprintln!("  ❌ Failed at {:?}: {}", sample_path, e);
+                    }
+                }
+            }
+        }
+    }
+
+    piano_config.samples_cache = cache;
+    println!(
+        "🎹 RAM Loading Complete. {} samples ready.",
+        piano_config.samples_cache.len()
+    );
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_opener::init())
         .manage(audio_handle)
         .manage(piano_config)
         .invoke_handler(tauri::generate_handler![
-            note::play_note,
             orchestrator::play_midi_note,
             orchestrator::stop_midi_note,
             orchestrator::set_sustain,
         ])
         .run(tauri::generate_context!())
-        .expect("Failed to start Raku Grand Piano application");
+        .expect("error while running tauri application");
 }

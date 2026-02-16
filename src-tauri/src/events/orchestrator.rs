@@ -1,7 +1,7 @@
-use crate::engine::{decoder, extractor};
-use crate::models::SplendidConfig; // Import from models
+use crate::engine::extractor;
+use crate::models::SplendidConfig;
 use crate::setup::sound;
-use tauri::{AppHandle, State};
+use tauri::State;
 
 #[tauri::command]
 pub async fn play_midi_note(
@@ -9,7 +9,7 @@ pub async fn play_midi_note(
     velocity: u8,
     handle: State<'_, sound::AudioHandle>,
     config: State<'_, SplendidConfig>,
-    app: AppHandle,
+    app: tauri::AppHandle,
 ) -> Result<(), String> {
     let key_data = config
         .keys
@@ -18,11 +18,13 @@ pub async fn play_midi_note(
 
     let details = extractor::get_note_details(midi_num, velocity, key_data, &app)?;
 
-    let path_str = details.final_path.to_str().ok_or("Invalid path")?;
-    let data = decoder::decode_flac(path_str)?;
+    let filename = details.final_path.file_name().unwrap().to_str().unwrap();
+    let data = config
+        .samples_cache
+        .get(filename)
+        .ok_or_else(|| format!("Sample {} not in RAM cache", filename))?
+        .clone();
 
-    // THE CRITICAL SECTION
-    // We lock the mutex only for the push, keeping the lock time minimal
     if let Ok(mut voices_guard) = handle.active_voices.lock() {
         voices_guard.push(sound::Voice {
             data,
