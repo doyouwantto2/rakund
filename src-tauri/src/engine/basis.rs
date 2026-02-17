@@ -1,5 +1,8 @@
+use crate::engine::{basis, decoder};
+use crate::setup::sound::AudioHandle;
 use crate::setup::sound::Voice;
 use std::sync::{Arc, Mutex};
+use tauri::State;
 
 pub fn play_sound(active_voices: &Arc<Mutex<Vec<Voice>>>, data: Arc<Vec<f32>>) {
     if let Ok(mut voices) = active_voices.lock() {
@@ -12,4 +15,10 @@ pub fn play_sound(active_voices: &Arc<Mutex<Vec<Voice>>>, data: Arc<Vec<f32>>) {
             volume: 1.0,
         });
     }
+}
+
+pub async fn play_note(path: String, handle: State<'_, AudioHandle>) -> Result<(), String> {
+    let sound_data = decoder::decode_flac(&path)?;
+    basis::play_sound(&handle.active_voices, sound_data);
+    Ok(())
 }

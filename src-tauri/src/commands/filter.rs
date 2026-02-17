@@ -1,0 +1,28 @@
+use crate::setup::sound;
+use tauri::State;
+
+#[tauri::command]
+pub async fn stop_midi_note(
+    midi_num: u8,
+    handle: State<'_, sound::AudioHandle>,
+) -> Result<(), String> {
+    let midi_num = midi_num;
+
+    if let Ok(mut voices) = handle.active_voices.lock() {
+        for v in voices.iter_mut().filter(|v| v.midi_note == midi_num) {
+            v.is_releasing = true;
+        }
+    }
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn set_sustain(
+    active: bool,
+    handle: State<'_, sound::AudioHandle>,
+) -> Result<(), String> {
+    if let Ok(mut sustain) = handle.is_sustained.lock() {
+        *sustain = active;
+    }
+    Ok(())
+}

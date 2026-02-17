@@ -1,4 +1,4 @@
-use crate::models::KeyData;
+use crate::setup::models::KeyData;
 use std::path::PathBuf;
 use tauri::{AppHandle, Manager};
 

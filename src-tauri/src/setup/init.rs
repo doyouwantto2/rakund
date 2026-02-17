@@ -1,12 +1,11 @@
+use crate::commands;
 use crate::engine::decoder;
-use crate::events::orchestrator;
-use crate::models::SplendidConfig;
-use crate::setup;
+use crate::setup::{models::SplendidConfig, sound};
 use std::collections::HashMap;
 use std::fs;
 
 pub fn run() {
-    let audio_handle = setup::sound::start_stream();
+    let audio_handle = sound::start_stream();
 
     let cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
 
@@ -51,9 +50,9 @@ pub fn run() {
         .manage(audio_handle)
         .manage(piano_config)
         .invoke_handler(tauri::generate_handler![
-            orchestrator::play_midi_note,
-            orchestrator::stop_midi_note,
-            orchestrator::set_sustain,
+            commands::player::play_midi_note,
+            commands::filter::stop_midi_note,
+            commands::filter::set_sustain,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

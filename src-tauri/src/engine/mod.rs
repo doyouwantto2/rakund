@@ -1,3 +1,3 @@
+pub mod basis;
 pub mod decoder;
-pub mod extractor;
-pub mod player;
+pub mod loader;
