@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 
 interface VelocitySelectorProps {
-  selectedLayer: string;
+  selectedLayer: () => string;
   onLayerChange: (layer: string) => void;
   layers: string[];
 }
@@ -14,7 +14,7 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
       <For each={layers}>{(l) => (
         <button
           onClick={() => onLayerChange(l)}
-          class={`px-3 py-1 rounded text-[9px] font-bold transition-all ${selectedLayer === l ? "bg-emerald-500 text-black shadow-md" : "text-zinc-500 hover:text-zinc-200"
+          class={`px-3 py-1 rounded text-[9px] font-bold transition-all ${selectedLayer() === l ? "bg-emerald-500 text-black shadow-md" : "text-zinc-500 hover:text-zinc-200"
             }`}
         >
           {l}

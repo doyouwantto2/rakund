@@ -1,16 +1,12 @@
 import { createSignal, onMount } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
+import { getKeyToMidi } from "../utils/keyMapping";
 
 export function usePiano() {
   const [activeNotes, setActiveNotes] = createSignal(new Set<number>());
   const [selectedLayer, setSelectedLayer] = createSignal("MF");
   
-  const layers = ["MP", "PP", "MF", "FF"];
-
-  const keyMap: Record<string, number> = {
-    'a': 60, 'w': 61, 's': 62, 'e': 63, 'd': 64, 'f': 65, 't': 66,
-    'g': 67, 'y': 68, 'h': 69, 'u': 70, 'j': 71, 'k': 72, 'o': 73, 'l': 74
-  };
+  const layers = ["PP", "MP", "MF", "FF"];
 
   const noteOn = async (midi: number) => {
     if (activeNotes().has(midi)) return;
@@ -44,11 +40,11 @@ export function usePiano() {
 
   onMount(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const midi = keyMap[e.key.toLowerCase()];
+      const midi = getKeyToMidi(e.key.toLowerCase());
       if (midi && !e.repeat) noteOn(midi);
     };
     const handleKeyUp = (e: KeyboardEvent) => {
-      const midi = keyMap[e.key.toLowerCase()];
+      const midi = getKeyToMidi(e.key.toLowerCase());
       if (midi) noteOff(midi);
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -65,6 +61,7 @@ export function usePiano() {
     setSelectedLayer,
     layers,
     noteOn,
-    noteOff
+    noteOff,
+    getKeyToMidi
   };
 }

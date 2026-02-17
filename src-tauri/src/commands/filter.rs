@@ -22,5 +22,13 @@ pub async fn set_sustain(
     if let Ok(mut sustain) = handle.is_sustained.lock() {
         *sustain = active;
     }
+    if !active {
+        if let Ok(mut voices) = handle.active_voices.lock() {
+            for v in voices.iter_mut() {
+                if v.is_releasing {}
+            }
+        }
+    }
+
     Ok(())
 }

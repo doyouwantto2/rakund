@@ -1,5 +1,5 @@
 interface BlackKeyProps {
-  active: boolean;
+  active: () => boolean;
   onMouseDown: () => void;
   onMouseUp: () => void;
   onMouseLeave: () => void;
@@ -14,8 +14,8 @@ export default function BlackKey(props: BlackKeyProps) {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
-      class={`absolute z-20 h-[58%] w-[1.1%] bg-zinc-900 border-x border-b border-black rounded-b-sm transition-all duration-75
-        ${active ? "!bg-emerald-700 !border-emerald-500 translate-y-1" : "hover:bg-zinc-800"}`}
+      class={`absolute z-20 h-[58%] w-[1.1%] bg-zinc-900 border-x border-b border-black rounded-b-sm transition-all duration-150
+        ${active() ? "!bg-emerald-600 !border-emerald-400 translate-y-2 shadow-lg" : "hover:bg-zinc-800"}`}
       style={style}
     />
   );

@@ -30,6 +30,7 @@ pub fn start_stream() -> AudioHandle {
     let is_sustained = Arc::new(Mutex::new(false));
 
     let voices_clone = Arc::clone(&active_voices);
+    let sustained_clone = Arc::clone(&is_sustained);
 
     let stream = device
         .build_output_stream(
@@ -39,6 +40,9 @@ pub fn start_stream() -> AudioHandle {
                     Ok(guard) => guard,
                     Err(_) => return,
                 };
+
+                // Check pedal state once per buffer for performance
+                let pedal_down = *sustained_clone.lock().unwrap_or_else(|e| e.into_inner());
 
                 let num_voices = voices.len() as f32;
                 let gain_reduction = if num_voices > 1.0 {
@@ -55,11 +59,17 @@ pub fn start_stream() -> AudioHandle {
 
                         if pos < v.data.len() && v.volume > 0.0005 {
                             mixed += v.data[pos] * v.volume;
-
                             v.playhead += v.pitch_ratio;
 
+                            // SUSTAIN LOGIC
                             if v.is_releasing {
-                                v.volume *= 0.999999;
+                                if pedal_down {
+                                    // Pedal is HOLDING the note: Very slow natural decay
+                                    v.volume *= 0.99998;
+                                } else {
+                                    // Pedal is UP: Fast release (the "thud" of the damper)
+                                    v.volume *= 0.99996;
+                                }
                             }
                         }
                     }

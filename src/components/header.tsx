@@ -2,7 +2,7 @@ import VelocitySelector from "./velocity";
 import VolumeControl from "./volume";
 
 interface HeaderProps {
-  selectedLayer: string;
+  selectedLayer: () => string;
   onLayerChange: (layer: string) => void;
   layers: string[];
 }
