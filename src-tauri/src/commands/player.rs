@@ -24,7 +24,6 @@ pub async fn play_midi_note(
 
     let pitch_ratio = 2.0f32.powf((midi_num as f32 - key_data.midi_note as f32) / 12.0);
 
-    // Use pre-decoded cache instead of decoding from disk
     let data = config
         .samples_cache
         .get(&sample_info.file)
