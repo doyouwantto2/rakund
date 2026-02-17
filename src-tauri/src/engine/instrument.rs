@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-enum Instrument {
+pub enum InstrumentConfig {
     Splendid { velocity_layer: Arc<str> },
     Salamander { velocity_layer: Arc<str> },
 }
