@@ -6,8 +6,6 @@ pub async fn stop_midi_note(
     midi_num: u8,
     handle: State<'_, sound::AudioHandle>,
 ) -> Result<(), String> {
-    let midi_num = midi_num;
-
     if let Ok(mut voices) = handle.active_voices.lock() {
         for v in voices.iter_mut().filter(|v| v.midi_note == midi_num) {
             v.is_releasing = true;

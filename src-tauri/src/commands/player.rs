@@ -16,7 +16,6 @@ pub async fn play_midi_note(
         .get(&midi_num.to_string())
         .ok_or_else(|| format!("Note {} not found in piano configuration", midi_num))?;
 
-    // Find the appropriate sample based on velocity
     let sample_info = key_data
         .samples
         .iter()
@@ -24,10 +23,8 @@ pub async fn play_midi_note(
         .or_else(|| key_data.samples.first())
         .ok_or_else(|| format!("No samples found for note {}", midi_num))?;
 
-    // Calculate pitch ratio using the midi_note from key_data
     let pitch_ratio = 2.0f32.powf((midi_num as f32 - key_data.midi_note as f32) / 12.0);
 
-    // Build the sample path
     let sample_path = std::env::current_dir()
         .unwrap_or_else(|_| std::path::PathBuf::from("."))
         .join("data/splendid/Samples")
@@ -50,7 +47,7 @@ pub async fn play_midi_note(
     let data = decoder::decode_flac(path_str)?;
 
     if let Ok(mut voices_guard) = handle.active_voices.lock() {
-        let voices: &mut Vec<sound::Voice> = &mut *voices_guard;
+        let voices: &mut Vec<sound::Voice> = &mut voices_guard;
         voices.push(sound::Voice {
             data,
             playhead: 0.0,
