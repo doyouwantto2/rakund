@@ -1,4 +1,3 @@
-use crate::engine::decoder;
 use crate::setup::models::SplendidConfig;
 use crate::setup::sound;
 use tauri::{AppHandle, State};
@@ -25,26 +24,12 @@ pub async fn play_midi_note(
 
     let pitch_ratio = 2.0f32.powf((midi_num as f32 - key_data.midi_note as f32) / 12.0);
 
-    let sample_path = std::env::current_dir()
-        .unwrap_or_else(|_| std::path::PathBuf::from("."))
-        .join("data/splendid/Samples")
-        .join(&sample_info.file);
-
-    let path_str = sample_path
-        .to_str()
-        .ok_or_else(|| "Invalid character in sample file path".to_string())?;
-
-    if !sample_path.exists() {
-        return Err(format!(
-            "Sample file not found: {}\nSample file: {}\nNote: {} ({})\nPlease ensure that 'splendid' folder exists in src-tauri/data/",
-            path_str,
-            sample_info.file,
-            midi_num,
-            key_data.note
-        ));
-    }
-
-    let data = decoder::decode_flac(path_str)?;
+    // Use pre-decoded cache instead of decoding from disk
+    let data = config
+        .samples_cache
+        .get(&sample_info.file)
+        .ok_or_else(|| format!("Sample {} not found in cache", sample_info.file))?
+        .clone();
 
     if let Ok(mut voices_guard) = handle.active_voices.lock() {
         let voices: &mut Vec<sound::Voice> = &mut voices_guard;
