@@ -3053,6 +3053,7 @@ dependencies = [
  "claxon",
  "cpal",
  "fundsp",
+ "lazy_static",
  "serde",
  "serde_json",
  "symphonia",

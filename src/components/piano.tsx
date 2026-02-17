@@ -26,7 +26,11 @@ export default function Piano(props: PianoProps) {
           <WhiteKey
             midi={midi}
             active={() => activeNotesSet().has(midi)}
-            onMouseDown={() => onNoteOn(midi)}
+            onNoteOn={midi => {
+              if (activeNotesSet().has(midi)) return;
+              setActiveNotes(prev => new Set(prev).add(midi));
+              onNoteOn(midi);
+            }}
             onMouseUp={() => onNoteOff(midi)}
             onMouseLeave={() => onNoteOff(midi)}
           />
@@ -38,7 +42,7 @@ export default function Piano(props: PianoProps) {
           return (
             <BlackKey
               active={() => activeNotesSet().has(midi)}
-              onMouseDown={() => onNoteOn(midi)}
+              onMouseDown={() => noteOn(midi)}
               onMouseUp={() => onNoteOff(midi)}
               onMouseLeave={() => onNoteOff(midi)}
               style={`left: calc(${whiteIndex} * 1.923% - 0.55%)`}

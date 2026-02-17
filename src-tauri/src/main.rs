@@ -3,5 +3,8 @@
 use raku_lib::setup::init;
 
 fn main() {
-    init::run();
+    if let Err(e) = init::run() {
+        eprintln!("Failed to start application: {:?}", e);
+        std::process::exit(1);
+    }
 }

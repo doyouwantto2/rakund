@@ -1,5 +1,6 @@
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use std::sync::{Arc, Mutex};
+use crate::error::{AudioError, Result};
 
 #[derive(Clone)]
 pub struct Voice {
@@ -17,14 +18,14 @@ pub struct AudioHandle {
     pub _stream: cpal::Stream,
 }
 
-pub fn start_stream() -> AudioHandle {
+pub fn start_stream() -> Result<AudioHandle> {
     let host = cpal::default_host();
     let device = host
         .default_output_device()
-        .expect("No output device found");
+        .ok_or(AudioError::NoOutputDevice)?;
     let config = device
         .default_output_config()
-        .expect("Failed to get config");
+        .map_err(|e| AudioError::ConfigError(e.to_string()))?;
 
     let active_voices = Arc::new(Mutex::new(Vec::<Voice>::new()));
     let is_sustained = Arc::new(Mutex::new(false));
@@ -80,16 +81,16 @@ pub fn start_stream() -> AudioHandle {
 
                 voices.retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.0005);
             },
-            |err| eprintln!("Audio error: {err}"),
+            |err| eprintln!("Audio error: {:?}", AudioError::StreamError(err.to_string())),
             None,
         )
-        .unwrap();
+        .map_err(|e| AudioError::StreamError(e.to_string()))?;
 
-    stream.play().unwrap();
+    stream.play().map_err(|e| AudioError::StreamError(e.to_string()))?;
 
-    AudioHandle {
+    Ok(AudioHandle {
         active_voices,
         is_sustained,
         _stream: stream,
-    }
+    })
 }
