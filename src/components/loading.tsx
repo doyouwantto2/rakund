@@ -2,10 +2,11 @@ interface LoadingIndicatorProps {
   isLoading: boolean;
   instrument: string;
   layer: string;
+  progress?: { loaded: number; total: number; progress: number } | null;
 }
 
 export default function LoadingIndicator(props: LoadingIndicatorProps) {
-  const { isLoading, instrument, layer } = props;
+  const { isLoading, instrument, layer, progress } = props;
   
   if (!isLoading) return null;
   
@@ -19,7 +20,9 @@ export default function LoadingIndicator(props: LoadingIndicatorProps) {
         </div>
         
         <div>
-          <div class="text-sm font-bold text-zinc-100">Loading Samples</div>
+          <div class="text-sm font-bold text-zinc-100">
+            {progress ? `Loading Samples (${progress.loaded}/${progress.total})` : 'Loading Samples'}
+          </div>
           <div class="flex items-center gap-2 text-xs text-zinc-400">
             <span class={`px-2 py-0.5 rounded-full ${
               instrument === 'splendid' 
@@ -38,13 +41,19 @@ export default function LoadingIndicator(props: LoadingIndicatorProps) {
       
       {/* Progress bar */}
       <div class="mt-3 w-full bg-zinc-800/50 rounded-full h-1 overflow-hidden">
-        <div class="h-full bg-gradient-to-r from-emerald-500 to-purple-500 rounded-full animate-pulse" 
+        <div class="h-full bg-gradient-to-r from-emerald-500 to-purple-500 rounded-full transition-all duration-300 ease-out" 
              style={{
-               width: "60%",
-               animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+               width: progress ? `${progress.progress}%` : "60%"
              }}>
         </div>
       </div>
+      
+      {/* Progress percentage */}
+      {progress && (
+        <div class="mt-1 text-xs text-zinc-400 text-center">
+          {Math.round(progress.progress)}%
+        </div>
+      )}
     </div>
   );
 }

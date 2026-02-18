@@ -6,13 +6,12 @@ import { usePiano } from "@/hooks/usePiano";
 export default function Home() {
   const { 
     activeNotes, 
-    selectedInstrument,
     selectedLayer,
-    setSelectedInstrument,
     setSelectedLayer,
     hoveredLayer,
     setHoveredLayer,
     isLayerLoading,
+    loadProgress,
     availableLayers,
     noteOn, 
     noteOff 
@@ -21,16 +20,10 @@ export default function Home() {
   return (
     <div class="h-screen w-full bg-zinc-950 text-white flex flex-col justify-between overflow-hidden select-none font-sans">
       <Header
-        selectedInstrument={selectedInstrument}
         selectedLayer={selectedLayer}
-        onInstrumentChange={(instrument: string) => {
-          // Reset to first layer when switching instruments
-          setSelectedInstrument(instrument);
-          setSelectedLayer(availableLayers()[0] || "");
-        }}
         onLayerChange={setSelectedLayer}
         onLayerHover={setHoveredLayer}
-        layers={() => availableLayers()}
+        layers={availableLayers}
       />
 
       <div class="flex-1 flex items-center justify-center opacity-20 pointer-events-none">
@@ -39,8 +32,9 @@ export default function Home() {
         {/* Enhanced Loading Indicator */}
         <LoadingIndicator 
           isLoading={isLayerLoading()} 
-          instrument={selectedInstrument()} 
-          layer={selectedLayer()} 
+          instrument={"instrument"} 
+          layer={selectedLayer()}
+          progress={loadProgress()}
         />
         
         {/* Layer indicator on hover */}

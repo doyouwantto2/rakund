@@ -1,21 +1,28 @@
 use thiserror::Error;
+use std::string::String;
 
 #[derive(Error, Debug)]
 pub enum AudioError {
     #[error("No output device found")]
     NoOutputDevice,
     
-    #[error("Failed to get audio config: {0}")]
-    ConfigError(String),
+    #[error("Audio play stream error: {0}")]
+    PlayStreamError(#[from] cpal::PlayStreamError),
     
     #[error("Audio stream error: {0}")]
     StreamError(String),
     
+    #[error("Audio config error: {0}")]
+    ConfigError(#[from] cpal::DefaultStreamConfigError),
+    
+    #[error("Audio build stream error: {0}")]
+    BuildStreamError(#[from] cpal::BuildStreamError),
+    
     #[error("Failed to decode FLAC file '{0}': {1}")]
     FlacDecodeError(String, String),
     
-    #[error("Sample file not found: {0}")]
-    SampleNotFound(String),
+    #[error("Instrument error: {0}")]
+    InstrumentError(String),
     
     #[error("Note {0} not found in piano configuration")]
     NoteNotFound(u8),
@@ -28,9 +35,6 @@ pub enum AudioError {
     
     #[error("Cache error: {0}")]
     CacheError(String),
-    
-    #[error("Instrument configuration error: {0}")]
-    InstrumentError(String),
 }
 
 pub type Result<T> = std::result::Result<T, AudioError>;

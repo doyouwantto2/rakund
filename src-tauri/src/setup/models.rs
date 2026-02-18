@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Arc;
-use crate::error::{AudioError, Result};
+use crate::error::Result;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct SampleInfo {
@@ -42,12 +42,4 @@ pub trait Instrument: Send + Sync {
     fn get_sample_path(&self, filename: &str) -> String;
     fn get_velocity_for_layer(&self, layer: &str) -> u8;
     fn get_layers(&self) -> Vec<String>;
-}
-
-pub fn create_instrument(instrument_name: &str) -> Result<Box<dyn Instrument>> {
-    match instrument_name {
-        "splendid" => Ok(Box::new(crate::instrument::splendid::SplendidInstrument::new()?)),
-        "salamander" => Ok(Box::new(crate::instrument::salamander::SalamanderInstrument::new()?)),
-        _ => Err(AudioError::InstrumentError(format!("Unknown instrument: {}", instrument_name))),
-    }
 }

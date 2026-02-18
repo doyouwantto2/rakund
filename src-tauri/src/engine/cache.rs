@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 
 pub struct SampleCache {
     pub cache: Arc<Mutex<HashMap<String, Arc<Vec<f32>>>>>,
-    pub loaded_instruments: Arc<Mutex<HashMap<String, Vec<String>>>>, // instrument -> loaded layers
+    pub loaded_instruments: Arc<Mutex<HashMap<String, Vec<String>>>>, 
 }
 
 impl SampleCache {

@@ -1,121 +1,221 @@
-use crate::setup::sound;
-use crate::setup::models::create_instrument;
-use crate::instrument::{load_splendid_layer, load_salamander_layer, get_splendid_sample, get_salamander_sample, is_splendid_layer_loaded, is_salamander_layer_loaded};
+use crate::engine::decoder;
 use crate::error::AudioError;
-use tauri::{AppHandle, State};
+use crate::setup::models::InstrumentConfig;
+use crate::setup::sound;
+use lazy_static::lazy_static;
+use std::collections::HashMap;
+use std::fs;
+use std::path::Path;
+use std::sync::Arc;
+use tauri::{AppHandle, Emitter, State};
+
+// Global instrument config and cache
+lazy_static! {
+    pub static ref INSTRUMENT_CONFIG: Arc<std::sync::Mutex<Option<InstrumentConfig>>> =
+        Arc::new(std::sync::Mutex::new(None));
+    pub static ref SAMPLE_CACHE: Arc<std::sync::Mutex<HashMap<String, Arc<Vec<f32>>>>> =
+        Arc::new(std::sync::Mutex::new(HashMap::new()));
+}
 
 #[tauri::command]
 pub async fn play_midi_note(
     midi_num: u8,
     velocity: u8,
-    instrument: String,
     layer: String,
     handle: State<'_, sound::AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
-    println!("[DEBUG] Playing note {} with instrument {} and layer {}", midi_num, instrument, layer);
+    // Load instrument config if not loaded
+    {
+        let mut config = INSTRUMENT_CONFIG.lock().unwrap();
+        if config.is_none() {
+            *config = Some(load_instrument_config().map_err(|e| e.to_string())?);
+        }
+    }
     
-    // Create instrument instance
-    let instrument_instance = create_instrument(&instrument)
-        .map_err(|e| e.to_string())?;
+    let config = INSTRUMENT_CONFIG.lock().unwrap().as_ref().unwrap().clone();
     
-    let key_data = instrument_instance.config()
+    let key_data = config
         .keys
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
-    println!("[DEBUG] Available samples for note {}: {:?}", midi_num, 
-        key_data.samples.iter().map(|s| (&s.layer, &s.file)).collect::<Vec<_>>());
-
     let sample_info = key_data
         .samples
         .iter()
-        .find(|s| {
-            println!("[DEBUG] Comparing layer '{}' with sample.layer '{}' (velocity: {})", layer, s.layer, velocity);
-            layer == s.layer && velocity >= s.min_vel && velocity <= s.max_vel
-        })
-        .or_else(|| {
-            println!("[DEBUG] Layer {} not found, trying first sample", layer);
-            key_data.samples.first()
-        })
-        .ok_or_else(|| AudioError::NoSamplesFound(midi_num).to_string())?;
+        .find(|s| layer == s.layer)
+        .or_else(|| key_data.samples.first())
+        .ok_or_else(|| format!("No samples found for note {}", midi_num))?;
 
-    println!("[DEBUG] Selected sample: {} for layer {} (velocity: {})", sample_info.file, sample_info.layer, velocity);
+    // Try to get from cache first
+    let cache = SAMPLE_CACHE.lock().unwrap();
+    
+    // Try exact match first
+    if let Some(cached_data) = cache.get(&sample_info.file).cloned() {
+        let data = cached_data;
+        
+        if let Ok(mut voices_guard) = handle.active_voices.lock() {
+            let voices: &mut Vec<sound::Voice> = &mut voices_guard;
+            voices.push(sound::Voice {
+                data: data.clone(),
+                playhead: 0.0,
+                pitch_ratio: 1.0,
+                midi_note: midi_num,
+                is_releasing: false,
+                volume: (velocity as f32 / 127.0),
+            });
+        }
+        return Ok(());
+    }
+    
+    // Try case-insensitive match
+    let target_name_lower = sample_info.file.to_lowercase();
+    for (cached_name, cached_data) in cache.iter() {
+        if cached_name.to_lowercase() == target_name_lower {
+            let data = cached_data.clone();
+            
+            if let Ok(mut voices_guard) = handle.active_voices.lock() {
+                let voices: &mut Vec<sound::Voice> = &mut voices_guard;
+                voices.push(sound::Voice {
+                    data: data.clone(),
+                    playhead: 0.0,
+                    pitch_ratio: 1.0,
+                    midi_note: midi_num,
+                    is_releasing: false,
+                    volume: (velocity as f32 / 127.0),
+                });
+            }
+            return Ok(());
+        }
+    }
+    
+    // Try partial match (layer name)
+    for (cached_name, cached_data) in cache.iter() {
+        if cached_name.to_lowercase().contains(&sample_info.layer.to_lowercase()) {
+            let data = cached_data.clone();
+            
+            if let Ok(mut voices_guard) = handle.active_voices.lock() {
+                let voices: &mut Vec<sound::Voice> = &mut voices_guard;
+                voices.push(sound::Voice {
+                    data: data.clone(),
+                    playhead: 0.0,
+                    pitch_ratio: 1.0,
+                    midi_note: midi_num,
+                    is_releasing: false,
+                    volume: (velocity as f32 / 127.0),
+                });
+            }
+            return Ok(());
+        }
+    }
+    
+    return Err(format!("Sample {} not found in cache", sample_info.file));
+}
 
-    let pitch_ratio = 2.0f32.powf((midi_num as f32 - key_data.midi_note as f32) / 12.0);
+#[tauri::command]
+pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
 
-    let data = match instrument.as_str() {
-        "splendid" => {
-            println!("[DEBUG] Looking for splendid sample: {}", sample_info.file);
-            get_splendid_sample(&sample_info.file)
-        },
-        "salamander" => {
-            println!("[DEBUG] Looking for salamander sample: {}", sample_info.file);
-            get_salamander_sample(&sample_info.file)
-        },
-        _ => return Err("Unknown instrument".to_string()),
-    }.ok_or_else(|| {
-        println!("[DEBUG] Sample {} not found in cache", sample_info.file);
-        format!("Sample {} not found in cache", sample_info.file)
-    })?;
+    // Get all FLAC files in the Samples directory
+    let samples_dir = Path::new("data/instrument/Samples");
 
-    println!("[DEBUG] Found sample data with {} samples", data.len());
-
-    if let Ok(mut voices_guard) = handle.active_voices.lock() {
-        let voices: &mut Vec<sound::Voice> = &mut voices_guard;
-        voices.push(sound::Voice {
-            data,
-            playhead: 0.0,
-            pitch_ratio,
-            midi_note: midi_num,
-            is_releasing: false,
-            volume: (velocity as f32 / 127.0),
-        });
+    if !samples_dir.exists() {
+        return Err("Samples directory not found".to_string());
     }
 
+    let mut total_files = 0;
+    let mut loaded_count = 0;
+
+    // Count total FLAC files first
+    for entry in std::fs::read_dir(samples_dir).map_err(|e| e.to_string())? {
+        let entry = entry.map_err(|e| e.to_string())?;
+        let path = entry.path();
+
+        if path.extension().and_then(|s| s.to_str()) == Some("flac") {
+            total_files += 1;
+        }
+    }
+
+    println!("[DEBUG] Found {} FLAC files to load", total_files);
+
+    // Load all FLAC files
+    for entry in std::fs::read_dir(samples_dir).map_err(|e| e.to_string())? {
+        let entry = entry.map_err(|e| e.to_string())?;
+        let path = entry.path();
+
+        if path.extension().and_then(|s| s.to_str()) == Some("flac") {
+            let file_name = path
+                .file_name()
+                .and_then(|n| n.to_str())
+                .unwrap_or("unknown")
+                .to_string();
+
+            println!(
+                "[LOADING] [{}/{}] Processing: {}",
+                loaded_count + 1,
+                total_files,
+                file_name
+            );
+
+            let file_path_str = path.to_string_lossy().to_string();
+            let decoded = decoder::decode_flac(&file_path_str)
+                .map_err(|e| format!("Failed to decode {}: {}", file_name, e))?;
+
+            let mut cache = SAMPLE_CACHE.lock().unwrap();
+            cache.insert(file_name.clone(), decoded);
+            loaded_count += 1;
+
+            // Emit progress event
+            let progress = (loaded_count as f32 / total_files as f32) * 100.0;
+            let event_data = serde_json::json!({
+                "layer": layer,
+                "loaded": loaded_count,
+                "total": total_files,
+                "progress": progress
+            });
+
+            println!(
+                "[PROGRESS] [{}/{}] {:.1}% complete - {}",
+                loaded_count, total_files, progress, file_name
+            );
+
+            match window.emit("load_progress", event_data) {
+                Ok(_) => {}
+                Err(e) => println!("[ERROR] Failed to emit progress event: {:?}", e),
+            }
+        }
+    }
+
+    println!("[CACHE] Loaded {} FLAC files into RAM", loaded_count);
     Ok(())
 }
 
 #[tauri::command]
-pub async fn load_instrument_layer(
-    instrument: String,
-    layer: String,
-) -> std::result::Result<(), String> {
-    let instrument_instance = create_instrument(&instrument)
-        .map_err(|e| e.to_string())?;
-    
-    match instrument.as_str() {
-        "splendid" => {
-            let result: std::result::Result<(), crate::error::AudioError> = load_splendid_layer(&layer, instrument_instance.config()).await;
-            result.map_err(|e| e.to_string())
-        },
-        "salamander" => {
-            let result: std::result::Result<(), crate::error::AudioError> = load_salamander_layer(&layer, instrument_instance.config()).await;
-            result.map_err(|e| e.to_string())
-        },
-        _ => Err("Unknown instrument".to_string()),
-    }
+pub async fn get_instrument_info() -> Result<serde_json::Value, String> {
+    let config = {
+        let mut global_config = INSTRUMENT_CONFIG.lock().unwrap();
+        if global_config.is_none() {
+            *global_config = Some(load_instrument_config().map_err(|e| e.to_string())?);
+        }
+        global_config.take().unwrap()
+    };
+
+    Ok(serde_json::json!({
+        "name": config.instrument,
+        "layers": config.layers
+    }))
 }
 
-#[tauri::command]
-pub async fn is_layer_loaded(
-    instrument: String,
-    layer: String,
-) -> std::result::Result<bool, String> {
-    match instrument.as_str() {
-        "splendid" => Ok(is_splendid_layer_loaded(&layer)),
-        "salamander" => Ok(is_salamander_layer_loaded(&layer)),
-        _ => Err("Unknown instrument".to_string()),
-    }
-}
+fn load_instrument_config() -> Result<InstrumentConfig, AudioError> {
+    let cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
+    let config_path = cwd.join("data").join("instrument.json");
 
-#[tauri::command]
-pub async fn get_instrument_info(instrument: String) -> std::result::Result<crate::setup::models::InstrumentInfo, String> {
-    let instrument_instance = create_instrument(&instrument)
-        .map_err(|e| e.to_string())?;
-    
-    Ok(crate::setup::models::InstrumentInfo {
-        name: instrument_instance.name().to_string(),
-        layers: instrument_instance.get_layers(),
-    })
+    let config_data = fs::read_to_string(&config_path).map_err(|e| {
+        AudioError::InstrumentError(format!("Could not find JSON at {:?}: {}", config_path, e))
+    })?;
+
+    let config: InstrumentConfig = serde_json::from_str(&config_data)
+        .map_err(|e| AudioError::InstrumentError(format!("Invalid JSON: {}", e)))?;
+
+    println!("[CONFIG] Loaded instrument config: {}", config.instrument);
+    Ok(config)
 }
