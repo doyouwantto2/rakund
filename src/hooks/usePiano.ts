@@ -1,7 +1,15 @@
-import { createSignal, onMount, createEffect, on } from "solid-js";
+import { createSignal, onMount, createEffect } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { getKeyToMidi } from "../utils/keyMapping";
+import {
+  getMidiForKey,
+  isLeftSectionKey,
+  isRightSectionKey,
+  isPianoKey,
+  LEFT_SECTION_KEYS,
+  RIGHT_SECTION_KEYS,
+  type SectionNum,
+} from "../utils/keyMapping";
 
 interface LoadProgressEvent {
   layer: string;
@@ -12,128 +20,152 @@ interface LoadProgressEvent {
 
 export function usePiano() {
   const [activeNotes, setActiveNotes] = createSignal(new Set<number>());
-  const [selectedLayer, setSelectedLayer] = createSignal("MF"); // Default to MF
+  const [selectedLayer, setSelectedLayer] = createSignal("MF");
   const [hoveredLayer, setHoveredLayer] = createSignal<string | null>(null);
   const [isLayerLoading, setIsLayerLoading] = createSignal(false);
   const [availableLayers, setAvailableLayers] = createSignal<string[]>(["PP", "MP", "MF", "FF"]);
-  const [loadProgress, setLoadProgress] = createSignal<{ loaded: number; total: number; progress: number } | null>(null);
+  const [loadProgress, setLoadProgress] = createSignal<{
+    loaded: number; total: number; progress: number;
+  } | null>(null);
 
-  // Load layer when layer changes
-  const loadLayer = async (layer: string) => {
-    setIsLayerLoading(true);
-    setLoadProgress(null);
-    try {
-      await invoke("load_instrument_layer", { layer });
-      console.log(`[CACHE] Loaded ${layer}`);
-    } catch (e) {
-      console.error("[CACHE] Failed to load layer:", e);
-    } finally {
-      setIsLayerLoading(false);
-      setLoadProgress(null);
-    }
+  // Single active section per hand (null = no section selected)
+  const [leftSection, setLeftSection] = createSignal<SectionNum | null>(null);
+  const [rightSection, setRightSection] = createSignal<SectionNum | null>(null);
+
+  // Modifier keys tracked independently (L/R)
+  const [leftAlt, setLeftAlt] = createSignal(false);
+  const [rightAlt, setRightAlt] = createSignal(false);
+  const [leftShift, setLeftShift] = createSignal(false);
+  const [rightShift, setRightShift] = createSignal(false);
+
+  const getSemitoneOffset = () => {
+    const up = (leftShift() ? 1 : 0) + (rightShift() ? 1 : 0);
+    const down = (leftAlt() ? 1 : 0) + (rightAlt() ? 1 : 0);
+    return up - down;
   };
 
-  // Get instrument info and layers
-  const loadInstrumentInfo = async () => {
-    try {
-      const info = await invoke<{ name: string; layers: string[] }>("get_instrument_info");
-      setAvailableLayers(info.layers);
-      console.log(`[INSTRUMENT] Loaded info:`, info);
-    } catch (e) {
-      console.error("[INSTRUMENT] Failed to load instrument info:", e);
-      // Fallback to default layers
-      setAvailableLayers(["PP", "MP", "MF", "FF"]);
-    }
-  };
-
-  // Only reload when user explicitly changes layer — skip initial mount
-  // because initialize_audio() already loads all FLACs into cache at startup
-  createEffect(on(selectedLayer, (layer) => {
-    loadLayer(layer);
-  }, { defer: true }));
-
-  // Listen for progress events
-  onMount(async () => {
-    console.log('[PROGRESS] Setting up event listener for load_progress');
-    const unlisten = await listen<LoadProgressEvent>('load_progress', (event) => {
-      console.log('[PROGRESS] Received event:', event.payload);
-      setLoadProgress(event.payload);
-    });
-
-    // Load instrument info on mount
-    loadInstrumentInfo();
-
-    return () => {
-      console.log('[PROGRESS] Cleaning up event listener');
-      unlisten();
-    };
-  });
-
-  // Get appropriate velocity for the selected layer
   const getVelocityForLayer = (layer: string): number => {
     switch (layer) {
-      case "PP": return 20;  // Very soft (1-40 range)
-      case "MP": return 54;  // Medium soft (41-67 range)
-      case "MF": return 76;  // Medium hard (68-84 range)
-      case "FF": return 106; // Very hard (85-127 range)
-      default: return 100;
+      case "PP": return 20;
+      case "MP": return 54;
+      case "MF": return 76;
+      case "FF": return 106;
+      default: return 80;
     }
   };
 
   const noteOn = async (midi: number) => {
     if (activeNotes().has(midi)) return;
     setActiveNotes(prev => new Set(prev).add(midi));
-
-    console.log(`[FRONTEND] Playing note ${midi}, layer: ${selectedLayer()}`);
-
     try {
       await invoke("play_midi_note", {
         midiNum: midi,
         velocity: getVelocityForLayer(selectedLayer()),
-        layer: selectedLayer()
+        layer: selectedLayer(),
       });
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("[PIANO] play error:", e); }
   };
 
   const noteOff = async (midi: number) => {
-    setActiveNotes(prev => {
-      const n = new Set(prev);
-      n.delete(midi);
-      return n;
-    });
+    setActiveNotes(prev => { const n = new Set(prev); n.delete(midi); return n; });
     try {
       await invoke("stop_midi_note", { midiNum: midi });
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("[PIANO] stop error:", e); }
   };
 
-  onMount(() => {
+  const loadLayer = async (layer: string) => {
+    setIsLayerLoading(true);
+    try { await invoke("load_instrument_layer", { layer }); }
+    catch (e) { console.error("[LAYER] error:", e); }
+    finally { setIsLayerLoading(false); setLoadProgress(null); }
+  };
+
+  createEffect(() => { loadLayer(selectedLayer()); });
+
+  onMount(async () => {
+    try {
+      const info = await invoke<{ name: string; layers: string[] }>("get_instrument_info");
+      setAvailableLayers(info.layers);
+    } catch (e) { console.error("[INSTRUMENT] error:", e); }
+
+    const unlisten = await listen<LoadProgressEvent>("load_progress", (e) => {
+      setLoadProgress(e.payload);
+    });
+
+    const heldKeys = new Set<string>();
+    const keyToMidis = new Map<string, number[]>();
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      const midi = getKeyToMidi(e.key.toLowerCase());
-      if (midi && !e.repeat) noteOn(midi);
+      // Modifier keys
+      if (e.code === "AltLeft") { setLeftAlt(true); e.preventDefault(); return; }
+      if (e.code === "AltRight") { setRightAlt(true); e.preventDefault(); return; }
+      if (e.code === "ShiftLeft") { setLeftShift(true); return; }
+      if (e.code === "ShiftRight") { setRightShift(true); return; }
+
+      if (e.repeat) return;
+      const key = e.key === ';' ? ';' : e.key.toLowerCase();
+
+      // Section SWITCH — sets the section, replaces any previous
+      if (isLeftSectionKey(key)) {
+        setLeftSection(LEFT_SECTION_KEYS[key] as SectionNum);
+        return;
+      }
+      if (isRightSectionKey(key)) {
+        setRightSection(RIGHT_SECTION_KEYS[key] as SectionNum);
+        return;
+      }
+      if (key === 'escape') {
+        setLeftSection(null);
+        setRightSection(null);
+        return;
+      }
+
+      if (!isPianoKey(key)) return;
+      if (heldKeys.has(key)) return;
+      heldKeys.add(key);
+
+      const offset = getSemitoneOffset();
+
+      const leftMidis = getMidiForKey(key, leftSection(), 'left', offset);
+      const rightMidis = getMidiForKey(key, rightSection(), 'right', offset);
+      const midis = [...new Set([...leftMidis, ...rightMidis])];
+
+      if (midis.length > 0) {
+        e.preventDefault();
+        keyToMidis.set(key, midis);
+        midis.forEach(noteOn);
+      }
     };
+
     const handleKeyUp = (e: KeyboardEvent) => {
-      const midi = getKeyToMidi(e.key.toLowerCase());
-      if (midi) noteOff(midi);
+      if (e.code === "AltLeft") { setLeftAlt(false); return; }
+      if (e.code === "AltRight") { setRightAlt(false); return; }
+      if (e.code === "ShiftLeft") { setLeftShift(false); return; }
+      if (e.code === "ShiftRight") { setRightShift(false); return; }
+
+      const key = e.key === ';' ? ';' : e.key.toLowerCase();
+      heldKeys.delete(key);
+      const midis = keyToMidis.get(key);
+      if (midis) { midis.forEach(noteOff); keyToMidis.delete(key); }
     };
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+
     return () => {
+      unlisten();
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
   });
 
   return {
-    activeNotes,
-    selectedLayer,
-    setSelectedLayer,
-    hoveredLayer,
-    setHoveredLayer,
-    isLayerLoading,
-    loadProgress,
-    availableLayers,
-    noteOn,
-    noteOff,
-    getKeyToMidi
+    activeNotes, selectedLayer, setSelectedLayer,
+    hoveredLayer, setHoveredLayer,
+    isLayerLoading, loadProgress, availableLayers,
+    noteOn, noteOff,
+    leftSection, rightSection,
+    leftAlt, rightAlt, leftShift, rightShift,
+    getSemitoneOffset,
   };
 }
