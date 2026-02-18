@@ -5,8 +5,8 @@ use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use std::fs;
 use std::sync::{Arc, Mutex};
 
-const FAST_RELEASE: f32 = 0.99989;
-const SLOW_RELEASE: f32 = 0.999982;
+const FAST_RELEASE: f32 = 0.99987;
+const SLOW_RELEASE: f32 = 0.99999;
 
 #[derive(Clone)]
 pub struct Voice {
