@@ -19,12 +19,6 @@ export default function Home() {
     getSemitoneOffset,
   } = usePiano();
 
-  const modifierLabel = () => {
-    const o = getSemitoneOffset();
-    if (o === -1) return { text: "−1 semitone (♭) - Alt", color: "text-blue-400" };
-    return null;
-  };
-
   return (
     <div class="h-screen w-full bg-zinc-950 text-white flex flex-col overflow-hidden select-none font-sans">
       <Header
@@ -39,15 +33,6 @@ export default function Home() {
           Raku
         </div>
       </div>
-
-      {/* Modifier label */}
-      {modifierLabel() && (
-        <div class="absolute top-24 left-1/2 -translate-x-1/2 pointer-events-none z-30">
-          <div class={`text-sm font-bold px-3 py-1 rounded-lg bg-zinc-900/90 border border-zinc-700 ${modifierLabel()!.color}`}>
-            {modifierLabel()!.text}
-          </div>
-        </div>
-      )}
 
       <LoadingIndicator
         isLoading={isLayerLoading()}

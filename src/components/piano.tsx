@@ -41,7 +41,7 @@ export default function Piano(props: PianoProps) {
   const whiteClass = (midi: number) => {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
-    if (active) return "bg-emerald-400 border-emerald-500 translate-y-1 shadow-lg";
+    if (active) return "bg-yellow-300 border-yellow-300 translate-y-1 shadow-lg";
     if (highlight === 'left') return "bg-blue-300 border-blue-400";
     if (highlight === 'right') return "bg-green-300 border-green-400";
     return "bg-zinc-100 hover:bg-white border-zinc-400";
@@ -50,7 +50,7 @@ export default function Piano(props: PianoProps) {
   const blackClass = (midi: number) => {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
-    if (active) return "bg-emerald-500 translate-y-1 shadow-lg";
+    if (active) return "bg-orange-500 translate-y-1 shadow-lg";
     if (highlight === 'left') return "bg-blue-600";
     if (highlight === 'right') return "bg-green-700";
     return "bg-zinc-900 hover:bg-zinc-700";
@@ -90,7 +90,7 @@ export default function Piano(props: PianoProps) {
         <div class="w-px bg-zinc-700" />
 
         <div class="flex items-center gap-2 text-zinc-600">
-          <span class={`px-2 py-0.5 rounded border text-[10px] font-bold ${altPressed() ? "bg-blue-900 border-blue-500 text-blue-300" : "border-zinc-800 text-zinc-700"}`}>Alt</span>
+          <span class={`px-2 py-0.5 rounded border text-[10px] font-bold ${altPressed() ? "bg-red-900 border-red-500 text-red-300" : "border-zinc-800 text-zinc-700"}`}>Alt</span>
           <span class="w-3 h-3 rounded-sm bg-blue-400 inline-block" />Left
           <span class="w-3 h-3 rounded-sm bg-green-400 inline-block" />Right
           <span class="text-zinc-700">· ESC clears</span>
@@ -106,7 +106,7 @@ export default function Piano(props: PianoProps) {
             onMouseDown={() => onNoteOn(midi)}
             onMouseUp={() => onNoteOff(midi)}
             onMouseLeave={() => onNoteOff(midi)}
-            class={`h-full w-[1.923%] shrink-0 border-x rounded-b-sm
+            class={`h-[95%] w-[1.923%] shrink-0 border-x rounded-b-sm
               flex items-end justify-center pb-1 text-[7px] font-black text-zinc-500
               transition-all duration-75 ${whiteClass(midi)}`}
           >
@@ -120,9 +120,9 @@ export default function Piano(props: PianoProps) {
             onMouseDown={() => onNoteOn(midi)}
             onMouseUp={() => onNoteOff(midi)}
             onMouseLeave={() => onNoteOff(midi)}
-            class={`absolute top-0 h-[60%] w-[1.2%] rounded-b-sm z-10
+            class={`absolute top-0 h-[53%] w-[1.5%] rounded-b-sm z-10
               transition-all duration-75 ${blackClass(midi)}`}
-            style={`left: calc(${blackKeyLeftPct.get(midi)} * 1.923% + 0.96% - 0.6%)`}
+            style={`left: calc(${blackKeyLeftPct.get(midi)} * 1.923% + 0.96%)`}
           />
         )}</For>
 
