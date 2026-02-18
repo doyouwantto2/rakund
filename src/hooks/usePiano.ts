@@ -20,7 +20,7 @@ interface LoadProgressEvent {
 
 export function usePiano() {
   const [activeNotes, setActiveNotes] = createSignal(new Set<number>());
-  const [selectedLayer, setSelectedLayer] = createSignal("MF");
+  const [selectedLayer, setSelectedLayer] = createSignal("MP");
   const [hoveredLayer, setHoveredLayer] = createSignal<string | null>(null);
   const [isLayerLoading, setIsLayerLoading] = createSignal(false);
   const [availableLayers, setAvailableLayers] = createSignal<string[]>(["PP", "MP", "MF", "FF"]);
