@@ -4,3 +4,5 @@
 [submodule "src-tauri/data/splendid"]
 	path = src-tauri/data/splendid
 	url = https://github.com/sfzinstruments/SplendidGrandPiano
+[submodule "src-tauri/data/instrument"]
+	path = src-tauri/data/instrument

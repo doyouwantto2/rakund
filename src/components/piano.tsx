@@ -10,14 +10,13 @@ interface PianoProps {
 
 export default function Piano(props: PianoProps) {
   const { activeNotes, onNoteOn, onNoteOff } = props;
-  
+
   const allMidiNotes = Array.from({ length: 88 }, (_, i) => i + 21);
   const whiteKeys = allMidiNotes.filter((m) => ![1, 3, 6, 8, 10].includes(m % 12));
   const isBlack = (midi: number) => [1, 3, 6, 8, 10].includes(midi % 12);
-  
-  // Create reactive memo to track active notes changes
+
   const activeNotesSet = createMemo(() => activeNotes());
-  
+
   return (
     <div class="w-full pb-4 px-2">
       <div class="relative flex w-full h-[140px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
@@ -26,11 +25,7 @@ export default function Piano(props: PianoProps) {
           <WhiteKey
             midi={midi}
             active={() => activeNotesSet().has(midi)}
-            onNoteOn={midi => {
-              if (activeNotesSet().has(midi)) return;
-              setActiveNotes(prev => new Set(prev).add(midi));
-              onNoteOn(midi);
-            }}
+            onMouseDown={() => onNoteOn(midi)}
             onMouseUp={() => onNoteOff(midi)}
             onMouseLeave={() => onNoteOff(midi)}
           />
@@ -42,7 +37,7 @@ export default function Piano(props: PianoProps) {
           return (
             <BlackKey
               active={() => activeNotesSet().has(midi)}
-              onMouseDown={() => noteOn(midi)}
+              onMouseDown={() => onNoteOn(midi)}
               onMouseUp={() => onNoteOff(midi)}
               onMouseLeave={() => onNoteOff(midi)}
               style={`left: calc(${whiteIndex} * 1.923% - 0.55%)`}

@@ -1,4 +1,4 @@
-import { createSignal, onMount, createEffect } from "solid-js";
+import { createSignal, onMount, createEffect, on } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getKeyToMidi } from "../utils/keyMapping";
@@ -46,29 +46,23 @@ export function usePiano() {
     }
   };
 
-  // Auto-load layer when selection changes
-  createEffect(() => {
-    const layer = selectedLayer();
-    if (layer) {
-      loadLayer(layer);
-    }
-  });
+  // Only reload when user explicitly changes layer — skip initial mount
+  // because initialize_audio() already loads all FLACs into cache at startup
+  createEffect(on(selectedLayer, (layer) => {
+    loadLayer(layer);
+  }, { defer: true }));
 
   // Listen for progress events
   onMount(async () => {
     console.log('[PROGRESS] Setting up event listener for load_progress');
     const unlisten = await listen<LoadProgressEvent>('load_progress', (event) => {
       console.log('[PROGRESS] Received event:', event.payload);
-      console.log('[PROGRESS] Layer:', event.payload.layer);
-      console.log('[PROGRESS] Loaded:', event.payload.loaded);
-      console.log('[PROGRESS] Total:', event.payload.total);
-      console.log('[PROGRESS] Progress %:', event.payload.progress);
       setLoadProgress(event.payload);
     });
-    
+
     // Load instrument info on mount
     loadInstrumentInfo();
-    
+
     return () => {
       console.log('[PROGRESS] Cleaning up event listener');
       unlisten();
@@ -79,7 +73,7 @@ export function usePiano() {
   const getVelocityForLayer = (layer: string): number => {
     switch (layer) {
       case "PP": return 20;  // Very soft (1-40 range)
-      case "MP": return 54;  // Medium soft (41-67 range) 
+      case "MP": return 54;  // Medium soft (41-67 range)
       case "MF": return 76;  // Medium hard (68-84 range)
       case "FF": return 106; // Very hard (85-127 range)
       default: return 100;

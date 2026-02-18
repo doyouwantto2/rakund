@@ -8,7 +8,7 @@ interface WhiteKeyProps {
 
 export default function WhiteKey(props: WhiteKeyProps) {
   const { midi, active, onMouseDown, onMouseUp, onMouseLeave } = props;
-  
+
   return (
     <button
       onMouseDown={onMouseDown}

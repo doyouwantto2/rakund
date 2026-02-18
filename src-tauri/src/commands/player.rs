@@ -5,11 +5,9 @@ use crate::setup::sound;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::fs;
-use std::path::Path;
 use std::sync::Arc;
 use tauri::{AppHandle, Emitter, State};
 
-// Global instrument config and cache
 lazy_static! {
     pub static ref INSTRUMENT_CONFIG: Arc<std::sync::Mutex<Option<InstrumentConfig>>> =
         Arc::new(std::sync::Mutex::new(None));
@@ -32,9 +30,9 @@ pub async fn play_midi_note(
             *config = Some(load_instrument_config().map_err(|e| e.to_string())?);
         }
     }
-    
+
     let config = INSTRUMENT_CONFIG.lock().unwrap().as_ref().unwrap().clone();
-    
+
     let key_data = config
         .keys
         .get(&midi_num.to_string())
@@ -49,11 +47,11 @@ pub async fn play_midi_note(
 
     // Try to get from cache first
     let cache = SAMPLE_CACHE.lock().unwrap();
-    
+
     // Try exact match first
     if let Some(cached_data) = cache.get(&sample_info.file).cloned() {
         let data = cached_data;
-        
+
         if let Ok(mut voices_guard) = handle.active_voices.lock() {
             let voices: &mut Vec<sound::Voice> = &mut voices_guard;
             voices.push(sound::Voice {
@@ -67,13 +65,13 @@ pub async fn play_midi_note(
         }
         return Ok(());
     }
-    
+
     // Try case-insensitive match
     let target_name_lower = sample_info.file.to_lowercase();
     for (cached_name, cached_data) in cache.iter() {
         if cached_name.to_lowercase() == target_name_lower {
             let data = cached_data.clone();
-            
+
             if let Ok(mut voices_guard) = handle.active_voices.lock() {
                 let voices: &mut Vec<sound::Voice> = &mut voices_guard;
                 voices.push(sound::Voice {
@@ -88,12 +86,15 @@ pub async fn play_midi_note(
             return Ok(());
         }
     }
-    
+
     // Try partial match (layer name)
     for (cached_name, cached_data) in cache.iter() {
-        if cached_name.to_lowercase().contains(&sample_info.layer.to_lowercase()) {
+        if cached_name
+            .to_lowercase()
+            .contains(&sample_info.layer.to_lowercase())
+        {
             let data = cached_data.clone();
-            
+
             if let Ok(mut voices_guard) = handle.active_voices.lock() {
                 let voices: &mut Vec<sound::Voice> = &mut voices_guard;
                 voices.push(sound::Voice {
@@ -108,15 +109,14 @@ pub async fn play_midi_note(
             return Ok(());
         }
     }
-    
+
     return Err(format!("Sample {} not found in cache", sample_info.file));
 }
 
 #[tauri::command]
 pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
-
-    // Get all FLAC files in the Samples directory
-    let samples_dir = Path::new("data/instrument/Samples");
+    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
+    let samples_dir = current_dir.join("data/instrument/Samples");
 
     if !samples_dir.exists() {
         return Err("Samples directory not found".to_string());
@@ -126,7 +126,7 @@ pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Resu
     let mut loaded_count = 0;
 
     // Count total FLAC files first
-    for entry in std::fs::read_dir(samples_dir).map_err(|e| e.to_string())? {
+    for entry in std::fs::read_dir(&samples_dir).map_err(|e| e.to_string())? {
         let entry = entry.map_err(|e| e.to_string())?;
         let path = entry.path();
 
@@ -135,10 +135,8 @@ pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Resu
         }
     }
 
-    println!("[DEBUG] Found {} FLAC files to load", total_files);
-
-    // Load all FLAC files
-    for entry in std::fs::read_dir(samples_dir).map_err(|e| e.to_string())? {
+    // Load all FLAC files, skipping any already in cache
+    for entry in std::fs::read_dir(&samples_dir).map_err(|e| e.to_string())? {
         let entry = entry.map_err(|e| e.to_string())?;
         let path = entry.path();
 
@@ -148,6 +146,15 @@ pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Resu
                 .and_then(|n| n.to_str())
                 .unwrap_or("unknown")
                 .to_string();
+
+            // Skip if already cached from initialize_audio()
+            {
+                let cache = SAMPLE_CACHE.lock().unwrap();
+                if cache.contains_key(&file_name) {
+                    loaded_count += 1;
+                    continue;
+                }
+            }
 
             println!(
                 "[LOADING] [{}/{}] Processing: {}",
@@ -185,7 +192,6 @@ pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Resu
         }
     }
 
-    println!("[CACHE] Loaded {} FLAC files into RAM", loaded_count);
     Ok(())
 }
 
@@ -216,6 +222,5 @@ fn load_instrument_config() -> Result<InstrumentConfig, AudioError> {
     let config: InstrumentConfig = serde_json::from_str(&config_data)
         .map_err(|e| AudioError::InstrumentError(format!("Invalid JSON: {}", e)))?;
 
-    println!("[CONFIG] Loaded instrument config: {}", config.instrument);
     Ok(config)
 }
