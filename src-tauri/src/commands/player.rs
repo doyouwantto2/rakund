@@ -11,8 +11,15 @@ use tauri::{AppHandle, Emitter, State};
 lazy_static! {
     pub static ref INSTRUMENT_CONFIG: Arc<std::sync::Mutex<Option<InstrumentConfig>>> =
         Arc::new(std::sync::Mutex::new(None));
+
+    /// Keyed as "{midi}:{layer}" — e.g. "60:PP", "60:MP", "61:PP"
+    /// Each note+layer is its own entry, so no two notes ever share a lookup.
     pub static ref SAMPLE_CACHE: Arc<std::sync::Mutex<HashMap<String, Arc<Vec<f32>>>>> =
         Arc::new(std::sync::Mutex::new(HashMap::new()));
+}
+
+fn pitch_ratio(recorded_midi: u8, target_midi: u8) -> f32 {
+    2.0f32.powf((target_midi as f32 - recorded_midi as f32) / 12.0)
 }
 
 #[tauri::command]
@@ -23,14 +30,13 @@ pub async fn play_midi_note(
     handle: State<'_, sound::AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
-    // Load instrument config if not loaded
+    // Lazy-load config
     {
-        let mut config = INSTRUMENT_CONFIG.lock().unwrap();
-        if config.is_none() {
-            *config = Some(load_instrument_config().map_err(|e| e.to_string())?);
+        let mut cfg = INSTRUMENT_CONFIG.lock().unwrap();
+        if cfg.is_none() {
+            *cfg = Some(load_instrument_config().map_err(|e| e.to_string())?);
         }
     }
-
     let config = INSTRUMENT_CONFIG.lock().unwrap().as_ref().unwrap().clone();
 
     let key_data = config
@@ -38,173 +44,70 @@ pub async fn play_midi_note(
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
+    // Find the sample for the requested layer (fall back to first)
     let sample_info = key_data
         .samples
         .iter()
-        .find(|s| layer == s.layer)
+        .find(|s| s.layer == layer)
         .or_else(|| key_data.samples.first())
-        .ok_or_else(|| format!("No samples found for note {}", midi_num))?;
+        .ok_or_else(|| format!("No samples for note {}", midi_num))?;
 
-    // Try to get from cache first
-    let cache = SAMPLE_CACHE.lock().unwrap();
+    let actual_layer = &sample_info.layer;
 
-    // Try exact match first
-    if let Some(cached_data) = cache.get(&sample_info.file).cloned() {
-        let data = cached_data;
+    // Exact lookup — "{midi}:{layer}"
+    let cache_key = format!("{}:{}", midi_num, actual_layer);
+    let data = SAMPLE_CACHE
+        .lock()
+        .unwrap()
+        .get(&cache_key)
+        .cloned()
+        .ok_or_else(|| {
+            format!(
+                "Sample not cached for midi={} layer={}. Is the layer loaded?",
+                midi_num, actual_layer
+            )
+        })?;
 
-        if let Ok(mut voices_guard) = handle.active_voices.lock() {
-            let voices: &mut Vec<sound::Voice> = &mut voices_guard;
-            voices.push(sound::Voice {
-                data: data.clone(),
-                playhead: 0.0,
-                pitch_ratio: 1.0,
-                midi_note: midi_num,
-                is_releasing: false,
-                volume: (velocity as f32 / 127.0),
-            });
-        }
-        return Ok(());
-    }
+    // Pitch ratio: recorded at key_data.midi_note, playing at midi_num
+    let ratio = pitch_ratio(key_data.midi_note, midi_num);
 
-    // Try case-insensitive match
-    let target_name_lower = sample_info.file.to_lowercase();
-    for (cached_name, cached_data) in cache.iter() {
-        if cached_name.to_lowercase() == target_name_lower {
-            let data = cached_data.clone();
-
-            if let Ok(mut voices_guard) = handle.active_voices.lock() {
-                let voices: &mut Vec<sound::Voice> = &mut voices_guard;
-                voices.push(sound::Voice {
-                    data: data.clone(),
-                    playhead: 0.0,
-                    pitch_ratio: 1.0,
-                    midi_note: midi_num,
-                    is_releasing: false,
-                    volume: (velocity as f32 / 127.0),
-                });
-            }
-            return Ok(());
-        }
-    }
-
-    // Try partial match (layer name)
-    for (cached_name, cached_data) in cache.iter() {
-        if cached_name
-            .to_lowercase()
-            .contains(&sample_info.layer.to_lowercase())
-        {
-            let data = cached_data.clone();
-
-            if let Ok(mut voices_guard) = handle.active_voices.lock() {
-                let voices: &mut Vec<sound::Voice> = &mut voices_guard;
-                voices.push(sound::Voice {
-                    data: data.clone(),
-                    playhead: 0.0,
-                    pitch_ratio: 1.0,
-                    midi_note: midi_num,
-                    is_releasing: false,
-                    volume: (velocity as f32 / 127.0),
-                });
-            }
-            return Ok(());
-        }
-    }
-
-    return Err(format!("Sample {} not found in cache", sample_info.file));
-}
-
-#[tauri::command]
-pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
-    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
-    let samples_dir = current_dir.join("data/instrument/Samples");
-
-    if !samples_dir.exists() {
-        return Err("Samples directory not found".to_string());
-    }
-
-    let mut total_files = 0;
-    let mut loaded_count = 0;
-
-    // Count total FLAC files first
-    for entry in std::fs::read_dir(&samples_dir).map_err(|e| e.to_string())? {
-        let entry = entry.map_err(|e| e.to_string())?;
-        let path = entry.path();
-
-        if path.extension().and_then(|s| s.to_str()) == Some("flac") {
-            total_files += 1;
-        }
-    }
-
-    // Load all FLAC files, skipping any already in cache
-    for entry in std::fs::read_dir(&samples_dir).map_err(|e| e.to_string())? {
-        let entry = entry.map_err(|e| e.to_string())?;
-        let path = entry.path();
-
-        if path.extension().and_then(|s| s.to_str()) == Some("flac") {
-            let file_name = path
-                .file_name()
-                .and_then(|n| n.to_str())
-                .unwrap_or("unknown")
-                .to_string();
-
-            // Skip if already cached from initialize_audio()
-            {
-                let cache = SAMPLE_CACHE.lock().unwrap();
-                if cache.contains_key(&file_name) {
-                    loaded_count += 1;
-                    continue;
-                }
-            }
-
-            println!(
-                "[LOADING] [{}/{}] Processing: {}",
-                loaded_count + 1,
-                total_files,
-                file_name
-            );
-
-            let file_path_str = path.to_string_lossy().to_string();
-            let decoded = decoder::decode_flac(&file_path_str)
-                .map_err(|e| format!("Failed to decode {}: {}", file_name, e))?;
-
-            let mut cache = SAMPLE_CACHE.lock().unwrap();
-            cache.insert(file_name.clone(), decoded);
-            loaded_count += 1;
-
-            // Emit progress event
-            let progress = (loaded_count as f32 / total_files as f32) * 100.0;
-            let event_data = serde_json::json!({
-                "layer": layer,
-                "loaded": loaded_count,
-                "total": total_files,
-                "progress": progress
-            });
-
-            println!(
-                "[PROGRESS] [{}/{}] {:.1}% complete - {}",
-                loaded_count, total_files, progress, file_name
-            );
-
-            match window.emit("load_progress", event_data) {
-                Ok(_) => {}
-                Err(e) => println!("[ERROR] Failed to emit progress event: {:?}", e),
-            }
-        }
+    if let Ok(mut voices) = handle.active_voices.lock() {
+        voices.push(sound::Voice {
+            data,
+            playhead: 0.0,
+            pitch_ratio: ratio,
+            midi_note: midi_num,
+            is_releasing: false,
+            volume: velocity as f32 / 127.0,
+        });
     }
 
     Ok(())
 }
 
 #[tauri::command]
-pub async fn get_instrument_info() -> Result<serde_json::Value, String> {
-    let config = {
-        let mut global_config = INSTRUMENT_CONFIG.lock().unwrap();
-        if global_config.is_none() {
-            *global_config = Some(load_instrument_config().map_err(|e| e.to_string())?);
-        }
-        global_config.take().unwrap()
-    };
+pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
+    // All layers are loaded at startup by initialize_audio().
+    // This command exists for frontend compatibility — emit 100% immediately.
+    let _ = window.emit(
+        "load_progress",
+        serde_json::json!({
+            "layer": layer,
+            "loaded": 1,
+            "total": 1,
+            "progress": 100.0
+        }),
+    );
+    Ok(())
+}
 
+#[tauri::command]
+pub async fn get_instrument_info() -> Result<serde_json::Value, String> {
+    let mut cfg = INSTRUMENT_CONFIG.lock().unwrap();
+    if cfg.is_none() {
+        *cfg = Some(load_instrument_config().map_err(|e| e.to_string())?);
+    }
+    let config = cfg.as_ref().unwrap();
     Ok(serde_json::json!({
         "name": config.instrument,
         "layers": config.layers
@@ -213,14 +116,9 @@ pub async fn get_instrument_info() -> Result<serde_json::Value, String> {
 
 fn load_instrument_config() -> Result<InstrumentConfig, AudioError> {
     let cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
-    let config_path = cwd.join("data").join("instrument.json");
-
-    let config_data = fs::read_to_string(&config_path).map_err(|e| {
-        AudioError::InstrumentError(format!("Could not find JSON at {:?}: {}", config_path, e))
-    })?;
-
-    let config: InstrumentConfig = serde_json::from_str(&config_data)
-        .map_err(|e| AudioError::InstrumentError(format!("Invalid JSON: {}", e)))?;
-
-    Ok(config)
+    let path = cwd.join("data").join("instrument.json");
+    let raw = fs::read_to_string(&path)
+        .map_err(|e| AudioError::InstrumentError(format!("Cannot read instrument.json: {}", e)))?;
+    serde_json::from_str(&raw)
+        .map_err(|e| AudioError::InstrumentError(format!("Invalid JSON: {}", e)))
 }
