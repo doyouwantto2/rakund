@@ -10,9 +10,6 @@ use tauri::{AppHandle, Emitter, State};
 lazy_static! {
     pub static ref INSTRUMENT_CONFIG: Arc<std::sync::Mutex<Option<InstrumentConfig>>> =
         Arc::new(std::sync::Mutex::new(None));
-
-    /// Keyed as "{midi}:{layer}" — e.g. "60:PP", "60:MP", "61:PP"
-    /// Each note+layer is its own entry, so no two notes ever share a lookup.
     pub static ref SAMPLE_CACHE: Arc<std::sync::Mutex<HashMap<String, Arc<Vec<f32>>>>> =
         Arc::new(std::sync::Mutex::new(HashMap::new()));
 }
@@ -29,7 +26,6 @@ pub async fn play_midi_note(
     handle: State<'_, sound::AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
-    // Lazy-load config
     {
         let mut cfg = INSTRUMENT_CONFIG.lock().unwrap();
         if cfg.is_none() {
@@ -43,7 +39,6 @@ pub async fn play_midi_note(
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
-    // Find the sample for the requested layer (fall back to first)
     let sample_info = key_data
         .samples
         .iter()
@@ -53,7 +48,6 @@ pub async fn play_midi_note(
 
     let actual_layer = &sample_info.layer;
 
-    // Exact lookup — "{midi}:{layer}"
     let cache_key = format!("{}:{}", midi_num, actual_layer);
     let data = SAMPLE_CACHE
         .lock()
@@ -67,7 +61,6 @@ pub async fn play_midi_note(
             )
         })?;
 
-    // Pitch ratio: recorded at key_data.midi_note, playing at midi_num
     let ratio = pitch_ratio(key_data.midi_note, midi_num);
 
     if let Ok(mut voices) = handle.active_voices.lock() {
@@ -86,8 +79,6 @@ pub async fn play_midi_note(
 
 #[tauri::command]
 pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
-    // All layers are loaded at startup by initialize_audio().
-    // This command exists for frontend compatibility — emit 100% immediately.
     let _ = window.emit(
         "load_progress",
         serde_json::json!({

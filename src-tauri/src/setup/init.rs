@@ -1,11 +1,10 @@
 use crate::commands;
-use crate::setup::sound;
 use crate::error::AudioError;
+use crate::setup::sound;
 
 pub fn run() -> Result<(), AudioError> {
-    // Initialize audio and load all FLAC files into RAM
     sound::initialize_audio()?;
-    
+
     let audio_handle = sound::start_stream()?;
 
     println!("🎹 Multi-instrument system enabled. Instruments will be loaded dynamically.");

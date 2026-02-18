@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 
 pub struct SampleCache {
     pub cache: Arc<Mutex<HashMap<String, Arc<Vec<f32>>>>>,
-    pub loaded_instruments: Arc<Mutex<HashMap<String, Vec<String>>>>, 
+    pub loaded_instruments: Arc<Mutex<HashMap<String, Vec<String>>>>,
 }
 
 impl SampleCache {
@@ -26,7 +26,10 @@ impl SampleCache {
 
     pub fn get_loaded_layers(&self, instrument: &str) -> Vec<String> {
         let loaded_instruments = self.loaded_instruments.lock().unwrap();
-        loaded_instruments.get(instrument).cloned().unwrap_or_default()
+        loaded_instruments
+            .get(instrument)
+            .cloned()
+            .unwrap_or_default()
     }
 
     pub fn set_layer_loaded(&self, instrument: &str, layer: &str) {

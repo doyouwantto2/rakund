@@ -32,16 +32,11 @@ export function usePiano() {
   const [leftSection, setLeftSection] = createSignal<SectionNum | null>(null);
   const [rightSection, setRightSection] = createSignal<SectionNum | null>(null);
 
-  // Modifier keys tracked independently (L/R)
-  const [leftAlt, setLeftAlt] = createSignal(false);
-  const [rightAlt, setRightAlt] = createSignal(false);
-  const [leftShift, setLeftShift] = createSignal(false);
-  const [rightShift, setRightShift] = createSignal(false);
+  // Modifier keys tracked simply
+  const [altPressed, setAltPressed] = createSignal(false);
 
   const getSemitoneOffset = () => {
-    const up = (leftShift() ? 1 : 0) + (rightShift() ? 1 : 0);
-    const down = (leftAlt() ? 1 : 0) + (rightAlt() ? 1 : 0);
-    return up - down;
+    return altPressed() ? -1 : 0;
   };
 
   const getVelocityForLayer = (layer: string): number => {
@@ -97,10 +92,7 @@ export function usePiano() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Modifier keys
-      if (e.code === "AltLeft") { setLeftAlt(true); e.preventDefault(); return; }
-      if (e.code === "AltRight") { setRightAlt(true); e.preventDefault(); return; }
-      if (e.code === "ShiftLeft") { setLeftShift(true); return; }
-      if (e.code === "ShiftRight") { setRightShift(true); return; }
+      if (e.code === "AltLeft" || e.code === "AltRight") { setAltPressed(true); e.preventDefault(); return; }
 
       if (e.repeat) return;
       const key = e.key === ';' ? ';' : e.key.toLowerCase();
@@ -138,10 +130,7 @@ export function usePiano() {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === "AltLeft") { setLeftAlt(false); return; }
-      if (e.code === "AltRight") { setRightAlt(false); return; }
-      if (e.code === "ShiftLeft") { setLeftShift(false); return; }
-      if (e.code === "ShiftRight") { setRightShift(false); return; }
+      if (e.code === "AltLeft" || e.code === "AltRight") { setAltPressed(false); return; }
 
       const key = e.key === ';' ? ';' : e.key.toLowerCase();
       heldKeys.delete(key);
@@ -165,7 +154,7 @@ export function usePiano() {
     isLayerLoading, loadProgress, availableLayers,
     noteOn, noteOff,
     leftSection, rightSection,
-    leftAlt, rightAlt, leftShift, rightShift,
+    altPressed,
     getSemitoneOffset,
   };
 }

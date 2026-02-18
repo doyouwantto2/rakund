@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { selectedLayer, onLayerChange, onLayerHover, layers } = props;
-  
+
   return (
     <div class="shrink-0 p-6 flex items-center justify-between border-b border-zinc-900 bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 backdrop-blur-sm">
       <div class="flex items-center gap-8">
@@ -23,11 +23,10 @@ export default function Header(props: HeaderProps) {
             <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
           </div>
           <div>
-            <h1 class="text-2xl font-black italic text-emerald-500 tracking-tighter uppercase leading-none">Raku Grand</h1>
-            <p class="text-xs text-zinc-500 font-medium">Instrument Piano</p>
+            <h1 class="text-2xl font-black italic text-emerald-500 tracking-tighter uppercase leading-none">Raku</h1>
           </div>
         </div>
-        
+
         {/* Velocity Selector */}
         <VelocitySelector
           selectedLayer={selectedLayer}
@@ -37,7 +36,7 @@ export default function Header(props: HeaderProps) {
           instrumentName={() => "instrument"}
         />
       </div>
-      
+
       <VolumeControl />
     </div>
   );

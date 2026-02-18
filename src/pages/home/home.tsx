@@ -16,16 +16,12 @@ export default function Home() {
     noteOff,
     leftSection,
     rightSection,
-    leftAlt, rightAlt, leftShift, rightShift,
     getSemitoneOffset,
   } = usePiano();
 
   const modifierLabel = () => {
     const o = getSemitoneOffset();
-    if (o === 2) return { text: "+2 semitones (𝄪)", color: "text-emerald-300" };
-    if (o === 1) return { text: "+1 semitone (♯)", color: "text-emerald-400" };
-    if (o === -1) return { text: "−1 semitone (♭)", color: "text-blue-400" };
-    if (o === -2) return { text: "−2 semitones (𝄫)", color: "text-blue-300" };
+    if (o === -1) return { text: "−1 semitone (♭) - Alt", color: "text-blue-400" };
     return null;
   };
 
@@ -52,14 +48,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      {/* Modifier key pills */}
-      <div class="flex justify-center gap-2 mb-1 text-[10px] font-bold pointer-events-none">
-        <span class={`px-2 py-0.5 rounded border ${leftAlt() ? "bg-blue-900 border-blue-500 text-blue-300" : "border-zinc-800 text-zinc-700"}`}>L-Alt</span>
-        <span class={`px-2 py-0.5 rounded border ${rightAlt() ? "bg-blue-900 border-blue-500 text-blue-300" : "border-zinc-800 text-zinc-700"}`}>R-Alt</span>
-        <span class={`px-2 py-0.5 rounded border ${leftShift() ? "bg-emerald-900 border-emerald-500 text-emerald-300" : "border-zinc-800 text-zinc-700"}`}>L-Shift</span>
-        <span class={`px-2 py-0.5 rounded border ${rightShift() ? "bg-emerald-900 border-emerald-500 text-emerald-300" : "border-zinc-800 text-zinc-700"}`}>R-Shift</span>
-      </div>
 
       <LoadingIndicator
         isLoading={isLayerLoading()}

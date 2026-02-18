@@ -107,10 +107,10 @@ export function getKeyHighlight(
   midi: number,
   leftSection: SectionNum | null,
   rightSection: SectionNum | null,
-): 'left' | 'right' | 'both' | null {
+): 'left' | 'right' | null {
   const inLeft = leftSection !== null && getSectionMidiRange('left', leftSection).includes(midi);
   const inRight = rightSection !== null && getSectionMidiRange('right', rightSection).includes(midi);
-  if (inLeft && inRight) return 'both';
+  if (inLeft && inRight) return 'left'; // Prioritize left when both sections overlap
   if (inLeft) return 'left';
   if (inRight) return 'right';
   return null;

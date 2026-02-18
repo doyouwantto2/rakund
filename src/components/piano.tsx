@@ -1,5 +1,6 @@
 import { createMemo, For } from "solid-js";
 import { getKeyHighlight, type SectionNum } from "../utils/keyMapping";
+import { usePiano } from "../hooks/usePiano";
 
 interface PianoProps {
   activeNotes: () => Set<number>;
@@ -19,18 +20,16 @@ const blackKeys = allMidi.filter(m => isBlack(m));
 
 // Precompute black key left-offset (doesn't change)
 const blackKeyLeftPct = new Map<number, number>(
-  blackKeys.map(midi => [
-    midi,
-    allMidi.filter(m => m < midi && !isBlack(m)).length,
-  ])
+  blackKeys.map(midi => [midi, allMidi.filter(m => m < midi && !isBlack(m)).length])
 );
 
 export default function Piano(props: PianoProps) {
   const { activeNotes, onNoteOn, onNoteOff, leftSection, rightSection } = props;
+  const { altPressed } = usePiano();
 
   // Reactive highlight map — recomputes when sections change
   const highlights = createMemo(() => {
-    const map = new Map<number, 'left' | 'right' | 'both'>();
+    const map = new Map<number, 'left' | 'right'>();
     for (const midi of allMidi) {
       const h = getKeyHighlight(midi, leftSection(), rightSection());
       if (h) map.set(midi, h);
@@ -43,7 +42,6 @@ export default function Piano(props: PianoProps) {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
     if (active) return "bg-emerald-400 border-emerald-500 translate-y-1 shadow-lg";
-    if (highlight === 'both') return "bg-purple-300 border-purple-400";
     if (highlight === 'left') return "bg-blue-300 border-blue-400";
     if (highlight === 'right') return "bg-green-300 border-green-400";
     return "bg-zinc-100 hover:bg-white border-zinc-400";
@@ -53,7 +51,6 @@ export default function Piano(props: PianoProps) {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
     if (active) return "bg-emerald-500 translate-y-1 shadow-lg";
-    if (highlight === 'both') return "bg-purple-600";
     if (highlight === 'left') return "bg-blue-600";
     if (highlight === 'right') return "bg-green-700";
     return "bg-zinc-900 hover:bg-zinc-700";
@@ -68,8 +65,8 @@ export default function Piano(props: PianoProps) {
           <span class="text-zinc-500">Left:</span>
           <For each={[1, 2, 3] as SectionNum[]}>{s => (
             <span class={`px-2 py-0.5 rounded border transition-all duration-150 ${leftSection() === s
-                ? "bg-blue-600 border-blue-400 text-white"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+              ? "bg-blue-600 border-blue-400 text-white"
+              : "bg-zinc-800 border-zinc-700 text-zinc-500"
               }`}>
               {LEFT_LABELS[s]}
             </span>
@@ -82,8 +79,8 @@ export default function Piano(props: PianoProps) {
           <span class="text-zinc-500">Right:</span>
           <For each={[1, 2, 3] as SectionNum[]}>{s => (
             <span class={`px-2 py-0.5 rounded border transition-all duration-150 ${rightSection() === s
-                ? "bg-green-600 border-green-400 text-white"
-                : "bg-zinc-800 border-zinc-700 text-zinc-500"
+              ? "bg-green-600 border-green-400 text-white"
+              : "bg-zinc-800 border-zinc-700 text-zinc-500"
               }`}>
               {RIGHT_LABELS[s]}
             </span>
@@ -93,9 +90,9 @@ export default function Piano(props: PianoProps) {
         <div class="w-px bg-zinc-700" />
 
         <div class="flex items-center gap-2 text-zinc-600">
+          <span class={`px-2 py-0.5 rounded border text-[10px] font-bold ${altPressed() ? "bg-blue-900 border-blue-500 text-blue-300" : "border-zinc-800 text-zinc-700"}`}>Alt</span>
           <span class="w-3 h-3 rounded-sm bg-blue-400 inline-block" />Left
           <span class="w-3 h-3 rounded-sm bg-green-400 inline-block" />Right
-          <span class="w-3 h-3 rounded-sm bg-purple-400 inline-block" />Both
           <span class="text-zinc-700">· ESC clears</span>
         </div>
       </div>
