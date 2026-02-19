@@ -1,42 +1,34 @@
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
-pub struct SampleCache {
-    pub cache: Arc<Mutex<HashMap<String, Arc<Vec<f32>>>>>,
-    pub loaded_instruments: Arc<Mutex<HashMap<String, Vec<String>>>>,
+lazy_static::lazy_static! {
+    /// Global sample cache keyed by "{midi}:{layer_index}"
+    /// layer_index = position in general.layers array (0-based)
+    /// This is completely independent of layer name or case.
+    pub static ref SAMPLE_CACHE: Arc<Mutex<HashMap<String, Arc<Vec<f32>>>>> =
+        Arc::new(Mutex::new(HashMap::new()));
 }
 
-impl SampleCache {
-    pub fn new() -> Self {
-        Self {
-            cache: Arc::new(Mutex::new(HashMap::new())),
-            loaded_instruments: Arc::new(Mutex::new(HashMap::new())),
-        }
-    }
+/// Cache key: "{midi}:{layer_index}"
+fn key_by_index(midi: u8, layer_idx: usize) -> String {
+    format!("{}:{}", midi, layer_idx)
+}
 
-    pub fn get_sample(&self, filename: &str) -> Option<Arc<Vec<f32>>> {
-        let cache = self.cache.lock().unwrap();
-        cache.get(filename).cloned()
-    }
+pub fn insert_by_index(midi: u8, layer_idx: usize, data: Arc<Vec<f32>>) {
+    SAMPLE_CACHE
+        .lock()
+        .unwrap()
+        .insert(key_by_index(midi, layer_idx), data);
+}
 
-    pub fn set_sample(&self, filename: &str, samples: Arc<Vec<f32>>) {
-        let mut cache = self.cache.lock().unwrap();
-        cache.insert(filename.to_string(), samples);
-    }
+pub fn get_by_index(midi: u8, layer_idx: usize) -> Option<Arc<Vec<f32>>> {
+    SAMPLE_CACHE
+        .lock()
+        .unwrap()
+        .get(&key_by_index(midi, layer_idx))
+        .cloned()
+}
 
-    pub fn get_loaded_layers(&self, instrument: &str) -> Vec<String> {
-        let loaded_instruments = self.loaded_instruments.lock().unwrap();
-        loaded_instruments
-            .get(instrument)
-            .cloned()
-            .unwrap_or_default()
-    }
-
-    pub fn set_layer_loaded(&self, instrument: &str, layer: &str) {
-        let mut loaded_instruments = self.loaded_instruments.lock().unwrap();
-        loaded_instruments
-            .entry(instrument.to_string())
-            .or_insert_with(|| Vec::new())
-            .push(layer.to_string());
-    }
+pub fn clear() {
+    SAMPLE_CACHE.lock().unwrap().clear();
 }

@@ -1,70 +1,57 @@
+use crate::engine::cache;
 use crate::error::AudioError;
-use crate::setup::audio;
-use crate::setup::models::InstrumentConfig;
+use crate::setup::audio::{self, AudioHandle};
+use crate::setup::models::{AppState, InstrumentConfig, InstrumentInfo};
+use crate::setup::state;
 use lazy_static::lazy_static;
-use std::collections::HashMap;
-use std::fs;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use tauri::{AppHandle, Emitter, State};
 
 lazy_static! {
-    pub static ref INSTRUMENT_CONFIG: Arc<std::sync::Mutex<Option<InstrumentConfig>>> =
-        Arc::new(std::sync::Mutex::new(None));
-    pub static ref SAMPLE_CACHE: Arc<std::sync::Mutex<HashMap<String, Arc<Vec<f32>>>>> =
-        Arc::new(std::sync::Mutex::new(HashMap::new()));
+    pub static ref CURRENT_INSTRUMENT: Arc<Mutex<Option<InstrumentConfig>>> =
+        Arc::new(Mutex::new(None));
 }
 
-fn pitch_ratio(recorded_midi: u8, target_midi: u8) -> f32 {
-    2.0f32.powf((target_midi as f32 - recorded_midi as f32) / 12.0)
-}
+// ── Playback ──────────────────────────────────────────────────────────────────
 
 #[tauri::command]
 pub async fn play_midi_note(
     midi_num: u8,
     velocity: u8,
-    layer: String,
-    handle: State<'_, audio::AudioHandle>,
+    layer: String, // uppercased layer name from frontend e.g. "MP"
+    handle: State<'_, AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
-    {
-        let mut cfg = INSTRUMENT_CONFIG.lock().unwrap();
-        if cfg.is_none() {
-            *cfg = Some(load_instrument_config().map_err(|e| e.to_string())?);
-        }
-    }
-    let config = INSTRUMENT_CONFIG.lock().unwrap().as_ref().unwrap().clone();
+    let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
+    let config = config_guard.as_ref().ok_or("No instrument loaded")?;
 
     let key_data = config
-        .keys
+        .piano_keys
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
-    let sample_info = key_data
-        .samples
+    // Find the layer index by matching uppercased names in general.layers.
+    // Frontend sends uppercase (e.g. "MP"), general.layers may have any case ("Mp", "MP").
+    // We match uppercase → uppercase so case in JSON doesn't matter.
+    let layer_idx = config
+        .layers()
         .iter()
-        .find(|s| s.layer == layer)
-        .or_else(|| key_data.samples.first())
-        .ok_or_else(|| format!("No samples for note {}", midi_num))?;
+        .position(|l| l.to_uppercase() == layer.to_uppercase())
+        .unwrap_or(0); // fall back to first layer if not found
 
-    let actual_layer = &sample_info.layer;
+    // Look up by index — completely independent of name/case
+    let data = cache::get_by_index(midi_num, layer_idx).ok_or_else(|| {
+        format!(
+            "Sample not cached: midi={} layer_idx={}",
+            midi_num, layer_idx
+        )
+    })?;
 
-    let cache_key = format!("{}:{}", midi_num, actual_layer);
-    let data = SAMPLE_CACHE
-        .lock()
-        .unwrap()
-        .get(&cache_key)
-        .cloned()
-        .ok_or_else(|| {
-            format!(
-                "Sample not cached for midi={} layer={}. Is the layer loaded?",
-                midi_num, actual_layer
-            )
-        })?;
-
-    let ratio = pitch_ratio(key_data.midi_note, midi_num);
+    let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
+    let ratio = audio::pitch_ratio(recorded_midi, midi_num);
 
     if let Ok(mut voices) = handle.active_voices.lock() {
-        voices.push(audio::Voice {
+        voices.push(crate::setup::audio::Voice {
             data,
             playhead: 0.0,
             pitch_ratio: ratio,
@@ -77,38 +64,72 @@ pub async fn play_midi_note(
     Ok(())
 }
 
+// ── Instrument management ─────────────────────────────────────────────────────
+
 #[tauri::command]
-pub async fn load_instrument_layer(layer: String, window: tauri::Window) -> Result<(), String> {
-    let _ = window.emit(
-        "load_progress",
-        serde_json::json!({
-            "layer": layer,
-            "loaded": 1,
-            "total": 1,
-            "progress": 100.0
-        }),
-    );
-    Ok(())
+pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> {
+    let folders = audio::scan_instruments().map_err(|e| e.to_string())?;
+
+    let mut result = Vec::new();
+    for folder in folders {
+        let json_path = folder.join("instrument.json");
+        let raw = std::fs::read_to_string(&json_path).unwrap_or_default();
+        if let Ok(config) = serde_json::from_str::<InstrumentConfig>(&raw) {
+            result.push(InstrumentInfo {
+                name: config.instrument.clone(),
+                folder: folder
+                    .file_name()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .to_string(),
+                // Always send uppercase layer names to frontend
+                layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+                format: config.files_format().to_string(),
+            });
+        }
+    }
+
+    Ok(result)
 }
 
 #[tauri::command]
-pub async fn get_instrument_info() -> Result<serde_json::Value, String> {
-    let mut cfg = INSTRUMENT_CONFIG.lock().unwrap();
-    if cfg.is_none() {
-        *cfg = Some(load_instrument_config().map_err(|e| e.to_string())?);
-    }
-    let config = cfg.as_ref().unwrap();
-    Ok(serde_json::json!({
-        "name": config.instrument,
-        "layers": config.layers
+pub async fn load_instrument(folder: String) -> Result<InstrumentInfo, String> {
+    let config = audio::load_instrument(&folder).map_err(|e| e.to_string())?;
+
+    state::set_last_instrument(&folder).map_err(|e: AudioError| e.to_string())?;
+
+    let info = InstrumentInfo {
+        name: config.instrument.clone(),
+        folder,
+        layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+        format: config.files_format().to_string(),
+    };
+
+    *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
+    Ok(info)
+}
+
+#[tauri::command]
+pub async fn get_app_state() -> Result<AppState, String> {
+    state::read().map_err(|e: AudioError| e.to_string())
+}
+
+#[tauri::command]
+pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
+    let guard = CURRENT_INSTRUMENT.lock().unwrap();
+    Ok(guard.as_ref().map(|config| InstrumentInfo {
+        name: config.instrument.clone(),
+        folder: String::new(),
+        layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+        format: config.files_format().to_string(),
     }))
 }
 
-fn load_instrument_config() -> Result<InstrumentConfig, AudioError> {
-    let cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
-    let path = cwd.join("data").join("instrument.json");
-    let raw = fs::read_to_string(&path)
-        .map_err(|e| AudioError::InstrumentError(format!("Cannot read instrument.json: {}", e)))?;
-    serde_json::from_str(&raw)
-        .map_err(|e| AudioError::InstrumentError(format!("Invalid JSON: {}", e)))
+#[tauri::command]
+pub async fn load_instrument_layer(_layer: String, window: tauri::Window) -> Result<(), String> {
+    let _ = window.emit(
+        "load_progress",
+        serde_json::json!({ "loaded": 1, "total": 1, "progress": 100.0 }),
+    );
+    Ok(())
 }

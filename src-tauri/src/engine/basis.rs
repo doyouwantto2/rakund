@@ -1,4 +1,4 @@
-use crate::engine::{basis, decoder};
+use crate::engine::decoder;
 use crate::setup::audio::AudioHandle;
 use crate::setup::audio::Voice;
 use std::sync::{Arc, Mutex};
@@ -18,7 +18,7 @@ pub fn play_sound(active_voices: &Arc<Mutex<Vec<Voice>>>, data: Arc<Vec<f32>>) {
 }
 
 pub async fn play_note(path: String, handle: State<'_, AudioHandle>) -> Result<(), String> {
-    let sound_data = decoder::decode_flac(&path).map_err(|e| e.to_string())?;
-    basis::play_sound(&handle.active_voices, sound_data);
+    let sound_data = decoder::decode(&path).map_err(|e| e.to_string())?;
+    play_sound(&handle.active_voices, sound_data);
     Ok(())
 }

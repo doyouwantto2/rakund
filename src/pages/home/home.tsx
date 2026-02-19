@@ -1,31 +1,26 @@
 import Header from '@/components/header';
-import Piano from '@/components/piano';
-import LoadingIndicator from '@/components/loading';
+import PianoSection from '@/components/pianosection';
 import { usePiano } from "@/hooks/usePiano";
 
 export default function Home() {
-  const {
-    activeNotes,
-    selectedLayer,
-    setSelectedLayer,
-    setHoveredLayer,
-    isLayerLoading,
-    loadProgress,
-    availableLayers,
-    noteOn,
-    noteOff,
-    leftSection,
-    rightSection,
-    getSemitoneOffset,
-  } = usePiano();
+  const piano = usePiano();
 
   return (
     <div class="h-screen w-full bg-zinc-950 text-white flex flex-col overflow-hidden select-none font-sans">
+
       <Header
-        selectedLayer={selectedLayer}
-        onLayerChange={setSelectedLayer}
-        onLayerHover={setHoveredLayer}
-        layers={availableLayers}
+        currentInstrument={piano.currentInstrument}
+        availableInstruments={piano.availableInstruments}
+        availableLayers={piano.availableLayers}
+        leftLayerIdx={piano.leftLayerIdx}
+        rightLayerIdx={piano.rightLayerIdx}
+        volume={piano.volume}
+        onVolumeChange={piano.setVolume}
+        isLoading={piano.isLoading}
+        loadProgress={piano.loadProgress}
+        onSelectInstrument={piano.selectInstrument}
+        leftModifier={piano.leftModifier}
+        rightModifier={piano.rightModifier}
       />
 
       <div class="flex-1 flex items-center justify-center pointer-events-none">
@@ -34,20 +29,19 @@ export default function Home() {
         </div>
       </div>
 
-      <LoadingIndicator
-        isLoading={isLayerLoading()}
-        instrument="instrument"
-        layer={selectedLayer()}
-        progress={loadProgress()}
+      <PianoSection
+        activeNotes={piano.activeNotes}
+        onNoteOn={piano.noteOn}
+        onNoteOff={piano.noteOff}
+        leftSection={piano.leftSection}
+        rightSection={piano.rightSection}
+        leftModifier={piano.leftModifier}
+        rightModifier={piano.rightModifier}
+        leftLayerIdx={piano.leftLayerIdx}
+        rightLayerIdx={piano.rightLayerIdx}
+        availableLayers={piano.availableLayers}
       />
 
-      <Piano
-        activeNotes={activeNotes}
-        onNoteOn={noteOn}
-        onNoteOff={noteOff}
-        leftSection={leftSection}
-        rightSection={rightSection}
-      />
     </div>
   );
 }

@@ -20,16 +20,18 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
 
 cpal = "0.17.1"
 fundsp = "0.23.0"
-symphonia = "0.5.5"
 
-claxon = "0.4.3"
+symphonia = { version = "0.5.5", features = ["flac", "wav"] }
 
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
 thiserror = "2.0.18"
 lazy_static = "1.4.0"
+
+dirs-next = "2.0.0"
 

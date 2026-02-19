@@ -1,12 +1,14 @@
-use crate::commands::player::SAMPLE_CACHE;
+use crate::engine::{cache, decoder, volume};
 use crate::error::{AudioError, Result};
+use crate::parser;
 use crate::setup::models::InstrumentConfig;
+use crate::setup::state;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
+use std::collections::HashMap;
 use std::fs;
+use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
-
-const FAST_RELEASE: f32 = 0.99987;
-const SLOW_RELEASE: f32 = 0.99999;
+use tauri::Emitter;
 
 #[derive(Clone)]
 pub struct Voice {
@@ -47,44 +49,43 @@ pub fn start_stream() -> Result<AudioHandle> {
                 };
                 let sustained = sustained_clone.try_lock().map(|g| *g).unwrap_or(false);
 
-                for s in output.iter_mut() {
-                    *s = 0.0;
-                }
-
-                let num_voices = voices.len() as f32;
-                let gain = if num_voices > 1.0 {
-                    1.0 / (num_voices.sqrt() * 1.2)
-                } else {
-                    0.7
-                };
+                let fast = volume::get_fast();
+                let slow = volume::get_slow();
                 let num_frames = output.len() / channels;
+                let mut mix = vec![0.0f32; num_frames];
 
                 for v in voices.iter_mut() {
                     for frame_idx in 0..num_frames {
                         let pos = v.playhead as usize;
-                        if pos >= v.data.len() {
+                        if pos + 1 >= v.data.len() {
                             break;
                         }
-                        let sample = v.data[pos] * gain * v.volume;
-                        for ch in 0..channels {
-                            let idx = frame_idx * channels + ch;
-                            if idx < output.len() {
-                                output[idx] = (output[idx] + sample).clamp(-1.0, 1.0);
-                            }
-                        }
+                        let frac = v.playhead - pos as f32;
+                        let sample = v.data[pos] * (1.0 - frac) + v.data[pos + 1] * frac;
+                        mix[frame_idx] += sample * v.volume;
                         if v.is_releasing {
-                            v.volume *= if sustained {
-                                SLOW_RELEASE
-                            } else {
-                                FAST_RELEASE
-                            };
+                            v.volume *= if sustained { slow } else { fast };
                         }
                         v.playhead += v.pitch_ratio;
                     }
                 }
-                voices.retain(|v| (v.playhead as usize) < v.data.len() && v.volume > 0.0005);
+
+                let num_voices = voices.len().max(1) as f32;
+                let gain = (1.0 / num_voices.sqrt()).min(1.0) * 0.8;
+
+                for frame_idx in 0..num_frames {
+                    let s = (mix[frame_idx] * gain).tanh();
+                    for ch in 0..channels {
+                        let idx = frame_idx * channels + ch;
+                        if idx < output.len() {
+                            output[idx] = s;
+                        }
+                    }
+                }
+
+                voices.retain(|v| (v.playhead as usize + 1) < v.data.len() && v.volume > 0.0005);
             },
-            |err| eprintln!("Audio error: {:?}", err),
+            |err| eprintln!("Audio stream error: {:?}", err),
             None,
         )
         .map_err(AudioError::BuildStreamError)?;
@@ -97,91 +98,129 @@ pub fn start_stream() -> Result<AudioHandle> {
     })
 }
 
-pub fn initialize_audio() -> Result<()> {
-    println!("[INIT] Loading FLAC samples into RAM (keyed by midi:layer)...");
+// ── Simple load (no progress events) — used by load_instrument command ────────
 
-    let cwd = std::env::current_dir().map_err(|e| AudioError::InstrumentError(e.to_string()))?;
+pub fn load_instrument(folder: &str) -> Result<InstrumentConfig> {
+    let instrument_dir = state::instruments_dir()?.join(folder);
+    load_instrument_from_path(&instrument_dir, None::<&tauri::AppHandle>)
+}
 
-    let samples_dir = cwd.join("data/instrument/Samples");
-    let config_path = cwd.join("data/instrument.json");
+// ── Background load with progress events — used by init.rs preload ────────────
 
-    if !samples_dir.exists() {
-        return Err(AudioError::InstrumentError(format!(
-            "Samples directory not found: {:?}",
-            samples_dir
-        )));
-    }
+pub fn load_instrument_with_progress(
+    folder: &str,
+    app: &tauri::AppHandle,
+) -> Result<InstrumentConfig> {
+    let instrument_dir = state::instruments_dir()?.join(folder);
+    load_instrument_from_path(&instrument_dir, Some(app))
+}
 
-    // Parse instrument.json to get midi -> layer -> file mapping
-    let raw = fs::read_to_string(&config_path)
+// ── Core implementation ───────────────────────────────────────────────────────
+
+fn load_instrument_from_path(
+    instrument_dir: &Path,
+    app: Option<&tauri::AppHandle>,
+) -> Result<InstrumentConfig> {
+    let json_path = instrument_dir.join("instrument.json");
+
+    let raw = fs::read_to_string(&json_path)
         .map_err(|e| AudioError::InstrumentError(format!("Cannot read instrument.json: {}", e)))?;
+
     let config: InstrumentConfig = serde_json::from_str(&raw)
         .map_err(|e| AudioError::InstrumentError(format!("Invalid instrument.json: {}", e)))?;
 
+    volume::set(config.fast_release(), config.slow_release());
+
     println!(
-        "[INIT] Instrument: {} ({} keys)",
+        "[LOAD] {} — format: {} — {} keys — layers: {:?}",
         config.instrument,
-        config.keys.len()
+        config.files_format(),
+        config.piano_keys.len(),
+        config.layers(),
     );
 
-    // Sort keys numerically for clean log output
-    let mut midi_keys: Vec<u8> = config.keys.keys().filter_map(|k| k.parse().ok()).collect();
+    cache::clear();
+
+    let mut midi_keys: Vec<u8> = config
+        .piano_keys
+        .keys()
+        .filter_map(|k| k.parse().ok())
+        .collect();
     midi_keys.sort();
 
-    let total = midi_keys.len() * config.layers.len();
-    let mut done = 0;
+    let total = midi_keys
+        .iter()
+        .map(|m| {
+            config
+                .piano_keys
+                .get(&m.to_string())
+                .map(|k| k.samples.len())
+                .unwrap_or(0)
+        })
+        .sum::<usize>();
+    let mut done = 0usize;
+    let mut last_emitted_pct = -1i32;
 
-    // File-level decode cache: avoid decoding the same FLAC twice
-    // (multiple midi notes share one recorded sample, e.g. "PP C3.flac" covers C3..D3)
-    let mut file_cache: std::collections::HashMap<String, Arc<Vec<f32>>> =
-        std::collections::HashMap::new();
+    let mut file_cache: HashMap<String, Arc<Vec<f32>>> = HashMap::new();
 
     for midi in &midi_keys {
-        let key_data = &config.keys[&midi.to_string()];
+        let key_data = &config.piano_keys[&midi.to_string()];
 
-        for sample_info in &key_data.samples {
-            // Cache key: exact "{midi}:{layer}" — zero ambiguity, zero overlap
-            let cache_key = format!("{}:{}", midi, sample_info.layer);
+        for (sample_idx, sample_info) in key_data.samples.iter().enumerate() {
+            let sample_path = instrument_dir.join(&sample_info.path);
+            let file_key = sample_path.to_string_lossy().to_lowercase();
 
-            // Decode each unique FLAC file once, then clone the Arc for all notes using it
-            let file_key = sample_info.file.to_lowercase();
             let data = if let Some(cached) = file_cache.get(&file_key) {
                 cached.clone()
             } else {
-                // Find file case-insensitively on disk
-                let path = find_flac_case_insensitive(&samples_dir, &sample_info.file).ok_or_else(
-                    || AudioError::InstrumentError(format!("FLAC not found: {}", sample_info.file)),
-                )?;
-                let decoded = crate::engine::decoder::decode_flac(&path.to_string_lossy())?;
+                let decoded = decoder::decode(&sample_path.to_string_lossy())?;
                 file_cache.insert(file_key, decoded.clone());
                 decoded
             };
 
-            SAMPLE_CACHE.lock().unwrap().insert(cache_key, data);
+            cache::insert_by_index(*midi, sample_idx, data);
             done += 1;
 
-            if done % 50 == 0 || done == total {
-                println!(
-                    "[INIT] [{}/{}] {:.0}%",
-                    done,
-                    total,
-                    (done as f32 / total as f32) * 100.0
-                );
+            // Emit progress every 1% increment
+            if let Some(handle) = app {
+                let pct = ((done as f32 / total as f32) * 100.0) as i32;
+                if pct != last_emitted_pct {
+                    last_emitted_pct = pct;
+                    let _ = handle.emit(
+                        "load_progress",
+                        serde_json::json!({
+                            "progress": pct as f32,
+                            "loaded": done,
+                            "total": total,
+                            "status": "loading"
+                        }),
+                    );
+                }
             }
         }
     }
 
-    println!("[INIT] Done — {} entries in cache", done);
-    Ok(())
+    println!("[LOAD] Done — {} entries cached", done);
+    Ok(config)
 }
 
-fn find_flac_case_insensitive(dir: &std::path::Path, name: &str) -> Option<std::path::PathBuf> {
-    let lower = name.to_lowercase();
-    fs::read_dir(dir).ok()?.flatten().find_map(|e| {
-        if e.file_name().to_string_lossy().to_lowercase() == lower {
-            Some(e.path())
-        } else {
-            None
-        }
-    })
+pub fn scan_instruments() -> Result<Vec<PathBuf>> {
+    let dir = state::instruments_dir()?;
+    let entries = fs::read_dir(&dir)
+        .map_err(|e| AudioError::InstrumentError(format!("Cannot read instruments dir: {}", e)))?;
+
+    Ok(entries
+        .flatten()
+        .filter(|e| e.path().is_dir())
+        .filter(|e| e.path().join("instrument.json").exists())
+        .map(|e| e.path())
+        .collect())
+}
+
+pub fn pitch_ratio(recorded_midi: u8, target_midi: u8) -> f32 {
+    2.0f32.powf((target_midi as f32 - recorded_midi as f32) / 12.0)
+}
+
+pub fn pitch_to_midi(pitch: &str) -> Option<u8> {
+    parser::note_name_to_midi(pitch)
 }
