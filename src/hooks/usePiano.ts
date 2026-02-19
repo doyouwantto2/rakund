@@ -147,11 +147,10 @@ export function usePiano() {
   // ── Startup ──────────────────────────────────────────────────────────────────
 
   onMount(async () => {
-    // Load instrument list immediately — doesn't depend on preload
+    // Load instrument list immediately
     await loadAvailableInstruments();
 
-    // Check if backend already has something loaded (e.g. previous session, fast load)
-    // Only apply if we're not in the middle of a background preload
+    // Check if backend already has something loaded
     try {
       const info = await invoke<InstrumentInfo | null>("get_instrument_info");
       if (info && !isLoading()) {
@@ -161,8 +160,7 @@ export function usePiano() {
       console.error("[INIT] get_instrument_info error:", e);
     }
 
-    // Listen for background preload progress events from init.rs
-    // This fires when the app starts and backend loads last instrument in background
+    // Listen for background preload progress events
     const unlisten = await listen<{
       progress: number;
       status: "loading" | "done" | "error";
@@ -177,14 +175,13 @@ export function usePiano() {
         setLoadProgress(progress);
       } else if (status === "done") {
         setLoadProgress(100);
-        // Hydrate instrument info now that backend is ready
         try {
           const info = await invoke<InstrumentInfo | null>("get_instrument_info");
           if (info && currentInstrument()?.folder !== info.folder) {
             applyInstrument(info);
           }
         } catch { /* ignore */ }
-        // Small delay so the 100% flash is visible
+
         setTimeout(() => {
           setIsLoading(false);
           setLoadProgress(null);
@@ -204,7 +201,7 @@ export function usePiano() {
     const keyToMidi = new Map<string, number>();
 
     const recomputeModifiers = () => {
-      // FIX: If ANY alt or ANY shift is pressed, apply it globally to both hands
+      // If ANY alt or ANY shift is pressed, apply it globally to both hands
       const anyAlt = heldModifiers.altLeft || heldModifiers.altRight;
       const anyShift = heldModifiers.shiftLeft || heldModifiers.shiftRight;
 
@@ -212,6 +209,15 @@ export function usePiano() {
 
       setLeftModifier(globalModifier);
       setRightModifier(globalModifier);
+    };
+
+    const normalizeKey = (k: string) => {
+      // Map shifted punctuation back to their base keys so they trigger the piano notes
+      if (k === '?') return '/';
+      if (k === '<') return ',';
+      if (k === '>') return '.';
+      if (k === ':') return ';';
+      return k.toLowerCase();
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -230,7 +236,7 @@ export function usePiano() {
         return;
       }
 
-      const key = e.key === ';' ? ';' : e.key.toLowerCase();
+      const key = normalizeKey(e.key);
 
       if (isLeftSectionKey(key)) { setLeftSection(LEFT_SECTION_KEYS[key] as SectionNum); return; }
       if (isRightSectionKey(key)) { setRightSection(RIGHT_SECTION_KEYS[key] as SectionNum); return; }
@@ -259,7 +265,7 @@ export function usePiano() {
       if (e.code === "AltLeft") { heldModifiers.altLeft = false; recomputeModifiers(); return; }
       if (e.code === "AltRight") { heldModifiers.altRight = false; recomputeModifiers(); return; }
 
-      const key = e.key === ';' ? ';' : e.key.toLowerCase();
+      const key = normalizeKey(e.key);
       heldKeys.delete(key);
       const midi = keyToMidi.get(key);
       if (midi !== undefined) { noteOff(midi); keyToMidi.delete(key); }

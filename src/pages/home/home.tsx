@@ -25,7 +25,7 @@ export default function Home() {
 
       <div class="flex-1 flex items-center justify-center pointer-events-none">
         <div class="text-6xl font-black italic text-zinc-800 tracking-tighter uppercase opacity-20">
-          Raku
+          Rakund
         </div>
       </div>
 

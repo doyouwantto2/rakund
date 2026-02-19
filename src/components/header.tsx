@@ -28,7 +28,7 @@ export default function Header(props: HeaderProps) {
   return (
     <div class="relative shrink-0" onMouseLeave={() => setShowList(false)}>
       <header class="flex items-center gap-3 px-4 bg-zinc-900 border-b border-zinc-800 h-10 overflow-hidden">
-        <span class="text-sm font-black italic tracking-tight text-zinc-300 shrink-0">Raku</span>
+        <span class="text-sm font-black italic tracking-tight text-zinc-300 shrink-0">Rakund</span>
         <div class="w-px h-4 bg-zinc-700 shrink-0" />
 
         <button
@@ -91,7 +91,7 @@ export default function Header(props: HeaderProps) {
             fallback={
               <div class="px-5 py-6 text-center">
                 <p class="text-zinc-400 text-sm font-bold">No instruments found</p>
-                <p class="text-zinc-600 text-xs mt-1 font-mono">~/.config/raku/instruments/</p>
+                <p class="text-zinc-600 text-xs mt-1 font-mono">~/.config/rakund/instruments/</p>
               </div>
             }
           >

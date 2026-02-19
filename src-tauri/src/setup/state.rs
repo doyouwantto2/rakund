@@ -3,18 +3,16 @@ use crate::setup::models::AppState;
 use std::fs;
 use std::path::PathBuf;
 
-/// ~/.local/share/raku/state.json
 fn state_path() -> Result<PathBuf> {
     let base = dirs_next::data_dir()
         .ok_or_else(|| AudioError::InstrumentError("Cannot find data directory".to_string()))?;
-    Ok(base.join("raku").join("state.json"))
+    Ok(base.join("rakund").join("state.json"))
 }
 
-/// ~/.config/raku/instruments/
 pub fn instruments_dir() -> Result<PathBuf> {
     let base = dirs_next::config_dir()
         .ok_or_else(|| AudioError::InstrumentError("Cannot find config directory".to_string()))?;
-    let dir = base.join("raku").join("instruments");
+    let dir = base.join("rakund").join("instruments");
     fs::create_dir_all(&dir).map_err(|e| {
         AudioError::InstrumentError(format!("Cannot create instruments dir: {}", e))
     })?;

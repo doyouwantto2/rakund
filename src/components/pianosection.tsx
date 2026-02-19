@@ -28,7 +28,6 @@ const RIGHT_SECTIONS: { num: SectionNum; key: string; label: string }[] = [
   { num: 3, key: "y", label: "F5–C7" },
 ];
 
-// Velocity values matching usePiano velocityForLayer logic
 const LAYER_VELOCITIES: Record<string, number> = {
   PP: 20, MP: 54, MF: 76, FF: 106,
 };
@@ -67,8 +66,8 @@ export default function PianoSection(props: PianoSectionProps) {
           <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mr-0.5">L</span>
           <For each={LEFT_SECTIONS}>{({ num, key, label }) => (
             <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 ${leftSection() === num
-                ? "bg-blue-600/80 border-blue-400"
-                : "bg-zinc-900 border-zinc-800"
+              ? "bg-blue-600/80 border-blue-400"
+              : "bg-zinc-900 border-zinc-800"
               }`}>
               <kbd class={`text-[9px] font-black rounded px-0.5 ${leftSection() === num ? "text-blue-100" : "text-zinc-600"
                 }`}>{key.toUpperCase()}</kbd>
@@ -84,8 +83,8 @@ export default function PianoSection(props: PianoSectionProps) {
         <div class="flex items-center gap-1">
           <For each={RIGHT_SECTIONS}>{({ num, key, label }) => (
             <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 ${rightSection() === num
-                ? "bg-green-600/80 border-green-400"
-                : "bg-zinc-900 border-zinc-800"
+              ? "bg-green-600/80 border-green-400"
+              : "bg-zinc-900 border-zinc-800"
               }`}>
               <kbd class={`text-[9px] font-black rounded px-0.5 ${rightSection() === num ? "text-green-100" : "text-zinc-600"
                 }`}>{key.toUpperCase()}</kbd>

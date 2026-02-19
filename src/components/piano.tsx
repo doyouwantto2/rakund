@@ -140,7 +140,6 @@ export default function Piano(props: PianoProps) {
     return "bg-zinc-900 hover:bg-zinc-700";
   };
 
-  // Determine which hand a mouse click belongs to based on highlight
   const handForMidi = (midi: number): 'left' | 'right' => {
     return highlights().get(midi) === 'right' ? 'right' : 'left';
   };
