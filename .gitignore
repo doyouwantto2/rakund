@@ -1,2 +1,11 @@
 node_modules
 dist
+
+# Rust build artifacts
+*.rlib
+src-tauri/lib*.rlib
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# Tauri specific
+src-tauri/target/
