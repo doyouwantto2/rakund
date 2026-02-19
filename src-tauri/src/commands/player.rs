@@ -1,6 +1,6 @@
 use crate::error::AudioError;
+use crate::setup::audio;
 use crate::setup::models::InstrumentConfig;
-use crate::setup::sound;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::fs;
@@ -23,7 +23,7 @@ pub async fn play_midi_note(
     midi_num: u8,
     velocity: u8,
     layer: String,
-    handle: State<'_, sound::AudioHandle>,
+    handle: State<'_, audio::AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
     {
@@ -64,7 +64,7 @@ pub async fn play_midi_note(
     let ratio = pitch_ratio(key_data.midi_note, midi_num);
 
     if let Ok(mut voices) = handle.active_voices.lock() {
-        voices.push(sound::Voice {
+        voices.push(audio::Voice {
             data,
             playhead: 0.0,
             pitch_ratio: ratio,

@@ -1,10 +1,10 @@
-use crate::setup::sound;
+use crate::setup::audio;
 use tauri::{AppHandle, State};
 
 #[tauri::command]
 pub async fn set_sustain(
     active: bool,
-    handle: State<'_, sound::AudioHandle>,
+    handle: State<'_, audio::AudioHandle>,
 ) -> Result<(), String> {
     if let Ok(mut sustain) = handle.is_sustained.lock() {
         *sustain = active;
@@ -23,7 +23,7 @@ pub async fn set_sustain(
 #[tauri::command]
 pub async fn stop_midi_note(
     midi_num: u8,
-    handle: State<'_, sound::AudioHandle>,
+    handle: State<'_, audio::AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
     if let Ok(mut voices) = handle.active_voices.lock() {

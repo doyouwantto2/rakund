@@ -1,11 +1,11 @@
 use crate::commands;
 use crate::error::AudioError;
-use crate::setup::sound;
+use crate::setup::audio;
 
 pub fn run() -> Result<(), AudioError> {
-    sound::initialize_audio()?;
+    audio::initialize_audio()?;
 
-    let audio_handle = sound::start_stream()?;
+    let audio_handle = audio::start_stream()?;
 
     println!("🎹 Multi-instrument system enabled. Instruments will be loaded dynamically.");
 

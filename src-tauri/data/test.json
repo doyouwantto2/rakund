@@ -1,0 +1,3101 @@
+{
+  "instrument": "Splendid Grand Piano",
+  "contribution": {
+    "authors": [],
+    "published_date": "",
+    "licenses": []
+  },
+  "general": {
+    "layers": [
+      "PP",
+      "MP",
+      "MF",
+      "FF"
+    ],
+    "files_format": "flac",
+    "fast_release": "",
+    "slow_release": ""
+  },
+  "piano_keys": [
+    {
+      "21": {
+        "note": "A0",
+        "midi": "21",
+        "pitch": "B-1",
+        "lokey": "21",
+        "hikey": "21",
+        "samples": [
+          {
+            "path": "PP B-1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B-1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B-1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B-1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "22": {
+        "note": "A#0",
+        "midi": "22",
+        "pitch": "B-1",
+        "lokey": "22",
+        "hikey": "22",
+        "samples": [
+          {
+            "path": "PP B-1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B-1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B-1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B-1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "23": {
+        "note": "B0",
+        "midi": "23",
+        "pitch": "B-1",
+        "lokey": "23",
+        "hikey": "23",
+        "samples": [
+          {
+            "path": "PP B-1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B-1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B-1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B-1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "24": {
+        "note": "C1",
+        "midi": "24",
+        "pitch": "B-1",
+        "lokey": "24",
+        "hikey": "24",
+        "samples": [
+          {
+            "path": "PP B-1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B-1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B-1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B-1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "25": {
+        "note": "C#1",
+        "midi": "25",
+        "pitch": "D#0",
+        "lokey": "25",
+        "hikey": "25",
+        "samples": [
+          {
+            "path": "PP D#0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D#0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D#0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D#0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "26": {
+        "note": "D1",
+        "midi": "26",
+        "pitch": "D#0",
+        "lokey": "26",
+        "hikey": "26",
+        "samples": [
+          {
+            "path": "PP D#0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D#0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D#0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D#0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "27": {
+        "note": "D#1",
+        "midi": "27",
+        "pitch": "D#0",
+        "lokey": "27",
+        "hikey": "27",
+        "samples": [
+          {
+            "path": "PP D#0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D#0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D#0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D#0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "28": {
+        "note": "E1",
+        "midi": "28",
+        "pitch": "F0",
+        "lokey": "28",
+        "hikey": "28",
+        "samples": [
+          {
+            "path": "PP F0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "29": {
+        "note": "F1",
+        "midi": "29",
+        "pitch": "F0",
+        "lokey": "29",
+        "hikey": "29",
+        "samples": [
+          {
+            "path": "PP F0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "30": {
+        "note": "F#1",
+        "midi": "30",
+        "pitch": "F0",
+        "lokey": "30",
+        "hikey": "30",
+        "samples": [
+          {
+            "path": "PP F0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "31": {
+        "note": "G1",
+        "midi": "31",
+        "pitch": "G0",
+        "lokey": "31",
+        "hikey": "31",
+        "samples": [
+          {
+            "path": "PP G0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "32": {
+        "note": "G#1",
+        "midi": "32",
+        "pitch": "G0",
+        "lokey": "32",
+        "hikey": "32",
+        "samples": [
+          {
+            "path": "PP G0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "33": {
+        "note": "A1",
+        "midi": "33",
+        "pitch": "A0",
+        "lokey": "33",
+        "hikey": "33",
+        "samples": [
+          {
+            "path": "PP A0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "34": {
+        "note": "A#1",
+        "midi": "34",
+        "pitch": "A0",
+        "lokey": "34",
+        "hikey": "34",
+        "samples": [
+          {
+            "path": "PP A0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "35": {
+        "note": "B1",
+        "midi": "35",
+        "pitch": "B0",
+        "lokey": "35",
+        "hikey": "35",
+        "samples": [
+          {
+            "path": "PP B0.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B0.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B0.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B0.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "36": {
+        "note": "C2",
+        "midi": "36",
+        "pitch": "C#1",
+        "lokey": "36",
+        "hikey": "36",
+        "samples": [
+          {
+            "path": "PP C#1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C#1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C#1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C#1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "37": {
+        "note": "C#2",
+        "midi": "37",
+        "pitch": "C#1",
+        "lokey": "37",
+        "hikey": "37",
+        "samples": [
+          {
+            "path": "PP C#1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C#1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C#1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C#1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "38": {
+        "note": "D2",
+        "midi": "38",
+        "pitch": "D1",
+        "lokey": "38",
+        "hikey": "38",
+        "samples": [
+          {
+            "path": "PP D1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF D1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "39": {
+        "note": "D#2",
+        "midi": "39",
+        "pitch": "D1",
+        "lokey": "39",
+        "hikey": "39",
+        "samples": [
+          {
+            "path": "PP D1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF D1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "40": {
+        "note": "E2",
+        "midi": "40",
+        "pitch": "E1",
+        "lokey": "40",
+        "hikey": "40",
+        "samples": [
+          {
+            "path": "PP E1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF E1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "41": {
+        "note": "F2",
+        "midi": "41",
+        "pitch": "F1",
+        "lokey": "41",
+        "hikey": "41",
+        "samples": [
+          {
+            "path": "PP F1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF F1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "42": {
+        "note": "F#2",
+        "midi": "42",
+        "pitch": "G1",
+        "lokey": "42",
+        "hikey": "42",
+        "samples": [
+          {
+            "path": "PP G1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "43": {
+        "note": "G2",
+        "midi": "43",
+        "pitch": "G1",
+        "lokey": "43",
+        "hikey": "43",
+        "samples": [
+          {
+            "path": "PP G1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "44": {
+        "note": "G#2",
+        "midi": "44",
+        "pitch": "G1",
+        "lokey": "44",
+        "hikey": "44",
+        "samples": [
+          {
+            "path": "PP G1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "45": {
+        "note": "A2",
+        "midi": "45",
+        "pitch": "A1",
+        "lokey": "45",
+        "hikey": "45",
+        "samples": [
+          {
+            "path": "PP A1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF A1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "46": {
+        "note": "A#2",
+        "midi": "46",
+        "pitch": "A1",
+        "lokey": "46",
+        "hikey": "46",
+        "samples": [
+          {
+            "path": "PP A1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF A1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "47": {
+        "note": "B2",
+        "midi": "47",
+        "pitch": "B1",
+        "lokey": "47",
+        "hikey": "47",
+        "samples": [
+          {
+            "path": "PP B1.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B1.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF B1.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B1.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "48": {
+        "note": "C3",
+        "midi": "48",
+        "pitch": "C2",
+        "lokey": "48",
+        "hikey": "48",
+        "samples": [
+          {
+            "path": "PP C2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "49": {
+        "note": "C#3",
+        "midi": "49",
+        "pitch": "C2",
+        "lokey": "49",
+        "hikey": "49",
+        "samples": [
+          {
+            "path": "PP C2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "50": {
+        "note": "D3",
+        "midi": "50",
+        "pitch": "D2",
+        "lokey": "50",
+        "hikey": "50",
+        "samples": [
+          {
+            "path": "PP D2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF D2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "51": {
+        "note": "D#3",
+        "midi": "51",
+        "pitch": "E2",
+        "lokey": "51",
+        "hikey": "51",
+        "samples": [
+          {
+            "path": "PP E2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF E2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "52": {
+        "note": "E3",
+        "midi": "52",
+        "pitch": "E2",
+        "lokey": "52",
+        "hikey": "52",
+        "samples": [
+          {
+            "path": "PP E2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF E2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "53": {
+        "note": "F3",
+        "midi": "53",
+        "pitch": "F2",
+        "lokey": "53",
+        "hikey": "53",
+        "samples": [
+          {
+            "path": "PP F2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF F2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "54": {
+        "note": "F#3",
+        "midi": "54",
+        "pitch": "F2",
+        "lokey": "54",
+        "hikey": "54",
+        "samples": [
+          {
+            "path": "PP F2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF F2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "55": {
+        "note": "G3",
+        "midi": "55",
+        "pitch": "G2",
+        "lokey": "55",
+        "hikey": "55",
+        "samples": [
+          {
+            "path": "PP G2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "56": {
+        "note": "G#3",
+        "midi": "56",
+        "pitch": "G#2",
+        "lokey": "56",
+        "hikey": "56",
+        "samples": [
+          {
+            "path": "PP G#2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G#2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G#2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G#2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "57": {
+        "note": "A3",
+        "midi": "57",
+        "pitch": "A2",
+        "lokey": "57",
+        "hikey": "57",
+        "samples": [
+          {
+            "path": "PP A2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF A2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "58": {
+        "note": "A#3",
+        "midi": "58",
+        "pitch": "A#2",
+        "lokey": "58",
+        "hikey": "58",
+        "samples": [
+          {
+            "path": "PP A#2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A#2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF A#2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A#2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "59": {
+        "note": "B3",
+        "midi": "59",
+        "pitch": "B2",
+        "lokey": "59",
+        "hikey": "59",
+        "samples": [
+          {
+            "path": "PP B2.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B2.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF B2.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B2.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "60": {
+        "note": "C4",
+        "midi": "60",
+        "pitch": "C3",
+        "lokey": "60",
+        "hikey": "60",
+        "samples": [
+          {
+            "path": "PP C3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "61": {
+        "note": "C#4",
+        "midi": "61",
+        "pitch": "C3",
+        "lokey": "61",
+        "hikey": "61",
+        "samples": [
+          {
+            "path": "PP C3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "62": {
+        "note": "D4",
+        "midi": "62",
+        "pitch": "D3",
+        "lokey": "62",
+        "hikey": "62",
+        "samples": [
+          {
+            "path": "PP D3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF D3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "63": {
+        "note": "D#4",
+        "midi": "63",
+        "pitch": "D3",
+        "lokey": "63",
+        "hikey": "63",
+        "samples": [
+          {
+            "path": "PP D3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF D3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "64": {
+        "note": "E4",
+        "midi": "64",
+        "pitch": "E3",
+        "lokey": "64",
+        "hikey": "64",
+        "samples": [
+          {
+            "path": "PP E3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF E3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "65": {
+        "note": "F4",
+        "midi": "65",
+        "pitch": "F3",
+        "lokey": "65",
+        "hikey": "65",
+        "samples": [
+          {
+            "path": "PP F3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF F3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "66": {
+        "note": "F#4",
+        "midi": "66",
+        "pitch": "F3",
+        "lokey": "66",
+        "hikey": "66",
+        "samples": [
+          {
+            "path": "PP F3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF F3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "67": {
+        "note": "G4",
+        "midi": "67",
+        "pitch": "G3",
+        "lokey": "67",
+        "hikey": "67",
+        "samples": [
+          {
+            "path": "PP G3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "68": {
+        "note": "G#4",
+        "midi": "68",
+        "pitch": "G3",
+        "lokey": "68",
+        "hikey": "68",
+        "samples": [
+          {
+            "path": "PP G3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF G3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "69": {
+        "note": "A4",
+        "midi": "69",
+        "pitch": "A3",
+        "lokey": "69",
+        "hikey": "69",
+        "samples": [
+          {
+            "path": "PP A3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF A3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "70": {
+        "note": "A#4",
+        "midi": "70",
+        "pitch": "B3",
+        "lokey": "70",
+        "hikey": "70",
+        "samples": [
+          {
+            "path": "PP B3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF B3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "71": {
+        "note": "B4",
+        "midi": "71",
+        "pitch": "B3",
+        "lokey": "71",
+        "hikey": "71",
+        "samples": [
+          {
+            "path": "PP B3.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B3.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF B3.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B3.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "72": {
+        "note": "C5",
+        "midi": "72",
+        "pitch": "C4",
+        "lokey": "72",
+        "hikey": "72",
+        "samples": [
+          {
+            "path": "PP C4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "73": {
+        "note": "C#5",
+        "midi": "73",
+        "pitch": "C4",
+        "lokey": "73",
+        "hikey": "73",
+        "samples": [
+          {
+            "path": "PP C4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "MF C4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "74": {
+        "note": "D5",
+        "midi": "74",
+        "pitch": "D4",
+        "lokey": "74",
+        "hikey": "74",
+        "samples": [
+          {
+            "path": "PP D4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "75": {
+        "note": "D#5",
+        "midi": "75",
+        "pitch": "D4",
+        "lokey": "75",
+        "hikey": "75",
+        "samples": [
+          {
+            "path": "PP D4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "76": {
+        "note": "E5",
+        "midi": "76",
+        "pitch": "E4",
+        "lokey": "76",
+        "hikey": "76",
+        "samples": [
+          {
+            "path": "PP E4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf E4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "77": {
+        "note": "F5",
+        "midi": "77",
+        "pitch": "F4",
+        "lokey": "77",
+        "hikey": "77",
+        "samples": [
+          {
+            "path": "PP F4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "78": {
+        "note": "F#5",
+        "midi": "78",
+        "pitch": "F4",
+        "lokey": "78",
+        "hikey": "78",
+        "samples": [
+          {
+            "path": "PP F4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "79": {
+        "note": "G5",
+        "midi": "79",
+        "pitch": "G4",
+        "lokey": "79",
+        "hikey": "79",
+        "samples": [
+          {
+            "path": "PP G4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "80": {
+        "note": "G#5",
+        "midi": "80",
+        "pitch": "G#4",
+        "lokey": "80",
+        "hikey": "80",
+        "samples": [
+          {
+            "path": "PP G#4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G#4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G#4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G#4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "81": {
+        "note": "A5",
+        "midi": "81",
+        "pitch": "A4",
+        "lokey": "81",
+        "hikey": "81",
+        "samples": [
+          {
+            "path": "PP A4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "82": {
+        "note": "A#5",
+        "midi": "82",
+        "pitch": "A#4",
+        "lokey": "82",
+        "hikey": "82",
+        "samples": [
+          {
+            "path": "PP A#4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A#4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A#4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A#4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "83": {
+        "note": "B5",
+        "midi": "83",
+        "pitch": "B4",
+        "lokey": "83",
+        "hikey": "83",
+        "samples": [
+          {
+            "path": "PP B4.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B4.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B4.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF B4.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "84": {
+        "note": "C6",
+        "midi": "84",
+        "pitch": "C#5",
+        "lokey": "84",
+        "hikey": "84",
+        "samples": [
+          {
+            "path": "PP C#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf C#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C#5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "85": {
+        "note": "C#6",
+        "midi": "85",
+        "pitch": "C#5",
+        "lokey": "85",
+        "hikey": "85",
+        "samples": [
+          {
+            "path": "PP C#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf C#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF C#5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "86": {
+        "note": "D6",
+        "midi": "86",
+        "pitch": "D5",
+        "lokey": "86",
+        "hikey": "86",
+        "samples": [
+          {
+            "path": "PP D5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "87": {
+        "note": "D#6",
+        "midi": "87",
+        "pitch": "D#5",
+        "lokey": "87",
+        "hikey": "87",
+        "samples": [
+          {
+            "path": "PP D#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF D5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "88": {
+        "note": "E6",
+        "midi": "88",
+        "pitch": "F5",
+        "lokey": "88",
+        "hikey": "88",
+        "samples": [
+          {
+            "path": "PP F5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp E5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf E5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF E5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "89": {
+        "note": "F6",
+        "midi": "89",
+        "pitch": "F5",
+        "lokey": "89",
+        "hikey": "89",
+        "samples": [
+          {
+            "path": "PP F5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "90": {
+        "note": "F#6",
+        "midi": "90",
+        "pitch": "F#5",
+        "lokey": "90",
+        "hikey": "90",
+        "samples": [
+          {
+            "path": "PP F#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF F5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "91": {
+        "note": "G6",
+        "midi": "91",
+        "pitch": "G5",
+        "lokey": "91",
+        "hikey": "91",
+        "samples": [
+          {
+            "path": "PP G5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "92": {
+        "note": "G#6",
+        "midi": "92",
+        "pitch": "G#5",
+        "lokey": "92",
+        "hikey": "92",
+        "samples": [
+          {
+            "path": "PP G#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF G5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "93": {
+        "note": "A6",
+        "midi": "93",
+        "pitch": "A5",
+        "lokey": "93",
+        "hikey": "93",
+        "samples": [
+          {
+            "path": "PP A5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "94": {
+        "note": "A#6",
+        "midi": "94",
+        "pitch": "A#5",
+        "lokey": "94",
+        "hikey": "94",
+        "samples": [
+          {
+            "path": "PP A#5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A#5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A#5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "FF A5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "95": {
+        "note": "B6",
+        "midi": "95",
+        "pitch": "B5",
+        "lokey": "95",
+        "hikey": "95",
+        "samples": [
+          {
+            "path": "PP B5.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp B5.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B5.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf B5.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "96": {
+        "note": "C7",
+        "midi": "96",
+        "pitch": "C6",
+        "lokey": "96",
+        "hikey": "96",
+        "samples": [
+          {
+            "path": "PP C6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf C6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf C6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "97": {
+        "note": "C#7",
+        "midi": "97",
+        "pitch": "C#6",
+        "lokey": "97",
+        "hikey": "97",
+        "samples": [
+          {
+            "path": "PP C#6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp C#6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf C#6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf C6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "98": {
+        "note": "D7",
+        "midi": "98",
+        "pitch": "D6",
+        "lokey": "98",
+        "hikey": "98",
+        "samples": [
+          {
+            "path": "PP D6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf C#6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "99": {
+        "note": "D#7",
+        "midi": "99",
+        "pitch": "D#6",
+        "lokey": "99",
+        "hikey": "99",
+        "samples": [
+          {
+            "path": "PP D#6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp D#6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf D#6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf D6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "100": {
+        "note": "E7",
+        "midi": "100",
+        "pitch": "E6",
+        "lokey": "100",
+        "hikey": "100",
+        "samples": [
+          {
+            "path": "PP E6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "PP E6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf E6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf D#6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "101": {
+        "note": "F7",
+        "midi": "101",
+        "pitch": "F6",
+        "lokey": "101",
+        "hikey": "101",
+        "samples": [
+          {
+            "path": "PP F6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf E6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "102": {
+        "note": "F#7",
+        "midi": "102",
+        "pitch": "F#6",
+        "lokey": "102",
+        "hikey": "102",
+        "samples": [
+          {
+            "path": "PP F#6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp F#6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf F#6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf F#6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "103": {
+        "note": "G7",
+        "midi": "103",
+        "pitch": "G6",
+        "lokey": "103",
+        "hikey": "103",
+        "samples": [
+          {
+            "path": "PP G6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf G6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "104": {
+        "note": "G#7",
+        "midi": "104",
+        "pitch": "G#6",
+        "lokey": "104",
+        "hikey": "104",
+        "samples": [
+          {
+            "path": "PP G#6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp G#6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf G#6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf G#6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "105": {
+        "note": "A7",
+        "midi": "105",
+        "pitch": "A6",
+        "lokey": "105",
+        "hikey": "105",
+        "samples": [
+          {
+            "path": "PP A6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf A6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "106": {
+        "note": "A#7",
+        "midi": "106",
+        "pitch": "A#6",
+        "lokey": "106",
+        "hikey": "106",
+        "samples": [
+          {
+            "path": "PP A#6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "Mp A#6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf A#6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf A#6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "107": {
+        "note": "B7",
+        "midi": "107",
+        "pitch": "B6",
+        "lokey": "107",
+        "hikey": "107",
+        "samples": [
+          {
+            "path": "PP B6.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "PP B6.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf B6.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf B6.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    },
+    {
+      "108": {
+        "note": "C8",
+        "midi": "108",
+        "pitch": "C7",
+        "lokey": "108",
+        "hikey": "108",
+        "samples": [
+          {
+            "path": "PP C7.flac",
+            "layer": "PP",
+            "lovel": "1",
+            "hivel": "40"
+          },
+          {
+            "path": "PP C7.flac",
+            "layer": "MP",
+            "lovel": "41",
+            "hivel": "67"
+          },
+          {
+            "path": "Mf C7.flac",
+            "layer": "MF",
+            "lovel": "68",
+            "hivel": "84"
+          },
+          {
+            "path": "Mf C7.flac",
+            "layer": "FF",
+            "lovel": "85",
+            "hivel": "127"
+          }
+        ]
+      }
+    }
+  ]
+}
