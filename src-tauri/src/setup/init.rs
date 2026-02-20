@@ -38,7 +38,6 @@ pub fn run() -> Result<(), AudioError> {
 
                     match audio::load_instrument_with_progress(&folder_clone, &app_handle) {
                         Ok(config) => {
-                            // Store the config AND the folder name — both must be set atomically
                             *crate::commands::player::CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
                             crate::commands::player::set_current_folder(folder_clone.clone());
 

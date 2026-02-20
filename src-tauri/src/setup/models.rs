@@ -87,13 +87,11 @@ where
     Ok(map)
 }
 
-/// Stored in ~/.local/share/raku/state.json
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct AppState {
     pub last_instrument: Option<String>,
 }
 
-/// Sent to frontend
 #[derive(Debug, Serialize, Clone)]
 pub struct InstrumentInfo {
     pub name: String,

@@ -98,14 +98,10 @@ pub fn start_stream() -> Result<AudioHandle> {
     })
 }
 
-// ── Simple load (no progress events) — used by load_instrument command ────────
-
 pub fn load_instrument(folder: &str) -> Result<InstrumentConfig> {
     let instrument_dir = state::instruments_dir()?.join(folder);
     load_instrument_from_path(&instrument_dir, None::<&tauri::AppHandle>)
 }
-
-// ── Background load with progress events — used by init.rs preload ────────────
 
 pub fn load_instrument_with_progress(
     folder: &str,
@@ -114,8 +110,6 @@ pub fn load_instrument_with_progress(
     let instrument_dir = state::instruments_dir()?.join(folder);
     load_instrument_from_path(&instrument_dir, Some(app))
 }
-
-// ── Core implementation ───────────────────────────────────────────────────────
 
 fn load_instrument_from_path(
     instrument_dir: &Path,
@@ -181,7 +175,6 @@ fn load_instrument_from_path(
             cache::insert_by_index(*midi, sample_idx, data);
             done += 1;
 
-            // Emit progress every 1% increment
             if let Some(handle) = app {
                 let pct = ((done as f32 / total as f32) * 100.0) as i32;
                 if pct != last_emitted_pct {

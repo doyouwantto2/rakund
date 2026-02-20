@@ -5,17 +5,12 @@ use crate::setup::models::{AppState, InstrumentConfig, InstrumentInfo};
 use crate::setup::state;
 use lazy_static::lazy_static;
 use std::sync::{Arc, Mutex};
-use tauri::{AppHandle, Emitter, State};
+use tauri::{AppHandle, State};
 
 lazy_static! {
     pub static ref CURRENT_INSTRUMENT: Arc<Mutex<Option<InstrumentConfig>>> =
         Arc::new(Mutex::new(None));
-
-    // Tracks the folder name of the currently loaded instrument.
-    // Separate from CURRENT_INSTRUMENT so get_instrument_info can return it
-    // without needing to store it inside InstrumentConfig.
-    pub static ref CURRENT_FOLDER: Arc<Mutex<Option<String>>> =
-        Arc::new(Mutex::new(None));
+    pub static ref CURRENT_FOLDER: Arc<Mutex<Option<String>>> = Arc::new(Mutex::new(None));
 }
 
 // ── Playback ──────────────────────────────────────────────────────────────────
@@ -37,7 +32,7 @@ pub async fn play_midi_note(
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
     let layer_upper = layer.to_uppercase();
-    let sample_info = key_data
+    let _sample_info = key_data
         .samples
         .iter()
         .find(|s| s.layer.to_uppercase() == layer_upper)
@@ -70,9 +65,6 @@ pub async fn play_midi_note(
     Ok(())
 }
 
-// ── Instrument management ─────────────────────────────────────────────────────
-
-/// Scan ~/.config/rakund/instruments/ and return all valid instruments
 #[tauri::command]
 pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> {
     let folders = audio::scan_instruments().map_err(|e| e.to_string())?;
@@ -98,12 +90,8 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
     Ok(result)
 }
 
-/// Load a specific instrument by folder name.
-/// This is called by the frontend when the user manually selects an instrument.
-/// The backend guard checks if it's already loaded to prevent double-loading.
 #[tauri::command]
 pub async fn load_instrument(folder: String, app: AppHandle) -> Result<InstrumentInfo, String> {
-    // Guard: if this folder is already loaded, return its info immediately
     {
         let current = CURRENT_FOLDER.lock().unwrap();
         if current.as_deref() == Some(folder.as_str()) {
@@ -144,8 +132,6 @@ pub async fn get_app_state() -> Result<AppState, String> {
     state::read().map_err(|e: AudioError| e.to_string())
 }
 
-/// Returns info about the currently loaded instrument, including the correct folder name.
-/// Returns null if nothing is loaded yet.
 #[tauri::command]
 pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
     let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
@@ -153,13 +139,12 @@ pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
 
     Ok(config_guard.as_ref().map(|config| InstrumentInfo {
         name: config.instrument.clone(),
-        folder: folder_guard.clone().unwrap_or_default(), // ← the fix: real folder, not ""
+        folder: folder_guard.clone().unwrap_or_default(),
         layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
         format: config.files_format().to_string(),
     }))
 }
 
-// Called by init.rs background preload — sets CURRENT_FOLDER directly
 pub fn set_current_folder(folder: String) {
     *CURRENT_FOLDER.lock().unwrap() = Some(folder);
 }

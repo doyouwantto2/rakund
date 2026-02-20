@@ -2,14 +2,10 @@ use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
 lazy_static::lazy_static! {
-    /// Global sample cache keyed by "{midi}:{layer_index}"
-    /// layer_index = position in general.layers array (0-based)
-    /// This is completely independent of layer name or case.
     pub static ref SAMPLE_CACHE: Arc<Mutex<HashMap<String, Arc<Vec<f32>>>>> =
         Arc::new(Mutex::new(HashMap::new()));
 }
 
-/// Cache key: "{midi}:{layer_index}"
 fn key_by_index(midi: u8, layer_idx: usize) -> String {
     format!("{}:{}", midi, layer_idx)
 }
