@@ -9,7 +9,7 @@ interface RangeControlProps {
 
 export default function RangeControl(props: RangeControlProps) {
   return (
-    <div class="flex items-center gap-3 bg-zinc-800 rounded-lg px-4 py-2 border border-zinc-700 flex-shrink-0">
+    <div class="flex items-center gap-3 bg-zinc-800 rounded-lg px-4 py-2 border border-zinc-700">
       <span class="text-sm text-zinc-400">{props.label || "Range"}</span>
       <input
         type="range"

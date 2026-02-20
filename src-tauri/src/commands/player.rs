@@ -150,6 +150,11 @@ pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
     }))
 }
 
+#[tauri::command]
+pub async fn clear_last_instrument() -> Result<(), String> {
+    state::clear_last_instrument().map_err(|e: AudioError| e.to_string())
+}
+
 pub fn set_current_folder(folder: String) {
     *CURRENT_FOLDER.lock().unwrap() = Some(folder);
 }

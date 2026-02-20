@@ -2,8 +2,6 @@ import { Show } from "solid-js";
 import type { Modifier } from "../../utils/keyMapping";
 
 interface VelocityInfoProps {
-  leftSection: () => SectionNum | null;
-  rightSection: () => SectionNum | null;
   leftModifier: () => Modifier;
   rightModifier: () => Modifier;
   leftLayerIdx: () => number;

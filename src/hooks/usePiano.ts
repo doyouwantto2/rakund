@@ -166,25 +166,44 @@ export function usePiano() {
   // ── Startup ───────────────────────────────────────────────────────────────────
 
   onMount(async () => {
+    // Set initial loading state immediately
+    setIsLoading(true);
+    setLoadProgress(0);
+    
     const instruments = await loadAvailableInstruments();
 
     try {
       const appState = await invoke<{ last_instrument: string | null }>("get_app_state");
       const lastFolder = appState.last_instrument;
       if (lastFolder) {
+        // Check if last instrument still exists
         const placeholder = instruments.find(i => i.folder === lastFolder);
         if (placeholder) {
+          // Instrument exists, set up loading state immediately
           setAvailableLayers(placeholder.layers);
           setAvailableLayerRanges(placeholder.layer_ranges ?? []);
           const defaultIdx = placeholder.layers.findIndex(l => l.toUpperCase() === "MP");
           setLeftLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
           setRightLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
+          setActiveFolder(lastFolder);
+          // Loading state already set above
+        } else {
+          // Instrument no longer exists, clear state
+          console.log("[INIT] Last instrument no longer exists, clearing state");
+          await invoke("clear_last_instrument");
+          // Clear loading state since no instrument to load
+          setIsLoading(false);
+          setLoadProgress(null);
         }
-        setActiveFolder(lastFolder);
-        setIsLoading(true);
+      } else {
+        // No last instrument, clear loading state
+        setIsLoading(false);
+        setLoadProgress(null);
       }
     } catch (e) {
       console.error("[INIT] get_app_state error:", e);
+      setIsLoading(false);
+      setLoadProgress(null);
     }
 
     try {
@@ -193,9 +212,22 @@ export function usePiano() {
         applyInstrument(info);
         setIsLoading(false);
         setLoadProgress(null);
+      } else if (activeFolder()) {
+        // If we have an active folder but no instrument info, it means loading is in progress
+        // Don't clear loading state - let progress events handle it
+        console.log("[INIT] Background preload in progress, keeping loading state");
+      } else {
+        // No active folder and no info, clear loading state
+        setIsLoading(false);
+        setLoadProgress(null);
       }
     } catch (e) {
       console.error("[INIT] get_instrument_info error:", e);
+      // Only clear loading state if no active folder
+      if (!activeFolder()) {
+        setIsLoading(false);
+        setLoadProgress(null);
+      }
     }
 
     const unlisten = await listen<{

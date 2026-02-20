@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import type { InstrumentInfo } from "../../hooks/usePiano";
+import type { InstrumentInfo } from "@/hooks/usePiano";
 
 interface InstrumentInfoProps {
   instrument: InstrumentInfo;

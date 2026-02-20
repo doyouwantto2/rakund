@@ -47,3 +47,9 @@ pub fn set_last_instrument(folder: &str) -> Result<()> {
     state.last_instrument = Some(folder.to_string());
     write(&state)
 }
+
+pub fn clear_last_instrument() -> Result<()> {
+    let mut state = read()?;
+    state.last_instrument = None;
+    write(&state)
+}

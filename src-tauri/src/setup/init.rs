@@ -13,6 +13,35 @@ pub fn run() -> Result<(), AudioError> {
 
     let last_instrument = state::read().ok().and_then(|s| s.last_instrument);
 
+    // Validate that the last instrument still exists before preloading
+    let validated_last_instrument = if let Some(ref folder) = last_instrument {
+        match audio::scan_instruments() {
+            Ok(instruments) => {
+                let instrument_exists = instruments.iter().any(|path| {
+                    path.file_name()
+                        .and_then(|name| name.to_str())
+                        .map(|name| name == folder)
+                        .unwrap_or(false)
+                });
+                
+                if instrument_exists {
+                    Some(folder.clone())
+                } else {
+                    println!("[INIT] Last instrument '{}' no longer exists, clearing state", folder);
+                    // Clear the invalid state
+                    let _ = state::clear_last_instrument();
+                    None
+                }
+            }
+            Err(e) => {
+                eprintln!("[INIT] Failed to scan instruments: {}", e);
+                None
+            }
+        }
+    } else {
+        None
+    };
+
     tauri::Builder::default()
         .manage(audio_handle)
         .invoke_handler(tauri::generate_handler![
@@ -21,11 +50,12 @@ pub fn run() -> Result<(), AudioError> {
             commands::player::get_available_instruments,
             commands::player::get_instrument_info,
             commands::player::get_app_state,
+            commands::player::clear_last_instrument,
             commands::filter::stop_midi_note,
             commands::filter::set_sustain,
         ])
         .setup(move |app| {
-            if let Some(folder) = last_instrument {
+            if let Some(folder) = validated_last_instrument {
                 println!("[INIT] Scheduling background preload: {}", folder);
                 let app_handle = app.handle().clone();
                 let folder_clone = folder.clone();
@@ -54,7 +84,7 @@ pub fn run() -> Result<(), AudioError> {
                     }
                 });
             } else {
-                println!("[INIT] No last instrument — skipping preload");
+                println!("[INIT] No valid last instrument — skipping preload");
             }
 
             Ok(())

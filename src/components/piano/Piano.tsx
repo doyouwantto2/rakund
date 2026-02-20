@@ -142,14 +142,11 @@ export default function Piano(props: PianoProps) {
     return "bg-zinc-900 hover:bg-zinc-700";
   };
 
-  // For 'both' zone: left key press uses left hand, right key press uses right hand.
-  // We always try left first (keyboard), but mouse click goes to whichever hand is active.
-  // For mouse on 'both' keys, default to right (treble) since that's where the piano sits visually.
   const handForMidi = (midi: number): 'left' | 'right' => {
     const h = highlights().get(midi);
     if (h === 'left') return 'left';
     if (h === 'right') return 'right';
-    if (h === 'both') return 'right'; // mouse click in overlap → right hand velocity
+    if (h === 'both') return 'right';
     return 'left';
   };
 
