@@ -27,27 +27,35 @@ export default function Header(props: HeaderProps) {
   };
 
   // What to show as the instrument name in the button:
+  // - If loading, show name from activeFolder (newly selected instrument)
   // - If loaded, show currentInstrument name
-  // - If loading but not yet loaded, show name from available list
   const displayName = () => {
-    const cur = props.currentInstrument();
-    if (cur) return cur.name;
+    // Priority 1: If currently loading, show the name of the active folder
     const af = props.activeFolder();
     if (af && props.isLoading()) {
       const match = props.availableInstruments().find(i => i.folder === af);
       return match?.name ?? af;
     }
+    
+    // Priority 2: If fully loaded, show currentInstrument name
+    const cur = props.currentInstrument();
+    if (cur) return cur.name;
+    
     return null;
   };
 
   const displayFormat = () => {
-    const cur = props.currentInstrument();
-    if (cur) return cur.format;
+    // Priority 1: If currently loading, show format of the active folder
     const af = props.activeFolder();
-    if (af) {
+    if (af && props.isLoading()) {
       const match = props.availableInstruments().find(i => i.folder === af);
       return match?.format ?? "";
     }
+    
+    // Priority 2: If fully loaded, show currentInstrument format
+    const cur = props.currentInstrument();
+    if (cur) return cur.format;
+    
     return "";
   };
 

@@ -124,16 +124,23 @@ export function usePiano() {
     }
 
     try {
-      // Backend also guards against double-loading — if folder already loaded it returns immediately
+      // Backend returns placeholder info immediately and starts background loading
       const info = await invoke<InstrumentInfo>("load_instrument", { folder });
+      console.log("[INSTRUMENTS] Backend started background load for:", info.name);
+      
+      // Apply placeholder info immediately (real info will come via progress events)
       applyInstrument(info);
+      
+      // Keep loading state true - background task will emit "done" event when complete
+      console.log("[INSTRUMENTS] Waiting for background load to complete...");
+      
     } catch (e) {
       console.error("[INSTRUMENTS] load error:", e);
       setActiveFolder(null);
-    } finally {
       setIsLoading(false);
       setLoadProgress(null);
     }
+    // Note: No finally block - loading state is cleared only when background load completes via progress event
   };
 
   // ── Audio ─────────────────────────────────────────────────────────────────────
