@@ -37,13 +37,7 @@ const RIGHT_SECTIONS: { num: SectionNum; key: string; label: string }[] = [
 export default function HeaderContainer(props: HeaderContainerProps) {
   return (
     <header class="w-full bg-zinc-900 border-b border-zinc-800 px-4 py-3">
-      {/*
-        3-column grid:
-          [auto]  — InstrumentSelect (shrinks to content)
-          [1fr]   — section buttons (centred, never shifts)
-          [auto]  — LayerIndicator (shrinks to content, right-aligned)
-      */}
-      <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+      <div class="flex items-center justify-between gap-4">
 
         {/* ── Left: instrument selector ── */}
         <InstrumentSelect
@@ -55,19 +49,20 @@ export default function HeaderContainer(props: HeaderContainerProps) {
           onSelectInstrument={props.onSelectInstrument}
         />
 
-        {/* ── Center: hand section buttons ── */}
-        <div class="flex items-center justify-center gap-2">
-          {/* Left hand */}
+        {/* ── Right: section buttons + layer indicator ── */}
+        <div class="flex items-center gap-3">
+
+          {/* Left hand sections */}
           <div class="flex items-center gap-1">
             <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mr-0.5">L</span>
             <For each={LEFT_SECTIONS}>{({ num, key, label }) => (
-              <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 ${props.leftSection() === num
-                ? "bg-blue-600/80 border-blue-400"
-                : "bg-zinc-900 border-zinc-800"
+              <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 bg-zinc-900 ${props.leftSection() === num
+                ? "border-blue-400" // Blue border when active
+                : "border-zinc-800"
                 }`}>
-                <kbd class={`text-[9px] font-black rounded px-0.5 ${props.leftSection() === num ? "text-blue-100" : "text-zinc-600"
+                <kbd class={`text-[9px] font-black rounded px-0.5 ${props.leftSection() === num ? "text-blue-300" : "text-zinc-600"
                   }`}>{key.toUpperCase()}</kbd>
-                <span class={`text-[9px] font-bold ${props.leftSection() === num ? "text-white" : "text-zinc-700"
+                <span class={`text-[9px] font-bold ${props.leftSection() === num ? "text-blue-400" : "text-zinc-700"
                   }`}>{label}</span>
               </div>
             )}</For>
@@ -75,32 +70,34 @@ export default function HeaderContainer(props: HeaderContainerProps) {
 
           <div class="h-4 w-px bg-zinc-800" />
 
-          {/* Right hand */}
+          {/* Right hand sections */}
           <div class="flex items-center gap-1">
             <For each={RIGHT_SECTIONS}>{({ num, key, label }) => (
-              <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 ${props.rightSection() === num
-                ? "bg-green-600/80 border-green-400"
-                : "bg-zinc-900 border-zinc-800"
+              <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 bg-zinc-900 ${props.rightSection() === num
+                ? "border-green-400" // Green border when active
+                : "border-zinc-800"
                 }`}>
-                <kbd class={`text-[9px] font-black rounded px-0.5 ${props.rightSection() === num ? "text-green-100" : "text-zinc-600"
+                <kbd class={`text-[9px] font-black rounded px-0.5 ${props.rightSection() === num ? "text-green-300" : "text-zinc-600"
                   }`}>{key.toUpperCase()}</kbd>
-                <span class={`text-[9px] font-bold ${props.rightSection() === num ? "text-white" : "text-zinc-700"
+                <span class={`text-[9px] font-bold ${props.rightSection() === num ? "text-green-400" : "text-zinc-700"
                   }`}>{label}</span>
               </div>
             )}</For>
             <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest ml-0.5">R</span>
           </div>
+
+          <div class="h-4 w-px bg-zinc-800" />
+
+          {/* Layer indicator */}
+          <LayerIndicator
+            layerRanges={props.availableLayerRanges}
+            leftLayerIdx={props.leftLayerIdx}
+            rightLayerIdx={props.rightLayerIdx}
+            leftActive={() => props.leftSection() !== null}
+            rightActive={() => props.rightSection() !== null}
+          />
+
         </div>
-
-        {/* ── Right: layer indicator ── */}
-        <LayerIndicator
-          layerRanges={props.availableLayerRanges}
-          leftLayerIdx={props.leftLayerIdx}
-          rightLayerIdx={props.rightLayerIdx}
-          leftActive={() => props.leftSection() !== null}
-          rightActive={() => props.rightSection() !== null}
-        />
-
       </div>
     </header>
   );
