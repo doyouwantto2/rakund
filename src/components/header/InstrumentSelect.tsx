@@ -74,7 +74,7 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
 
       {/* Instrument Dropdown */}
       <Show when={showList()}>
-        <div class="absolute top-full left-0 mt-2 z-50 w-full bg-zinc-800 rounded-lg shadow-xl border border-zinc-700 max-h-[60vh] overflow-y-auto">
+        <div class="absolute top-full left-0 mt-2 z-50 w-[120%] bg-zinc-800 rounded-lg shadow-xl border border-zinc-700 max-h-[60vh] overflow-y-auto">
           <div class="p-1">
             <For each={props.availableInstruments()}>{inst => {
               const isActive = () => props.activeFolder() === inst.folder;
@@ -123,8 +123,8 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
                   </button>
 
                   {/* Layers with horizontal scroll and scrollbar beneath */}
-                  <div class="px-4 pb-6 max-h-40 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-zinc-800">
-                    <div class="flex gap-0.5 mt-2">
+                  <div class="px-4 pb-6 max-h-[50vh] overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-track-zinc-800">
+                    <div class="flex gap-0.5 mt-4">
                       <For each={inst.layers}>{layer => (
                         <span class="text-xs font-medium px-2 py-1 rounded bg-zinc-700 border border-zinc-600 text-zinc-400 whitespace-nowrap">
                           {layer}
