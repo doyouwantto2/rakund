@@ -10,6 +10,12 @@ use tauri::{AppHandle, Emitter, State};
 lazy_static! {
     pub static ref CURRENT_INSTRUMENT: Arc<Mutex<Option<InstrumentConfig>>> =
         Arc::new(Mutex::new(None));
+
+    // Tracks the folder name of the currently loaded instrument.
+    // Separate from CURRENT_INSTRUMENT so get_instrument_info can return it
+    // without needing to store it inside InstrumentConfig.
+    pub static ref CURRENT_FOLDER: Arc<Mutex<Option<String>>> =
+        Arc::new(Mutex::new(None));
 }
 
 // ── Playback ──────────────────────────────────────────────────────────────────
@@ -18,7 +24,7 @@ lazy_static! {
 pub async fn play_midi_note(
     midi_num: u8,
     velocity: u8,
-    layer: String, // uppercased layer name from frontend e.g. "MP"
+    layer: String,
     handle: State<'_, AudioHandle>,
     _app: AppHandle,
 ) -> Result<(), String> {
@@ -30,22 +36,22 @@ pub async fn play_midi_note(
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
 
-    // Find the layer index by matching uppercased names in general.layers.
-    // Frontend sends uppercase (e.g. "MP"), general.layers may have any case ("Mp", "MP").
-    // We match uppercase → uppercase so case in JSON doesn't matter.
-    let layer_idx = config
-        .layers()
+    let layer_upper = layer.to_uppercase();
+    let sample_info = key_data
+        .samples
         .iter()
-        .position(|l| l.to_uppercase() == layer.to_uppercase())
-        .unwrap_or(0); // fall back to first layer if not found
+        .find(|s| s.layer.to_uppercase() == layer_upper)
+        .or_else(|| key_data.samples.first())
+        .ok_or_else(|| format!("No samples for note {}", midi_num))?;
 
-    // Look up by index — completely independent of name/case
-    let data = cache::get_by_index(midi_num, layer_idx).ok_or_else(|| {
-        format!(
-            "Sample not cached: midi={} layer_idx={}",
-            midi_num, layer_idx
-        )
-    })?;
+    let sample_idx = key_data
+        .samples
+        .iter()
+        .position(|s| s.layer.to_uppercase() == layer_upper)
+        .unwrap_or(0);
+
+    let data = cache::get_by_index(midi_num, sample_idx)
+        .ok_or_else(|| format!("Sample not cached: midi={} layer={}", midi_num, layer))?;
 
     let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
     let ratio = audio::pitch_ratio(recorded_midi, midi_num);
@@ -66,6 +72,7 @@ pub async fn play_midi_note(
 
 // ── Instrument management ─────────────────────────────────────────────────────
 
+/// Scan ~/.config/rakund/instruments/ and return all valid instruments
 #[tauri::command]
 pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> {
     let folders = audio::scan_instruments().map_err(|e| e.to_string())?;
@@ -82,7 +89,6 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
                     .unwrap_or_default()
                     .to_string_lossy()
                     .to_string(),
-                // Always send uppercase layer names to frontend
                 layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
                 format: config.files_format().to_string(),
             });
@@ -92,44 +98,68 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
     Ok(result)
 }
 
+/// Load a specific instrument by folder name.
+/// This is called by the frontend when the user manually selects an instrument.
+/// The backend guard checks if it's already loaded to prevent double-loading.
 #[tauri::command]
-pub async fn load_instrument(folder: String) -> Result<InstrumentInfo, String> {
-    let config = audio::load_instrument(&folder).map_err(|e| e.to_string())?;
+pub async fn load_instrument(folder: String, app: AppHandle) -> Result<InstrumentInfo, String> {
+    // Guard: if this folder is already loaded, return its info immediately
+    {
+        let current = CURRENT_FOLDER.lock().unwrap();
+        if current.as_deref() == Some(folder.as_str()) {
+            let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
+            if let Some(config) = config_guard.as_ref() {
+                return Ok(InstrumentInfo {
+                    name: config.instrument.clone(),
+                    folder: folder.clone(),
+                    layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+                    format: config.files_format().to_string(),
+                });
+            }
+        }
+    }
+
+    let info = audio::load_instrument_with_progress(&folder, &app)
+        .map_err(|e| e.to_string())
+        .map(|config| {
+            let info = InstrumentInfo {
+                name: config.instrument.clone(),
+                folder: folder.clone(),
+                layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+                format: config.files_format().to_string(),
+            };
+            *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
+            *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
+            info
+        })?;
 
     state::set_last_instrument(&folder).map_err(|e: AudioError| e.to_string())?;
 
-    let info = InstrumentInfo {
-        name: config.instrument.clone(),
-        folder,
-        layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-        format: config.files_format().to_string(),
-    };
-
-    *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
     Ok(info)
 }
 
+/// Returns app state (last_instrument folder name)
 #[tauri::command]
 pub async fn get_app_state() -> Result<AppState, String> {
     state::read().map_err(|e: AudioError| e.to_string())
 }
 
+/// Returns info about the currently loaded instrument, including the correct folder name.
+/// Returns null if nothing is loaded yet.
 #[tauri::command]
 pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
-    let guard = CURRENT_INSTRUMENT.lock().unwrap();
-    Ok(guard.as_ref().map(|config| InstrumentInfo {
+    let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
+    let folder_guard = CURRENT_FOLDER.lock().unwrap();
+
+    Ok(config_guard.as_ref().map(|config| InstrumentInfo {
         name: config.instrument.clone(),
-        folder: String::new(),
+        folder: folder_guard.clone().unwrap_or_default(), // ← the fix: real folder, not ""
         layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
         format: config.files_format().to_string(),
     }))
 }
 
-#[tauri::command]
-pub async fn load_instrument_layer(_layer: String, window: tauri::Window) -> Result<(), String> {
-    let _ = window.emit(
-        "load_progress",
-        serde_json::json!({ "loaded": 1, "total": 1, "progress": 100.0 }),
-    );
-    Ok(())
+// Called by init.rs background preload — sets CURRENT_FOLDER directly
+pub fn set_current_folder(folder: String) {
+    *CURRENT_FOLDER.lock().unwrap() = Some(folder);
 }

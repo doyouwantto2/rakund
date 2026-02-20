@@ -11,7 +11,6 @@ pub fn run() -> Result<(), AudioError> {
         Err(e) => eprintln!("[INIT] Cannot resolve instruments dir: {}", e),
     }
 
-    // Read last instrument name BEFORE building the app — just the name, no loading yet
     let last_instrument = state::read().ok().and_then(|s| s.last_instrument);
 
     tauri::Builder::default()
@@ -19,7 +18,6 @@ pub fn run() -> Result<(), AudioError> {
         .invoke_handler(tauri::generate_handler![
             commands::player::play_midi_note,
             commands::player::load_instrument,
-            commands::player::load_instrument_layer,
             commands::player::get_available_instruments,
             commands::player::get_instrument_info,
             commands::player::get_app_state,
@@ -27,28 +25,25 @@ pub fn run() -> Result<(), AudioError> {
             commands::filter::set_sustain,
         ])
         .setup(move |app| {
-            // Window is now open. Kick off background preload if we have a last instrument.
             if let Some(folder) = last_instrument {
                 println!("[INIT] Scheduling background preload: {}", folder);
-
                 let app_handle = app.handle().clone();
+                let folder_clone = folder.clone();
 
                 std::thread::spawn(move || {
-                    println!("[INIT] Background preload starting: {}", folder);
+                    println!("[INIT] Background preload starting: {}", folder_clone);
 
-                    // Emit: loading started
                     let _ = app_handle.emit("load_progress",
                         serde_json::json!({ "progress": 0.0, "status": "loading" }));
 
-                    match audio::load_instrument_with_progress(&folder, &app_handle) {
+                    match audio::load_instrument_with_progress(&folder_clone, &app_handle) {
                         Ok(config) => {
-                            *crate::commands::player::CURRENT_INSTRUMENT
-                                .lock()
-                                .unwrap() = Some(config);
+                            // Store the config AND the folder name — both must be set atomically
+                            *crate::commands::player::CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
+                            crate::commands::player::set_current_folder(folder_clone.clone());
 
-                            println!("[INIT] Background preload complete: {}", folder);
+                            println!("[INIT] Background preload complete: {}", folder_clone);
 
-                            // Emit: done
                             let _ = app_handle.emit("load_progress",
                                 serde_json::json!({ "progress": 100.0, "status": "done" }));
                         }

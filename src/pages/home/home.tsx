@@ -18,6 +18,7 @@ export default function Home() {
         onVolumeChange={piano.setVolume}
         isLoading={piano.isLoading}
         loadProgress={piano.loadProgress}
+        activeFolder={piano.activeFolder}
         onSelectInstrument={piano.selectInstrument}
         leftModifier={piano.leftModifier}
         rightModifier={piano.rightModifier}
@@ -40,6 +41,7 @@ export default function Home() {
         leftLayerIdx={piano.leftLayerIdx}
         rightLayerIdx={piano.rightLayerIdx}
         availableLayers={piano.availableLayers}
+        velocityForLayer={piano.velocityForLayer}
       />
 
     </div>

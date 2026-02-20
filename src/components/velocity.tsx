@@ -10,12 +10,11 @@ interface VelocitySelectorProps {
 
 export default function VelocitySelector(props: VelocitySelectorProps) {
   const { selectedLayer, onLayerChange, onLayerHover, layers, instrumentName } = props;
-  
-  // Dynamic sizing based on instrument and number of layers
+
   const containerClass = createMemo(() => {
     const layerCount = layers().length;
     const isSalamander = instrumentName() === 'salamander';
-    
+
     if (isSalamander && layerCount > 8) {
       return "flex items-center gap-1 bg-zinc-900/80 p-2 rounded-xl border border-zinc-800/50 backdrop-blur-sm max-w-2xl overflow-x-auto";
     } else if (layerCount > 6) {
@@ -24,10 +23,10 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
       return "flex items-center gap-1 bg-zinc-900/80 p-2 rounded-xl border border-zinc-800/50 backdrop-blur-sm";
     }
   });
-  
+
   const buttonClass = createMemo(() => {
     const isSalamander = instrumentName() === 'salamander';
-    
+
     if (isSalamander) {
       return "px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all duration-200 min-w-[45px] border border-transparent hover:border-zinc-600/50";
     } else {
@@ -37,13 +36,13 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
 
   const getLayerColor = (_layer: string, isSelected: boolean) => {
     const isSalamander = instrumentName() === 'salamander';
-    
+
     if (isSelected) {
-      return isSalamander 
-        ? "bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30 border-purple-400/50" 
+      return isSalamander
+        ? "bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30 border-purple-400/50"
         : "bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30 border-emerald-400/50";
     }
-    
+
     return isSalamander
       ? "text-zinc-400 hover:text-purple-300 hover:bg-purple-500/10"
       : "text-zinc-400 hover:text-emerald-300 hover:bg-emerald-500/10";
@@ -51,16 +50,14 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
 
   const getLayerIcon = (layer: string) => {
     const isSalamander = instrumentName() === 'salamander';
-    
+
     if (isSalamander) {
-      // For V01-V16, show velocity indicators
       const num = parseInt(layer.substring(1));
       if (num <= 4) return "🎵";
       if (num <= 8) return "🎶";
       if (num <= 12) return "🎼";
       return "🎧";
     } else {
-      // For PP, MP, MF, FF
       switch (layer) {
         case "PP": return "🎹";
         case "MP": return "🎵";
@@ -78,7 +75,7 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
         <div class="text-xs text-zinc-500 font-medium uppercase tracking-wider">Velocity</div>
         <div class="w-1 h-4 bg-zinc-700 rounded-full"></div>
       </div>
-      
+
       <For each={layers()}>{(layer) => (
         <button
           onClick={() => onLayerChange(layer)}
@@ -93,10 +90,10 @@ export default function VelocitySelector(props: VelocitySelectorProps) {
           </div>
         </button>
       )}</For>
-      
+
       {/* Animated border effect for selected layer */}
       <div class="relative">
-        <div 
+        <div
           class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-purple-500 rounded-xl opacity-20 blur-sm transition-all duration-300"
           style={{
             width: selectedLayer() ? "60px" : "0px",

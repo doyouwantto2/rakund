@@ -27,7 +27,11 @@ export function usePiano() {
   const [currentInstrument, setCurrentInstrument] = createSignal<InstrumentInfo | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
   const [loadProgress, setLoadProgress] = createSignal<number | null>(null);
-  const [isCurrentlyLoading, setIsCurrentlyLoading] = createSignal<string | null>(null);
+
+  // The single source of truth for "what is currently loading or loaded".
+  // Set immediately when a load starts (before any await), cleared when done.
+  // This is what the guard checks — not currentInstrument, which lags behind.
+  const [activeFolder, setActiveFolder] = createSignal<string | null>(null);
 
   const [leftSection, setLeftSection] = createSignal<SectionNum | null>(null);
   const [rightSection, setRightSection] = createSignal<SectionNum | null>(null);
@@ -43,10 +47,12 @@ export function usePiano() {
   const applyInstrument = (info: InstrumentInfo) => {
     setCurrentInstrument(info);
     setAvailableLayers(info.layers);
-    const defaultIdx = info.layers.indexOf("MP");
+    const defaultIdx = info.layers.findIndex(l => l.toUpperCase() === "MP");
     const idx = defaultIdx >= 0 ? defaultIdx : 0;
     setLeftLayerIdx(idx);
     setRightLayerIdx(idx);
+    // Mark this folder as the active one so the guard knows
+    if (info.folder) setActiveFolder(info.folder);
   };
 
   const layerForHand = (hand: 'left' | 'right'): string => {
@@ -66,49 +72,8 @@ export function usePiano() {
     }
   };
 
-  const loadAvailableInstruments = async () => {
-    try {
-      const instruments = await invoke<InstrumentInfo[]>("get_available_instruments");
-      setAvailableInstruments(instruments);
-    } catch (e) {
-      console.error("[INSTRUMENTS] scan error:", e);
-    }
-  };
-
-  const selectInstrument = async (folder: string) => {
-    // If the same instrument is currently loaded, do nothing
-    if (currentInstrument()?.folder === folder) {
-      console.log("[INSTRUMENTS] Same instrument already loaded, skipping:", folder);
-      return;
-    }
-
-    // If currently loading any instrument, do nothing
-    if (isCurrentlyLoading() !== null) {
-      console.log("[INSTRUMENTS] Already loading, skipping:", folder);
-      return;
-    }
-
-    // Set the loading state to prevent multiple clicks
-    setIsCurrentlyLoading(folder);
-    setIsLoading(true);
-    setLoadProgress(0);
-
-    try {
-      console.log("[INSTRUMENTS] Loading instrument:", folder);
-      const info = await invoke<InstrumentInfo>("load_instrument", { folder });
-      applyInstrument(info);
-    } catch (e) {
-      console.error("[INSTRUMENTS] load error:", e);
-    } finally {
-      setIsLoading(false);
-      setLoadProgress(null);
-      setIsCurrentlyLoading(null);
-    }
-  };
-
-  // ── Audio ────────────────────────────────────────────────────────────────────
-
   const velocityForLayer = (layer: string): number => {
+    if (!layer) return 54;
     const lower = layer.toLowerCase();
     const layers = availableLayers();
     const base =
@@ -123,6 +88,55 @@ export function usePiano() {
               })();
     return Math.min(127, Math.round(base * volume()));
   };
+
+  // ── Instrument management ─────────────────────────────────────────────────────
+
+  const loadAvailableInstruments = async () => {
+    try {
+      const instruments = await invoke<InstrumentInfo[]>("get_available_instruments");
+      setAvailableInstruments(instruments);
+      return instruments;
+    } catch (e) {
+      console.error("[INSTRUMENTS] scan error:", e);
+      return [] as InstrumentInfo[];
+    }
+  };
+
+  const selectInstrument = async (folder: string) => {
+    // PRIMARY GUARD: if this folder is already active (loading or loaded), do nothing
+    if (activeFolder() === folder) {
+      console.log("[INSTRUMENTS] already active:", folder);
+      return;
+    }
+
+    console.log("[INSTRUMENTS] loading:", folder);
+    setActiveFolder(folder);
+    setIsLoading(true);
+    setLoadProgress(0);
+
+    // Show name immediately from available list while loading
+    const placeholder = availableInstruments().find(i => i.folder === folder);
+    if (placeholder && !currentInstrument()) {
+      setAvailableLayers(placeholder.layers);
+      const defaultIdx = placeholder.layers.findIndex(l => l.toUpperCase() === "MP");
+      setLeftLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
+      setRightLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
+    }
+
+    try {
+      // Backend also guards against double-loading — if folder already loaded it returns immediately
+      const info = await invoke<InstrumentInfo>("load_instrument", { folder });
+      applyInstrument(info);
+    } catch (e) {
+      console.error("[INSTRUMENTS] load error:", e);
+      setActiveFolder(null);
+    } finally {
+      setIsLoading(false);
+      setLoadProgress(null);
+    }
+  };
+
+  // ── Audio ─────────────────────────────────────────────────────────────────────
 
   const noteOn = async (midi: number, hand: 'left' | 'right') => {
     if (activeNotes().has(midi)) return;
@@ -144,28 +158,52 @@ export function usePiano() {
     } catch (e) { console.error("[PIANO] stop error:", e); }
   };
 
-  // ── Startup ──────────────────────────────────────────────────────────────────
+  // ── Startup ───────────────────────────────────────────────────────────────────
 
   onMount(async () => {
-    // Load instrument list immediately
-    await loadAvailableInstruments();
+    // 1. Scan instrument list (reads JSON headers only, fast)
+    const instruments = await loadAvailableInstruments();
 
-    // Check if backend already has something loaded
+    // 2. Read last_instrument from state to know what will be background-loading.
+    //    Set activeFolder immediately so any click on that instrument is blocked.
+    try {
+      const appState = await invoke<{ last_instrument: string | null }>("get_app_state");
+      const lastFolder = appState.last_instrument;
+
+      if (lastFolder) {
+        // Pre-populate layers from the scanned list for immediate UI feedback
+        const placeholder = instruments.find(i => i.folder === lastFolder);
+        if (placeholder) {
+          setAvailableLayers(placeholder.layers);
+          const defaultIdx = placeholder.layers.findIndex(l => l.toUpperCase() === "MP");
+          setLeftLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
+          setRightLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
+        }
+
+        // Mark as active so the guard blocks duplicate loads
+        setActiveFolder(lastFolder);
+        setIsLoading(true);
+      }
+    } catch (e) {
+      console.error("[INIT] get_app_state error:", e);
+    }
+
+    // 3. Check if backend already finished loading before we got here (fast restart)
     try {
       const info = await invoke<InstrumentInfo | null>("get_instrument_info");
-      if (info && !isLoading()) {
+      if (info && info.folder) {
         applyInstrument(info);
+        setIsLoading(false);
+        setLoadProgress(null);
       }
     } catch (e) {
       console.error("[INIT] get_instrument_info error:", e);
     }
 
-    // Listen for background preload progress events
+    // 4. Listen for background preload progress events
     const unlisten = await listen<{
       progress: number;
       status: "loading" | "done" | "error";
-      loaded?: number;
-      total?: number;
       message?: string;
     }>("load_progress", async (e) => {
       const { progress, status } = e.payload;
@@ -177,21 +215,17 @@ export function usePiano() {
         setLoadProgress(100);
         try {
           const info = await invoke<InstrumentInfo | null>("get_instrument_info");
-          if (info && currentInstrument()?.folder !== info.folder) {
-            applyInstrument(info);
-          }
+          if (info && info.folder) applyInstrument(info);
         } catch { /* ignore */ }
-
         setTimeout(() => {
           setIsLoading(false);
           setLoadProgress(null);
-          setIsCurrentlyLoading(null);
         }, 400);
       } else if (status === "error") {
-        console.error("[PRELOAD] Error:", e.payload.message);
+        console.error("[PRELOAD] failed:", e.payload.message);
         setIsLoading(false);
         setLoadProgress(null);
-        setIsCurrentlyLoading(null);
+        setActiveFolder(null);
       }
     });
 
@@ -201,18 +235,13 @@ export function usePiano() {
     const keyToMidi = new Map<string, number>();
 
     const recomputeModifiers = () => {
-      // If ANY alt or ANY shift is pressed, apply it globally to both hands
-      const anyAlt = heldModifiers.altLeft || heldModifiers.altRight;
-      const anyShift = heldModifiers.shiftLeft || heldModifiers.shiftRight;
-
-      const globalModifier: Modifier = anyAlt ? 'flat' : anyShift ? 'sharp' : null;
-
-      setLeftModifier(globalModifier);
-      setRightModifier(globalModifier);
+      const lm: Modifier = heldModifiers.altLeft ? 'flat' : heldModifiers.shiftLeft ? 'sharp' : null;
+      const rm: Modifier = heldModifiers.altRight ? 'flat' : heldModifiers.shiftRight ? 'sharp' : null;
+      setLeftModifier(lm);
+      setRightModifier(rm);
     };
 
     const normalizeKey = (k: string) => {
-      // Map shifted punctuation back to their base keys so they trigger the piano notes
       if (k === '?') return '/';
       if (k === '<') return ',';
       if (k === '>') return '.';
@@ -230,7 +259,6 @@ export function usePiano() {
       if (e.code === "Space") {
         e.preventDefault();
         const dir: 1 | -1 = (heldModifiers.shiftLeft || heldModifiers.shiftRight) ? 1 : -1;
-        // Space logic still respects exact Left/Right physical keys
         if (heldModifiers.shiftLeft || heldModifiers.altLeft) cycleLayer('left', dir);
         if (heldModifiers.shiftRight || heldModifiers.altRight) cycleLayer('right', dir);
         return;
@@ -286,8 +314,10 @@ export function usePiano() {
     availableLayers,
     leftLayerIdx, rightLayerIdx,
     layerForHand,
+    velocityForLayer,
     volume, setVolume,
     availableInstruments, currentInstrument,
+    activeFolder,
     selectInstrument, isLoading, loadProgress,
     leftSection, rightSection,
     leftModifier, rightModifier,

@@ -114,7 +114,7 @@ export default function Piano(props: PianoProps) {
   const { activeNotes, onNoteOn, onNoteOff, leftSection, rightSection } = props;
 
   const highlights = createMemo(() => {
-    const map = new Map<number, 'left' | 'right'>();
+    const map = new Map<number, 'left' | 'right' | 'both'>();
     for (const k of PIANO_KEYS) {
       const h = getKeyHighlight(k.midi, leftSection(), rightSection());
       if (h) map.set(k.midi, h);
@@ -126,6 +126,7 @@ export default function Piano(props: PianoProps) {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
     if (active) return "bg-emerald-300 border-emerald-400 translate-y-0.5";
+    if (highlight === "both") return "bg-purple-200 border-purple-300";
     if (highlight === "left") return "bg-blue-200 border-blue-300";
     if (highlight === "right") return "bg-green-200 border-green-300";
     return "bg-zinc-100 hover:bg-white border-zinc-300";
@@ -135,13 +136,21 @@ export default function Piano(props: PianoProps) {
     const active = activeNotes().has(midi);
     const highlight = highlights().get(midi);
     if (active) return "bg-emerald-500 translate-y-0.5";
-    if (highlight === "left") return "bg-blue-600";
+    if (highlight === "both") return "bg-purple-700";
+    if (highlight === "left") return "bg-blue-700";
     if (highlight === "right") return "bg-green-700";
     return "bg-zinc-900 hover:bg-zinc-700";
   };
 
+  // For 'both' zone: left key press uses left hand, right key press uses right hand.
+  // We always try left first (keyboard), but mouse click goes to whichever hand is active.
+  // For mouse on 'both' keys, default to right (treble) since that's where the piano sits visually.
   const handForMidi = (midi: number): 'left' | 'right' => {
-    return highlights().get(midi) === 'right' ? 'right' : 'left';
+    const h = highlights().get(midi);
+    if (h === 'left') return 'left';
+    if (h === 'right') return 'right';
+    if (h === 'both') return 'right'; // mouse click in overlap → right hand velocity
+    return 'left';
   };
 
   return (
