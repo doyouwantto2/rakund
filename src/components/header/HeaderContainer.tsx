@@ -1,8 +1,8 @@
-import { For, Show } from "solid-js";
-import type { InstrumentInfo } from "../../hooks/usePiano";
+import { For } from "solid-js";
+import type { InstrumentInfo, LayerRange } from "../../hooks/usePiano";
 import type { Modifier, SectionNum } from "../../utils/keyMapping";
 import InstrumentSelect from "./InstrumentSelect";
-import VolumeControl from "./VolumeControl";
+import LayerIndicator from "./LayerIndicator";
 
 interface HeaderContainerProps {
   currentInstrument: () => InstrumentInfo | null;
@@ -11,8 +11,6 @@ interface HeaderContainerProps {
   loadProgress: () => number | null;
   activeFolder: () => string | null;
   onSelectInstrument: (folder: string) => void;
-  volume: () => number;
-  onVolumeChange: (v: number) => void;
   leftSection: () => SectionNum | null;
   rightSection: () => SectionNum | null;
   leftModifier: () => Modifier;
@@ -20,6 +18,7 @@ interface HeaderContainerProps {
   leftLayerIdx: () => number;
   rightLayerIdx: () => number;
   availableLayers: () => string[];
+  availableLayerRanges: () => LayerRange[];
   velocityForLayer: (layer: string) => number;
 }
 
@@ -35,39 +34,18 @@ const RIGHT_SECTIONS: { num: SectionNum; key: string; label: string }[] = [
   { num: 3, key: "y", label: "F5–C7" },
 ];
 
-function modBadge(mod: Modifier) {
-  if (!mod) return null;
-  return (
-    <span class={`text-[9px] font-black ml-1 ${mod === 'sharp' ? 'text-emerald-400' : 'text-blue-400'}`}>
-      {mod === 'sharp' ? '♯' : '♭'}
-    </span>
-  );
-}
-
 export default function HeaderContainer(props: HeaderContainerProps) {
-  const isActive = () => props.leftSection() !== null || props.rightSection() !== null;
-
-  // Use velocityForLayer from usePiano — correctly handles any instrument's layer names
-  const leftVelLabel = () => {
-    const layers = props.availableLayers();
-    if (layers.length === 0) return "—";
-    const layer = layers[Math.min(props.leftLayerIdx(), layers.length - 1)];
-    const vel = props.velocityForLayer(layer);
-    return `${layer} ${vel}`;
-  };
-
-  const rightVelLabel = () => {
-    const layers = props.availableLayers();
-    if (layers.length === 0) return "—";
-    const layer = layers[Math.min(props.rightLayerIdx(), layers.length - 1)];
-    const vel = props.velocityForLayer(layer);
-    return `${layer} ${vel}`;
-  };
-
   return (
     <header class="w-full bg-zinc-900 border-b border-zinc-800 px-4 py-3">
-      <div class="flex items-center justify-between gap-4">
-        {/* Instrument Selection - Left */}
+      {/*
+        3-column grid:
+          [auto]  — InstrumentSelect (shrinks to content)
+          [1fr]   — section buttons (centred, never shifts)
+          [auto]  — LayerIndicator (shrinks to content, right-aligned)
+      */}
+      <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4">
+
+        {/* ── Left: instrument selector ── */}
         <InstrumentSelect
           currentInstrument={props.currentInstrument}
           availableInstruments={props.availableInstruments}
@@ -77,9 +55,9 @@ export default function HeaderContainer(props: HeaderContainerProps) {
           onSelectInstrument={props.onSelectInstrument}
         />
 
-        {/* Piano Status Controls - Middle */}
-        <div class="flex-1 flex items-center justify-center gap-2 px-4 flex-wrap">
-          {/* Left hand sections */}
+        {/* ── Center: hand section buttons ── */}
+        <div class="flex items-center justify-center gap-2">
+          {/* Left hand */}
           <div class="flex items-center gap-1">
             <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mr-0.5">L</span>
             <For each={LEFT_SECTIONS}>{({ num, key, label }) => (
@@ -97,7 +75,7 @@ export default function HeaderContainer(props: HeaderContainerProps) {
 
           <div class="h-4 w-px bg-zinc-800" />
 
-          {/* Right hand sections */}
+          {/* Right hand */}
           <div class="flex items-center gap-1">
             <For each={RIGHT_SECTIONS}>{({ num, key, label }) => (
               <div class={`flex items-center gap-1 px-2 py-0.5 rounded border transition-all duration-100 ${props.rightSection() === num
@@ -112,50 +90,17 @@ export default function HeaderContainer(props: HeaderContainerProps) {
             )}</For>
             <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest ml-0.5">R</span>
           </div>
-
-          <div class="h-4 w-px bg-zinc-800" />
-
-          {/* Per-hand velocity — only shown when layers are loaded */}
-          <Show when={props.availableLayers().length > 0}>
-            <div class="flex items-center gap-3 text-[10px]">
-              <div class="flex items-center gap-1">
-                <span class="text-blue-500 font-black">L</span>
-                <span class="text-zinc-300 font-bold">{leftVelLabel()}</span>
-                {modBadge(props.leftModifier())}
-              </div>
-              <div class="flex items-center gap-1">
-                <span class="text-green-500 font-black">R</span>
-                <span class="text-zinc-300 font-bold">{rightVelLabel()}</span>
-                {modBadge(props.rightModifier())}
-              </div>
-            </div>
-
-            <div class="h-4 w-px bg-zinc-800" />
-          </Show>
-
-          {/* ESC / active status */}
-          <div class="flex items-center gap-1.5">
-            <Show
-              when={isActive()}
-              fallback={
-                <span class="text-[9px] text-zinc-700 font-bold italic">
-                  ESC — no sound · press B/G/T or N/H/Y to activate
-                </span>
-              }
-            >
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
-              <span class="text-[9px] text-zinc-500 font-bold">
-                active · <kbd class="font-black text-zinc-400">ESC</kbd> to mute
-              </span>
-            </Show>
-          </div>
         </div>
 
-        {/* Volume Control - Right */}
-        <VolumeControl
-          volume={props.volume}
-          onVolumeChange={props.onVolumeChange}
+        {/* ── Right: layer indicator ── */}
+        <LayerIndicator
+          layerRanges={props.availableLayerRanges}
+          leftLayerIdx={props.leftLayerIdx}
+          rightLayerIdx={props.rightLayerIdx}
+          leftActive={() => props.leftSection() !== null}
+          rightActive={() => props.rightSection() !== null}
         />
+
       </div>
     </header>
   );

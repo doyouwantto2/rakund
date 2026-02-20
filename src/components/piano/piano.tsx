@@ -1,5 +1,5 @@
 import { For, createMemo } from "solid-js";
-import { getKeyHighlight, type SectionNum } from "../utils/keyMapping";
+import { getKeyHighlight, type SectionNum } from "@/utils/keyMapping";
 
 interface PianoProps {
   activeNotes: () => Set<number>;

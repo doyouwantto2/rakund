@@ -1,6 +1,6 @@
 import InstrumentSelect from "./InstrumentSelect";
-import VolumeControl from "./VolumeControl";
+import RangeControl from "./RangeControl";
 import HeaderContainer from "./HeaderContainer";
 
-export { InstrumentSelect, VolumeControl, HeaderContainer };
+export { InstrumentSelect, RangeControl, HeaderContainer };
 export default HeaderContainer;

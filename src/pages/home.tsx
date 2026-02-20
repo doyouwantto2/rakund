@@ -1,5 +1,5 @@
 import Header from '@/components/header/HeaderContainer';
-import Piano from '@/components/piano';
+import Piano from '@/components/piano/piano';
 import { usePiano } from "@/hooks/usePiano";
 
 export default function Home() {
@@ -14,8 +14,6 @@ export default function Home() {
         loadProgress={piano.loadProgress}
         activeFolder={piano.activeFolder}
         onSelectInstrument={piano.selectInstrument}
-        volume={piano.volume}
-        onVolumeChange={piano.setVolume}
         leftSection={piano.leftSection}
         rightSection={piano.rightSection}
         leftModifier={piano.leftModifier}
@@ -23,6 +21,7 @@ export default function Home() {
         leftLayerIdx={piano.leftLayerIdx}
         rightLayerIdx={piano.rightLayerIdx}
         availableLayers={piano.availableLayers}
+        availableLayerRanges={piano.availableLayerRanges}
         velocityForLayer={piano.velocityForLayer}
       />
 
