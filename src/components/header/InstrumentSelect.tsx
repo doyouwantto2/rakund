@@ -49,7 +49,7 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
       {/* Instrument button */}
       <button
         onClick={() => setShowList(v => !v)}
-        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-4 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${displayName()
+        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-15 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${displayName()
           ? "text-zinc-200"
           : "text-zinc-400"
           }`}
@@ -74,7 +74,7 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
 
       {/* Dropdown */}
       <Show when={showList()}>
-        <div class="absolute top-full left-0 z-50 min-w-[320px] max-w-[420px] bg-zinc-800 rounded-lg border border-zinc-700 shadow-xl max-h-[60vh] overflow-y-auto">
+        <div class="absolute top-full left-0 mt-2 z-50 min-w-[320px] max-w-[420px] bg-zinc-800 rounded-lg border border-zinc-700 shadow-xl max-h-[60vh] overflow-y-auto">
           <Show
             when={props.availableInstruments().length > 0}
             fallback={
@@ -89,9 +89,10 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
                 {props.availableInstruments().length} available
               </span>
               <Show when={props.isLoading()}>
-                <span class="text-xs text-amber-400 font-medium animate-pulse">
-                  loading {progressPct().toFixed(0)}%
-                </span>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                  <span class="text-xs text-amber-400 font-medium">Loading...</span>
+                </div>
               </Show>
             </div>
 
@@ -100,14 +101,17 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
               const isActive = () => props.activeFolder() === inst.folder;
               const isLoading = () => isActive() && props.isLoading();
               const isLoaded = () => isActive() && !props.isLoading();
+              const isOtherLoading = () => !isActive() && props.isLoading();
 
               return (
                 <button
                   onClick={() => {
+                    if (isOtherLoading()) return; // Block selection when other instrument is loading
                     props.onSelectInstrument(inst.folder); // guard is in usePiano
                     setShowList(false);
                   }}
-                  class={`w-full text-left px-4 py-3 border-b border-zinc-700/60 hover:bg-zinc-700 transition-colors group ${isActive() ? "bg-zinc-700/50" : "cursor-pointer"}`}
+                  disabled={isOtherLoading()}
+                  class={`w-full text-left px-4 py-3 border-b border-zinc-700/60 transition-colors group ${isActive() ? "bg-zinc-700/50" : isOtherLoading() ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-zinc-800"}`}
                 >
                   <div class="flex items-center gap-3">
                     <span class={`w-2 h-2 rounded-full shrink-0 transition-colors ${isLoading()
