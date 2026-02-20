@@ -109,6 +109,12 @@ export function usePiano() {
       return;
     }
 
+    // SECONDARY GUARD: if another instrument is currently loading, do nothing
+    if (isLoading() && activeFolder() !== folder) {
+      console.log("[INSTRUMENTS] Another instrument is loading, blocking selection:", folder);
+      return;
+    }
+
     console.log("[INSTRUMENTS] loading:", folder);
     setActiveFolder(folder);
     setIsLoading(true);

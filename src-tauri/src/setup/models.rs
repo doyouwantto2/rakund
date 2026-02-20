@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use crate::setup::tweak::Settings;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct SampleInfo {
@@ -36,17 +37,6 @@ pub struct Contribution {
 pub struct General {
     pub layers: Vec<String>,
     pub files_format: String,
-    pub fast_release: String,
-    pub slow_release: String,
-}
-
-impl General {
-    pub fn fast_release_f32(&self) -> f32 {
-        self.fast_release.parse().unwrap_or(0.9998)
-    }
-    pub fn slow_release_f32(&self) -> f32 {
-        self.slow_release.parse().unwrap_or(0.99999)
-    }
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -54,6 +44,7 @@ pub struct InstrumentConfig {
     pub instrument: String,
     pub contribution: Contribution,
     pub general: General,
+    pub settings: Settings,
     #[serde(deserialize_with = "deserialize_piano_keys")]
     pub piano_keys: HashMap<String, KeyData>,
 }
@@ -65,11 +56,58 @@ impl InstrumentConfig {
     pub fn files_format(&self) -> &str {
         &self.general.files_format
     }
-    pub fn fast_release(&self) -> f32 {
-        self.general.fast_release_f32()
+    pub fn fast_release(&self) -> Option<f32> {
+        self.settings.fast_release()
     }
-    pub fn slow_release(&self) -> f32 {
-        self.general.slow_release_f32()
+    pub fn slow_release(&self) -> Option<f32> {
+        self.settings.slow_release()
+    }
+    pub fn get_setting(&self, key: &str) -> Option<&String> {
+        self.settings.get_string(key)
+    }
+    
+    /// Migrate old JSON format to new format
+    pub fn migrate_from_old(json_str: &str) -> Result<Self, serde_json::Error> {
+        // Try to parse as new format first
+        if let Ok(new_config) = serde_json::from_str::<Self>(json_str) {
+            return Ok(new_config);
+        }
+        
+        // Try to parse as old format and migrate
+        #[derive(Deserialize)]
+        struct OldGeneral {
+            layers: Vec<String>,
+            files_format: String,
+            fast_release: String,
+            slow_release: String,
+        }
+        
+        #[derive(Deserialize)]
+        struct OldConfig {
+            instrument: String,
+            contribution: Contribution,
+            general: OldGeneral,
+            #[serde(deserialize_with = "deserialize_piano_keys")]
+            piano_keys: HashMap<String, KeyData>,
+        }
+        
+        let old_config: OldConfig = serde_json::from_str(json_str)?;
+        
+        // Convert to new format
+        let mut settings = Settings::new();
+        settings.set("fast_release".to_string(), old_config.general.fast_release);
+        settings.set("slow_release".to_string(), old_config.general.slow_release);
+        
+        Ok(Self {
+            instrument: old_config.instrument,
+            contribution: old_config.contribution,
+            general: General {
+                layers: old_config.general.layers,
+                files_format: old_config.general.files_format,
+            },
+            settings,
+            piano_keys: old_config.piano_keys,
+        })
     }
 }
 
@@ -79,11 +117,19 @@ fn deserialize_piano_keys<'de, D>(
 where
     D: serde::Deserializer<'de>,
 {
-    let raw: Vec<HashMap<String, KeyData>> = serde::Deserialize::deserialize(deserializer)?;
+    let raw: Vec<serde_json::Value> = serde::Deserialize::deserialize(deserializer)?;
     let mut map = HashMap::new();
+    
     for entry in raw {
-        map.extend(entry);
+        if let serde_json::Value::Object(obj) = entry {
+            for (midi_key, key_data) in obj {
+                if let Ok(key_data) = serde_json::from_value::<KeyData>(key_data) {
+                    map.insert(midi_key, key_data);
+                }
+            }
+        }
     }
+    
     Ok(map)
 }
 

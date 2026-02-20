@@ -120,10 +120,20 @@ fn load_instrument_from_path(
     let raw = fs::read_to_string(&json_path)
         .map_err(|e| AudioError::InstrumentError(format!("Cannot read instrument.json: {}", e)))?;
 
-    let config: InstrumentConfig = serde_json::from_str(&raw)
+    let config = InstrumentConfig::migrate_from_old(&raw)
         .map_err(|e| AudioError::InstrumentError(format!("Invalid instrument.json: {}", e)))?;
 
-    volume::set(config.fast_release(), config.slow_release());
+    // Set release rates from JSON settings, or use defaults if not specified
+    let fast_release = config.fast_release().unwrap_or_else(|| {
+        println!("[LOAD] Using default fast_release (not specified in JSON)");
+        0.9998
+    });
+    let slow_release = config.slow_release().unwrap_or_else(|| {
+        println!("[LOAD] Using default slow_release (not specified in JSON)");
+        0.99999
+    });
+    
+    volume::set(fast_release, slow_release);
 
     println!(
         "[LOAD] {} — format: {} — {} keys — layers: {:?}",
@@ -194,6 +204,20 @@ fn load_instrument_from_path(
     }
 
     println!("[LOAD] Done — {} entries cached", done);
+    
+    // Emit completion event
+    if let Some(handle) = app {
+        let _ = handle.emit(
+            "load_progress",
+            serde_json::json!({
+                "progress": 100.0,
+                "loaded": done,
+                "total": total,
+                "status": "done"
+            }),
+        );
+    }
+    
     Ok(config)
 }
 

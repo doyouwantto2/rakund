@@ -149,7 +149,7 @@ export default function Header(props: HeaderProps) {
                   }}
                   class={`w-full text-left px-3 py-2.5 border-b border-zinc-800/60
                           hover:bg-zinc-800 transition-colors group
-                          ${isActive() ? "bg-zinc-800/50" : "cursor-pointer"}`}
+                          ${isActive() ? "bg-zinc-800/50" : props.isLoading() && !isActive() ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   <div class="flex items-center gap-2.5">
                     <span class={`w-2 h-2 rounded-full shrink-0 transition-colors ${isLoading()
