@@ -154,7 +154,7 @@ export default function Piano(props: PianoProps) {
   };
 
   return (
-    <div class="relative w-full select-none" style="height: 140px;">
+    <div class="relative w-full select-none" style="height: 10rem;">
       <div class="absolute inset-0 flex">
         <For each={WHITE_KEYS}>{key => (
           <button

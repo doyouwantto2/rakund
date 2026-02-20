@@ -1,5 +1,5 @@
 import Header from '@/components/header/HeaderContainer';
-import Piano from '@/components/piano/piano';
+import Piano from '@/components/piano/Piano';
 import { usePiano } from "@/hooks/usePiano";
 
 export default function Home() {
