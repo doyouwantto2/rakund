@@ -12,11 +12,19 @@ import {
   type Modifier,
 } from "../utils/keyMapping";
 
+export interface Contribution {
+  authors: string[];
+  published_date: string;
+  licenses: string[];
+}
+
 export interface InstrumentInfo {
   name: string;
   folder: string;
   layers: string[];
   format: string;
+  settings?: [string, string][];
+  contribution?: Contribution;
 }
 
 export function usePiano() {

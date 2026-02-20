@@ -13,8 +13,6 @@ lazy_static! {
     pub static ref CURRENT_FOLDER: Arc<Mutex<Option<String>>> = Arc::new(Mutex::new(None));
 }
 
-// ── Playback ──────────────────────────────────────────────────────────────────
-
 #[tauri::command]
 pub async fn play_midi_note(
     midi_num: u8,
@@ -83,6 +81,8 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
                     .to_string(),
                 layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
                 format: config.files_format().to_string(),
+                settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+                contribution: config.contribution.clone(),
             });
         }
     }
@@ -102,6 +102,8 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
                     folder: folder.clone(),
                     layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
                     format: config.files_format().to_string(),
+                    settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+                    contribution: config.contribution.clone(),
                 });
             }
         }
@@ -115,6 +117,8 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
                 folder: folder.clone(),
                 layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
                 format: config.files_format().to_string(),
+                settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+                contribution: config.contribution.clone(),
             };
             *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
             *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
@@ -126,7 +130,6 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
     Ok(info)
 }
 
-/// Returns app state (last_instrument folder name)
 #[tauri::command]
 pub async fn get_app_state() -> Result<AppState, String> {
     state::read().map_err(|e: AudioError| e.to_string())
@@ -142,6 +145,8 @@ pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
         folder: folder_guard.clone().unwrap_or_default(),
         layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
         format: config.files_format().to_string(),
+        settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+        contribution: config.contribution.clone(),
     }))
 }
 

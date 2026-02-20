@@ -1,6 +1,6 @@
+use crate::setup::tweak::Settings;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use crate::setup::tweak::Settings;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct SampleInfo {
@@ -26,7 +26,7 @@ impl KeyData {
     }
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Contribution {
     pub authors: Vec<String>,
     pub published_date: String,
@@ -65,15 +65,12 @@ impl InstrumentConfig {
     pub fn get_setting(&self, key: &str) -> Option<&String> {
         self.settings.get_string(key)
     }
-    
-    /// Migrate old JSON format to new format
+
     pub fn migrate_from_old(json_str: &str) -> Result<Self, serde_json::Error> {
-        // Try to parse as new format first
         if let Ok(new_config) = serde_json::from_str::<Self>(json_str) {
             return Ok(new_config);
         }
-        
-        // Try to parse as old format and migrate
+
         #[derive(Deserialize)]
         struct OldGeneral {
             layers: Vec<String>,
@@ -81,7 +78,7 @@ impl InstrumentConfig {
             fast_release: String,
             slow_release: String,
         }
-        
+
         #[derive(Deserialize)]
         struct OldConfig {
             instrument: String,
@@ -90,14 +87,13 @@ impl InstrumentConfig {
             #[serde(deserialize_with = "deserialize_piano_keys")]
             piano_keys: HashMap<String, KeyData>,
         }
-        
+
         let old_config: OldConfig = serde_json::from_str(json_str)?;
-        
-        // Convert to new format
+
         let mut settings = Settings::new();
         settings.set("fast_release".to_string(), old_config.general.fast_release);
         settings.set("slow_release".to_string(), old_config.general.slow_release);
-        
+
         Ok(Self {
             instrument: old_config.instrument,
             contribution: old_config.contribution,
@@ -119,7 +115,7 @@ where
 {
     let raw: Vec<serde_json::Value> = serde::Deserialize::deserialize(deserializer)?;
     let mut map = HashMap::new();
-    
+
     for entry in raw {
         if let serde_json::Value::Object(obj) = entry {
             for (midi_key, key_data) in obj {
@@ -129,7 +125,7 @@ where
             }
         }
     }
-    
+
     Ok(map)
 }
 
@@ -144,4 +140,19 @@ pub struct InstrumentInfo {
     pub folder: String,
     pub layers: Vec<String>,
     pub format: String,
+    pub settings: Vec<(String, String)>,
+    pub contribution: Contribution,
+}
+
+impl InstrumentInfo {
+    pub fn from_config(config: &crate::setup::models::InstrumentConfig, folder: &str) -> Self {
+        Self {
+            name: config.instrument.clone(),
+            folder: folder.to_string(),
+            layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+            format: config.files_format().to_string(),
+            settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+            contribution: config.contribution.clone(),
+        }
+    }
 }
