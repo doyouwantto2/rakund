@@ -1,57 +1,10 @@
 use crate::engine::optional::settings::Settings;
+use crate::extension::instrument::{
+    contribution::Contribution, general::General, layer::LayerRange, sample::KeyData,
+    deserialize::deserialize_piano_keys,
+};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct LayerRange {
-    pub lovel: u8,
-    pub hivel: u8,
-}
-
-impl LayerRange {
-    pub fn lovel_num(&self) -> u8 {
-        self.lovel
-    }
-
-    pub fn hivel_num(&self) -> u8 {
-        self.hivel
-    }
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct SampleInfo {
-    pub path: String,
-    pub layer: String,
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct KeyData {
-    pub note: String,
-    pub midi: String,
-    pub pitch: String,
-    pub lokey: String,
-    pub hikey: String,
-    pub samples: Vec<SampleInfo>,
-}
-
-impl KeyData {
-    pub fn midi_num(&self) -> u8 {
-        self.midi.parse().unwrap_or(0)
-    }
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct Contribution {
-    pub authors: Vec<String>,
-    pub published_date: String,
-    pub licenses: Vec<String>,
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct General {
-    pub layers: std::collections::HashMap<String, LayerRange>,
-    pub files_format: String,
-}
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct InstrumentConfig {
@@ -156,78 +109,7 @@ impl InstrumentConfig {
     }
 }
 
-fn deserialize_piano_keys<'de, D>(
-    deserializer: D,
-) -> std::result::Result<HashMap<String, KeyData>, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    let raw: Vec<serde_json::Value> = serde::Deserialize::deserialize(deserializer)?;
-    let mut map = HashMap::new();
-
-    for entry in raw {
-        if let serde_json::Value::Object(obj) = entry {
-            for (midi_key, key_data) in obj {
-                if let Ok(key_data) = serde_json::from_value::<KeyData>(key_data) {
-                    map.insert(midi_key, key_data);
-                }
-            }
-        }
-    }
-
-    Ok(map)
-}
-
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct AppState {
     pub last_instrument: Option<String>,
-}
-
-#[derive(Debug, Serialize, Clone)]
-pub struct InstrumentInfo {
-    pub name: String,
-    pub folder: String,
-    pub layers: Vec<String>,
-    pub layer_ranges: Vec<LayerRangeInfo>,
-    pub format: String,
-    pub settings: Vec<(String, String)>,
-    pub contribution: Contribution,
-}
-
-#[derive(Debug, Serialize, Clone)]
-pub struct LayerRangeInfo {
-    pub name: String,
-    pub lovel: u8,
-    pub hivel: u8,
-}
-
-impl InstrumentInfo {
-    pub fn from_config(config: &crate::setup::models::InstrumentConfig, folder: &str) -> Self {
-        let mut layer_ranges: Vec<LayerRangeInfo> = config
-            .general
-            .layers
-            .iter()
-            .map(|(name, range)| LayerRangeInfo {
-                name: name.clone(),
-                lovel: range.lovel_num(),
-                hivel: range.hivel_num(),
-            })
-            .collect();
-        layer_ranges.sort_by_key(|range| range.lovel);
-
-        Self {
-            name: config.instrument.clone(),
-            folder: folder.to_string(),
-            layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-            layer_ranges,
-            format: config.files_format().to_string(),
-            settings: config
-                .settings
-                .values
-                .iter()
-                .map(|(k, v)| (k.clone(), v.to_string()))
-                .collect(),
-            contribution: config.contribution.clone(),
-        }
-    }
 }

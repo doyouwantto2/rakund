@@ -1,7 +1,8 @@
 use crate::engine::cache;
 use crate::error::AudioError;
 use crate::setup::audio::{self, AudioHandle};
-use crate::setup::models::{AppState, InstrumentConfig, InstrumentInfo};
+use crate::setup::models::{AppState, InstrumentConfig};
+use crate::extension::instrument::response::InstrumentInfoResponse;
 use crate::setup::state;
 use lazy_static::lazy_static;
 use std::sync::{Arc, Mutex};
@@ -64,7 +65,7 @@ pub async fn play_midi_note(
 }
 
 #[tauri::command]
-pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> {
+pub async fn get_available_instruments() -> Result<Vec<InstrumentInfoResponse>, String> {
     let folders = audio::scan_instruments().map_err(|e| e.to_string())?;
 
     let mut result = Vec::new();
@@ -85,7 +86,7 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
                     .unwrap_or_default()
                     .to_string_lossy()
                     .to_string();
-                let info = InstrumentInfo::from_config(&config, &folder_name);
+                let info = InstrumentInfoResponse::from_config(&config, &folder_name);
                 result.push(info);
             }
             Err(e) => {
@@ -103,13 +104,13 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
 }
 
 #[tauri::command]
-pub async fn load_instrument(folder: String, app: AppHandle) -> Result<InstrumentInfo, String> {
+pub async fn load_instrument(folder: String, app: AppHandle) -> Result<InstrumentInfoResponse, String> {
     {
         let current = CURRENT_FOLDER.lock().unwrap();
         if current.as_deref() == Some(folder.as_str()) {
             let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
             if let Some(config) = config_guard.as_ref() {
-                return Ok(InstrumentInfo::from_config(config, &folder));
+                return Ok(InstrumentInfoResponse::from_config(config, &folder));
             }
         }
     }
@@ -117,7 +118,7 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
     let info = audio::load_instrument_with_progress(&folder, &app)
         .map_err(|e| e.to_string())
         .map(|config| {
-            let info = InstrumentInfo::from_config(&config, &folder);
+            let info = InstrumentInfoResponse::from_config(&config, &folder);
             *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
             *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
             info
@@ -134,13 +135,13 @@ pub async fn get_app_state() -> Result<AppState, String> {
 }
 
 #[tauri::command]
-pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
+pub async fn get_instrument_info() -> Result<Option<InstrumentInfoResponse>, String> {
     let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
     let folder_guard = CURRENT_FOLDER.lock().unwrap();
 
     Ok(config_guard.as_ref().map(|config| {
         let folder_name = folder_guard.clone().unwrap_or_default();
-        InstrumentInfo::from_config(config, &folder_name)
+        InstrumentInfoResponse::from_config(config, &folder_name)
     }))
 }
 
