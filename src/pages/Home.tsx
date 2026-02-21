@@ -1,4 +1,4 @@
-import Header from '@/components/header/HeaderContainer';
+import HeaderContainer from '@/components/header/HeaderContainer';
 import PianoContainer from '@/components/piano/PianoContainer';
 import { usePiano } from "@/hooks/usePiano";
 
@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <div class="h-screen w-full bg-zinc-950 text-white flex flex-col overflow-hidden select-none font-sans">
-      <Header
+      <HeaderContainer
         currentInstrument={piano.currentInstrument}
         availableInstruments={piano.availableInstruments}
         isLoading={piano.isLoading}
