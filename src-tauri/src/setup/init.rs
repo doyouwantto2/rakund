@@ -1,4 +1,4 @@
-use crate::commands;
+use crate::core;
 use crate::error::AudioError;
 use crate::setup::{audio, state};
 use tauri::Emitter;
@@ -46,14 +46,14 @@ pub fn run() -> Result<(), AudioError> {
     tauri::Builder::default()
         .manage(audio_handle)
         .invoke_handler(tauri::generate_handler![
-            commands::player::play_midi_note,
-            commands::player::load_instrument,
-            commands::player::get_available_instruments,
-            commands::player::get_instrument_info,
-            commands::player::get_app_state,
-            commands::player::clear_last_instrument,
-            commands::filter::stop_midi_note,
-            commands::filter::set_sustain,
+            core::player::play_midi_note,
+            core::player::load_instrument,
+            core::player::get_available_instruments,
+            core::player::get_instrument_info,
+            core::player::get_app_state,
+            core::player::clear_last_instrument,
+            core::filter::stop_midi_note,
+            core::filter::set_sustain,
         ])
         .setup(move |app| {
             if let Some(folder) = validated_last_instrument {
@@ -69,8 +69,8 @@ pub fn run() -> Result<(), AudioError> {
 
                     match audio::load_instrument_with_progress(&folder_clone, &app_handle) {
                         Ok(config) => {
-                            *crate::commands::player::CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
-                            crate::commands::player::set_current_folder(folder_clone.clone());
+                            *crate::core::player::CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
+                            crate::core::player::set_current_folder(folder_clone.clone());
 
                             println!("[INIT] Background preload complete: {}", folder_clone);
 

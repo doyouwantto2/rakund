@@ -1,4 +1,4 @@
-pub mod commands;
+pub mod core;
 pub mod engine;
 pub mod error;
 pub mod parser;
