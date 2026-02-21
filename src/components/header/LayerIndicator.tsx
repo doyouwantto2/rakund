@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { Show } from "solid-js";
 import type { LayerRange } from "../../hooks/usePiano";
 
 interface LayerIndicatorProps {
@@ -10,30 +10,63 @@ interface LayerIndicatorProps {
 }
 
 export default function LayerIndicator(props: LayerIndicatorProps) {
+  const getLayerInfo = (layerIdx: number) => {
+    const layers = props.layerRanges();
+    if (layerIdx >= 0 && layerIdx < layers.length) {
+      return layers[layerIdx];
+    }
+    return null;
+  };
+
+  const leftLayerInfo = () => getLayerInfo(props.leftLayerIdx());
+  const rightLayerInfo = () => getLayerInfo(props.rightLayerIdx());
+
   return (
     <Show when={props.layerRanges().length > 0}>
-      <div class="flex items-center gap-1">
-        <For each={props.layerRanges()}>{(range, idx) => {
-          const isLeft = () => props.leftActive() && props.leftLayerIdx() === idx();
-          const isRight = () => props.rightActive() && props.rightLayerIdx() === idx();
-          const isBoth = () => isLeft() && isRight();
-
-          const style = () => {
-            if (isBoth()) return "bg-purple-700/60 border-purple-500 text-white";
-            if (isLeft()) return "bg-blue-700/60   border-blue-500   text-white";
-            if (isRight()) return "bg-green-700/60  border-green-500  text-white";
-            return "bg-zinc-900 border-zinc-800 text-zinc-600";
-          };
-
-          return (
-            <div class={`flex flex-col items-center justify-center w-10 h-9 rounded border transition-colors duration-75 ${style()}`}>
-              <span class="text-[9px] font-black leading-none">{range.name}</span>
-              <span class="text-[7px] leading-none mt-0.5 tabular-nums opacity-70">
-                {range.lovel}–{range.hivel}
+      <div class="flex items-center gap-4">
+        
+        {/* Left hand indicator */}
+        <div class="flex items-center gap-2">
+          <span class="text-[9px] text-blue-500 font-bold uppercase tracking-widest">L</span>
+          <Show when={props.leftActive() && leftLayerInfo()}>
+            <div class="flex items-center gap-1 px-2 py-1 rounded border border-blue-500 bg-blue-900/60">
+              <span class="text-[9px] font-black text-blue-300">{leftLayerInfo()!.name}</span>
+              <span class="text-[7px] text-blue-400 tabular-nums opacity-80">
+                {leftLayerInfo()!.lovel}-{leftLayerInfo()!.hivel}
               </span>
             </div>
-          );
-        }}</For>
+          </Show>
+          <Show when={!props.leftActive()}>
+            <div class="flex items-center gap-1 px-2 py-1 rounded border border-zinc-800 bg-zinc-900">
+              <span class="text-[9px] font-black text-zinc-600">-</span>
+              <span class="text-[7px] text-zinc-600 tabular-nums opacity-50">
+                --
+              </span>
+            </div>
+          </Show>
+        </div>
+
+        {/* Right hand indicator */}
+        <div class="flex items-center gap-2">
+          <span class="text-[9px] text-green-500 font-bold uppercase tracking-widest">R</span>
+          <Show when={props.rightActive() && rightLayerInfo()}>
+            <div class="flex items-center gap-1 px-2 py-1 rounded border border-green-500 bg-green-900/60">
+              <span class="text-[9px] font-black text-green-300">{rightLayerInfo()!.name}</span>
+              <span class="text-[7px] text-green-400 tabular-nums opacity-80">
+                {rightLayerInfo()!.lovel}-{rightLayerInfo()!.hivel}
+              </span>
+            </div>
+          </Show>
+          <Show when={!props.rightActive()}>
+            <div class="flex items-center gap-1 px-2 py-1 rounded border border-zinc-800 bg-zinc-900">
+              <span class="text-[9px] font-black text-zinc-600">-</span>
+              <span class="text-[7px] text-zinc-600 tabular-nums opacity-50">
+                --
+              </span>
+            </div>
+          </Show>
+        </div>
+
       </div>
     </Show>
   );

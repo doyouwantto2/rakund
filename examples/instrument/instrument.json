@@ -1,0 +1,90 @@
+{
+  "instrument": "Grand Piano",
+  "description": "",
+  "contribution": {
+    "authors": [],
+    "published_date": "",
+    "licenses": []
+  },
+  "general": {
+    "layers": {
+      "A": {
+        "lovel": 1,
+        "hivel": 40
+      },
+      "B": {
+        "lovel": 41,
+        "hivel": 67
+      },
+      "C": {
+        "lovel": 68,
+        "hivel": 84
+      },
+      "D": {
+        "lovel": 85,
+        "hivel": 127
+      }
+    },
+    "files_format": "flac/wav"
+  },
+  "settings": {
+    "fast_release": 0.99987,
+    "slow_release": 0.99999
+  },
+  "piano_keys": [
+    {
+      "21": {
+        "note": "A0",
+        "midi": "21",
+        "pitch": "21",
+        "lokey": "21",
+        "hikey": "21",
+        "samples": [
+          {
+            "path": "./samples-container/A A0.flac",
+            "layer": "A"
+          },
+          {
+            "path": "./samples-container/B A0.flac",
+            "layer": "B"
+          },
+          {
+            "path": "./samples-container/C A0.flac",
+            "layer": "C"
+          },
+          {
+            "path": "./samples-container/D A0.flac",
+            "layer": "D"
+          }
+        ]
+      }
+    },
+    {
+      "22": {
+        "note": "A#0",
+        "midi": "22",
+        "pitch": "22",
+        "lokey": "22",
+        "hikey": "22",
+        "samples": [
+          {
+            "path": "./samples-container/A A#0.flac",
+            "layer": "A"
+          },
+          {
+            "path": "./samples-container/B A#0.flac",
+            "layer": "B"
+          },
+          {
+            "path": "./samples-container/C A#0.flac",
+            "layer": "C"
+          },
+          {
+            "path": "./samples-container/D A#0.flac",
+            "layer": "D"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -80,19 +80,13 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
         
         match serde_json::from_str::<InstrumentConfig>(&raw) {
             Ok(config) => {
-                println!("[SCAN] Successfully parsed: {}", config.instrument);
-                result.push(InstrumentInfo {
-                    name: config.instrument.clone(),
-                    folder: folder
-                        .file_name()
-                        .unwrap_or_default()
-                        .to_string_lossy()
-                        .to_string(),
-                    layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-                    format: config.files_format().to_string(),
-                    settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
-                    contribution: config.contribution.clone(),
-                });
+                let folder_name = folder
+                    .file_name()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .to_string();
+                let info = InstrumentInfo::from_config(&config, &folder_name);
+                result.push(info);
             }
             Err(e) => {
                 println!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
@@ -112,14 +106,7 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
         if current.as_deref() == Some(folder.as_str()) {
             let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
             if let Some(config) = config_guard.as_ref() {
-                return Ok(InstrumentInfo {
-                    name: config.instrument.clone(),
-                    folder: folder.clone(),
-                    layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-                    format: config.files_format().to_string(),
-                    settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
-                    contribution: config.contribution.clone(),
-                });
+                return Ok(InstrumentInfo::from_config(&config, &folder));
             }
         }
     }
@@ -127,14 +114,7 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
     let info = audio::load_instrument_with_progress(&folder, &app)
         .map_err(|e| e.to_string())
         .map(|config| {
-            let info = InstrumentInfo {
-                name: config.instrument.clone(),
-                folder: folder.clone(),
-                layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-                format: config.files_format().to_string(),
-                settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
-                contribution: config.contribution.clone(),
-            };
+            let info = InstrumentInfo::from_config(&config, &folder);
             *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
             *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
             info
@@ -155,13 +135,9 @@ pub async fn get_instrument_info() -> Result<Option<InstrumentInfo>, String> {
     let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
     let folder_guard = CURRENT_FOLDER.lock().unwrap();
 
-    Ok(config_guard.as_ref().map(|config| InstrumentInfo {
-        name: config.instrument.clone(),
-        folder: folder_guard.clone().unwrap_or_default(),
-        layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-        format: config.files_format().to_string(),
-        settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
-        contribution: config.contribution.clone(),
+    Ok(config_guard.as_ref().map(|config| {
+        let folder_name = folder_guard.clone().unwrap_or_default();
+        InstrumentInfo::from_config(config, &folder_name)
     }))
 }
 
