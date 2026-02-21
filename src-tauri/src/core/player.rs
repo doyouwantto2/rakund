@@ -1,8 +1,8 @@
 use crate::engine::cache;
 use crate::error::AudioError;
-use crate::setup::audio::{self, AudioHandle};
-use crate::setup::models::{AppState, InstrumentConfig};
 use crate::extension::instrument::response::InstrumentInfoResponse;
+use crate::setup::audio::{self, AudioHandle};
+use crate::setup::config::{AppState, InstrumentConfig};
 use crate::setup::state;
 use lazy_static::lazy_static;
 use std::sync::{Arc, Mutex};
@@ -104,7 +104,10 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfoResponse>, 
 }
 
 #[tauri::command]
-pub async fn load_instrument(folder: String, app: AppHandle) -> Result<InstrumentInfoResponse, String> {
+pub async fn load_instrument(
+    folder: String,
+    app: AppHandle,
+) -> Result<InstrumentInfoResponse, String> {
     {
         let current = CURRENT_FOLDER.lock().unwrap();
         if current.as_deref() == Some(folder.as_str()) {

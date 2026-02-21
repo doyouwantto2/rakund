@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::contribution::Contribution;
+use super::{contribution::Contribution, layer::LayerRange};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct InstrumentInfoResponse {
@@ -21,12 +21,12 @@ pub struct LayerRangeInfo {
 }
 
 impl InstrumentInfoResponse {
-    pub fn from_config(config: &crate::setup::models::InstrumentConfig, folder: &str) -> Self {
+    pub fn from_config(config: &crate::setup::config::InstrumentConfig, folder: &str) -> Self {
         let mut layer_ranges: Vec<LayerRangeInfo> = config
             .general
             .layers
             .iter()
-            .map(|(name, range)| LayerRangeInfo {
+            .map(|(name, range): (&String, &LayerRange)| LayerRangeInfo {
                 name: name.clone(),
                 lovel: range.lovel_num(),
                 hivel: range.hivel_num(),
@@ -37,14 +37,18 @@ impl InstrumentInfoResponse {
         Self {
             name: config.instrument.clone(),
             folder: folder.to_string(),
-            layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+            layers: config
+                .layers()
+                .iter()
+                .map(|l: &String| l.to_uppercase())
+                .collect(),
             layer_ranges,
             format: config.files_format().to_string(),
             settings: config
                 .settings
                 .values
                 .iter()
-                .map(|(k, v)| (k.clone(), v.to_string()))
+                .map(|(k, v): (&String, &serde_json::Value)| (k.clone(), v.to_string()))
                 .collect(),
             contribution: config.contribution.clone(),
         }

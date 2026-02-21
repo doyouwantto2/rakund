@@ -3,12 +3,12 @@ use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct InstrumentInfo {
+pub struct Settings {
     #[serde(flatten)]
     pub values: HashMap<String, serde_json::Value>,
 }
 
-impl InstrumentInfo {
+impl Settings {
     pub fn new() -> Self {
         Self {
             values: HashMap::new(),
@@ -85,15 +85,15 @@ impl InstrumentInfo {
     }
 }
 
-impl Default for InstrumentInfo {
+impl Default for Settings {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl From<Value> for InstrumentInfo {
+impl From<Value> for Settings {
     fn from(value: Value) -> Self {
-        let mut settings = InstrumentInfo::new();
+        let mut settings = Settings::new();
 
         if let Value::Object(map) = value {
             for (key, val) in map {
@@ -105,8 +105,8 @@ impl From<Value> for InstrumentInfo {
     }
 }
 
-impl From<InstrumentInfo> for Value {
-    fn from(settings: InstrumentInfo) -> Self {
+impl From<Settings> for Value {
+    fn from(settings: Settings) -> Self {
         let mut map = serde_json::Map::new();
         for (key, value) in settings.values {
             map.insert(key, value);

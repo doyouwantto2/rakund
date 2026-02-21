@@ -1,5 +1,5 @@
 use crate::error::{AudioError, Result};
-use crate::setup::models::AppState;
+use crate::setup::config::AppState;
 use std::fs;
 use std::path::PathBuf;
 

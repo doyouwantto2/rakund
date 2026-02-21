@@ -1,7 +1,7 @@
-use crate::engine::optional::volume;
 use crate::engine::{cache, decoder, parser};
 use crate::error::{AudioError, Result};
-use crate::setup::models::InstrumentConfig;
+use crate::extension::instrument::release;
+use crate::setup::config::InstrumentConfig;
 use crate::setup::state;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use std::collections::HashMap;
@@ -49,8 +49,8 @@ pub fn start_stream() -> Result<AudioHandle> {
                 };
                 let sustained = sustained_clone.try_lock().map(|g| *g).unwrap_or(false);
 
-                let fast = volume::get_fast();
-                let slow = volume::get_slow();
+                let fast = release::get_fast();
+                let slow = release::get_slow();
                 let num_frames = output.len() / channels;
                 let mut mix = vec![0.0f32; num_frames];
 
@@ -132,7 +132,7 @@ fn load_instrument_from_path(
         0.99999
     });
 
-    volume::set(fast_release, slow_release);
+    release::set(fast_release, slow_release);
 
     println!(
         "[LOAD] {} — format: {} — {} keys — layers: {:?}",
