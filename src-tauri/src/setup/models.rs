@@ -66,10 +66,12 @@ pub struct InstrumentConfig {
 
 impl InstrumentConfig {
     pub fn layers(&self) -> Vec<String> {
-        // Sort layers by lovel value to maintain consistent order (smallest to largest)
-        let mut layers: Vec<(String, u8)> = self.general.layers.iter().map(|(name, range)| {
-            (name.clone(), range.lovel_num())
-        }).collect();
+        let mut layers: Vec<(String, u8)> = self
+            .general
+            .layers
+            .iter()
+            .map(|(name, range)| (name.clone(), range.lovel_num()))
+            .collect();
         layers.sort_by_key(|(_, lovel)| *lovel);
         layers.into_iter().map(|(name, _)| name).collect()
     }
@@ -116,27 +118,28 @@ impl InstrumentConfig {
         let old_config: OldConfig = serde_json::from_str(json_str)?;
 
         let mut settings = Settings::new();
-        
-        // Convert string values to numbers for fast_release and slow_release
+
         if let Ok(fast_release) = old_config.general.fast_release.parse::<f32>() {
             settings.set_f32("fast_release".to_string(), fast_release);
         } else {
             settings.set("fast_release".to_string(), old_config.general.fast_release);
         }
-        
+
         if let Ok(slow_release) = old_config.general.slow_release.parse::<f32>() {
             settings.set_f32("slow_release".to_string(), slow_release);
         } else {
             settings.set("slow_release".to_string(), old_config.general.slow_release);
         }
 
-        // Convert old layer HashMap to new layer HashMap
         let mut layers = std::collections::HashMap::new();
         for (layer_name, layer_range) in &old_config.general.layers {
-            layers.insert(layer_name.clone(), LayerRange {
-                lovel: layer_range.lovel,
-                hivel: layer_range.hivel,
-            });
+            layers.insert(
+                layer_name.clone(),
+                LayerRange {
+                    lovel: layer_range.lovel,
+                    hivel: layer_range.hivel,
+                },
+            );
         }
 
         Ok(Self {
@@ -201,12 +204,16 @@ pub struct LayerRangeInfo {
 
 impl InstrumentInfo {
     pub fn from_config(config: &crate::setup::models::InstrumentConfig, folder: &str) -> Self {
-        // Extract layer ranges from the config and sort by lovel value
-        let mut layer_ranges: Vec<LayerRangeInfo> = config.general.layers.iter().map(|(name, range)| LayerRangeInfo {
-            name: name.clone(),
-            lovel: range.lovel_num(),
-            hivel: range.hivel_num(),
-        }).collect();
+        let mut layer_ranges: Vec<LayerRangeInfo> = config
+            .general
+            .layers
+            .iter()
+            .map(|(name, range)| LayerRangeInfo {
+                name: name.clone(),
+                lovel: range.lovel_num(),
+                hivel: range.hivel_num(),
+            })
+            .collect();
         layer_ranges.sort_by_key(|range| range.lovel);
 
         Self {
@@ -215,7 +222,12 @@ impl InstrumentInfo {
             layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
             layer_ranges,
             format: config.files_format().to_string(),
-            settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.to_string())).collect(),
+            settings: config
+                .settings
+                .values
+                .iter()
+                .map(|(k, v)| (k.clone(), v.to_string()))
+                .collect(),
             contribution: config.contribution.clone(),
         }
     }

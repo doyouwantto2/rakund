@@ -133,6 +133,9 @@ export function usePiano() {
     try {
       const info = await invoke<InstrumentInfo>("load_instrument", { folder });
       applyInstrument(info);
+      // Reset loading state immediately after successful load
+      setIsLoading(false);
+      setLoadProgress(null);
     } catch (e) {
       console.error("[INSTRUMENTS] load error:", e);
       setActiveFolder(null);
@@ -243,7 +246,10 @@ export function usePiano() {
         setLoadProgress(100);
         try {
           const info = await invoke<InstrumentInfo | null>("get_instrument_info");
-          if (info && info.folder) applyInstrument(info);
+          // Only apply instrument if it matches the currently active folder
+          if (info && info.folder && info.folder === activeFolder()) {
+            applyInstrument(info);
+          }
         } catch { /* ignore */ }
         setTimeout(() => {
           setIsLoading(false);

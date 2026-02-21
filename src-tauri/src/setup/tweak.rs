@@ -23,7 +23,7 @@ impl Settings {
     }
 
     pub fn get_f32(&self, key: &str) -> Option<f32> {
-        self.values.get(&key.to_string()).and_then(|v| match v {
+        self.values.get(key).and_then(|v| match v {
             Value::Number(n) => n.as_f64().map(|f| f as f32),
             Value::String(s) => s.parse().ok(),
             _ => None,
@@ -31,7 +31,7 @@ impl Settings {
     }
 
     pub fn get_i32(&self, key: &str) -> Option<i32> {
-        self.values.get(&key.to_string()).and_then(|v| match v {
+        self.values.get(key).and_then(|v| match v {
             Value::Number(n) => n.as_i64().map(|i| i as i32),
             Value::String(s) => s.parse().ok(),
             _ => None,
@@ -39,7 +39,7 @@ impl Settings {
     }
 
     pub fn get_bool(&self, key: &str) -> Option<bool> {
-        self.values.get(&key.to_string()).and_then(|v| match v {
+        self.values.get(key).and_then(|v| match v {
             Value::Bool(b) => Some(*b),
             Value::String(s) => s.parse::<bool>().ok(),
             _ => None,
@@ -51,11 +51,17 @@ impl Settings {
     }
 
     pub fn set_f32(&mut self, key: String, value: f32) {
-        self.values.insert(key, Value::Number(serde_json::Number::from_f64(value as f64).expect("Invalid f32 value")));
+        self.values.insert(
+            key,
+            Value::Number(serde_json::Number::from_f64(value as f64).expect("Invalid f32 value")),
+        );
     }
 
     pub fn set_i32(&mut self, key: String, value: i32) {
-        self.values.insert(key, Value::Number(serde_json::Number::from_f64(value as f64).expect("Invalid i32 value")));
+        self.values.insert(
+            key,
+            Value::Number(serde_json::Number::from_f64(value as f64).expect("Invalid i32 value")),
+        );
     }
 
     pub fn set_bool(&mut self, key: String, value: bool) {

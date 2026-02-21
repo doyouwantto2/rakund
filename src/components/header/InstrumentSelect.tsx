@@ -45,7 +45,7 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
   };
 
   return (
-    <div class="flex-shrink-0 relative">
+    <div class="shrink-0 relative">
       {/* Instrument button */}
       <button
         onClick={() => setShowList(v => !v)}
@@ -74,7 +74,7 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
 
       {/* Instrument Dropdown */}
       <Show when={showList()}>
-        <div class="absolute top-full left-0 mt-2 z-50 w-[120%] bg-zinc-800 rounded-lg shadow-xl border border-zinc-700 max-h-[60vh] overflow-y-auto">
+        <div class="absolute top-full left-0 mt-3 z-50 w-[120%] bg-zinc-800 rounded-lg shadow-xl border border-zinc-700 max-h-[60vh] overflow-y-auto">
           <div class="p-1">
             <For each={props.availableInstruments()}>{inst => {
               const isActive = () => props.activeFolder() === inst.folder;

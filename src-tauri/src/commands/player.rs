@@ -71,13 +71,13 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
     for folder in folders {
         let json_path = folder.join("instrument.json");
         println!("[SCAN] Checking instrument at: {:?}", json_path);
-        
+
         let raw = std::fs::read_to_string(&json_path).unwrap_or_default();
         if raw.is_empty() {
             println!("[SCAN] Empty JSON file at: {:?}", json_path);
             continue;
         }
-        
+
         match serde_json::from_str::<InstrumentConfig>(&raw) {
             Ok(config) => {
                 let folder_name = folder
@@ -90,7 +90,10 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
             }
             Err(e) => {
                 println!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
-                println!("[SCAN] JSON content preview: {}", &raw[..std::cmp::min(200, raw.len())]);
+                println!(
+                    "[SCAN] JSON content preview: {}",
+                    &raw[..std::cmp::min(200, raw.len())]
+                );
             }
         }
     }
@@ -106,7 +109,7 @@ pub async fn load_instrument(folder: String, app: AppHandle) -> Result<Instrumen
         if current.as_deref() == Some(folder.as_str()) {
             let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
             if let Some(config) = config_guard.as_ref() {
-                return Ok(InstrumentInfo::from_config(&config, &folder));
+                return Ok(InstrumentInfo::from_config(config, &folder));
             }
         }
     }

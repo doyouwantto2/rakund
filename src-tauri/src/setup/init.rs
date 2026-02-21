@@ -13,7 +13,6 @@ pub fn run() -> Result<(), AudioError> {
 
     let last_instrument = state::read().ok().and_then(|s| s.last_instrument);
 
-    // Validate that the last instrument still exists before preloading
     let validated_last_instrument = if let Some(ref folder) = last_instrument {
         match audio::scan_instruments() {
             Ok(instruments) => {
@@ -23,12 +22,14 @@ pub fn run() -> Result<(), AudioError> {
                         .map(|name| name == folder)
                         .unwrap_or(false)
                 });
-                
+
                 if instrument_exists {
                     Some(folder.clone())
                 } else {
-                    println!("[INIT] Last instrument '{}' no longer exists, clearing state", folder);
-                    // Clear the invalid state
+                    println!(
+                        "[INIT] Last instrument '{}' no longer exists, clearing state",
+                        folder
+                    );
                     let _ = state::clear_last_instrument();
                     None
                 }
