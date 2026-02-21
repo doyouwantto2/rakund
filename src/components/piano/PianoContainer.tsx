@@ -110,7 +110,7 @@ const PIANO_KEYS: PianoKey[] = [
 const WHITE_KEYS = PIANO_KEYS.filter(k => k.type === "white");
 const BLACK_KEYS = PIANO_KEYS.filter(k => k.type === "black");
 
-export default function Piano(props: PianoProps) {
+export default function PianoContainer(props: PianoProps) {
   const { activeNotes, onNoteOn, onNoteOff, leftSection, rightSection } = props;
 
   const highlights = createMemo(() => {

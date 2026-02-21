@@ -1,5 +1,5 @@
 import Header from '@/components/header/HeaderContainer';
-import Piano from '@/components/piano/Piano';
+import PianoContainer from '@/components/piano/PianoContainer';
 import { usePiano } from "@/hooks/usePiano";
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Piano
+      <PianoContainer
         activeNotes={piano.activeNotes}
         onNoteOn={piano.noteOn}
         onNoteOff={piano.noteOff}
