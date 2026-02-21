@@ -70,23 +70,38 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfo>, String> 
     let mut result = Vec::new();
     for folder in folders {
         let json_path = folder.join("instrument.json");
+        println!("[SCAN] Checking instrument at: {:?}", json_path);
+        
         let raw = std::fs::read_to_string(&json_path).unwrap_or_default();
-        if let Ok(config) = serde_json::from_str::<InstrumentConfig>(&raw) {
-            result.push(InstrumentInfo {
-                name: config.instrument.clone(),
-                folder: folder
-                    .file_name()
-                    .unwrap_or_default()
-                    .to_string_lossy()
-                    .to_string(),
-                layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
-                format: config.files_format().to_string(),
-                settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
-                contribution: config.contribution.clone(),
-            });
+        if raw.is_empty() {
+            println!("[SCAN] Empty JSON file at: {:?}", json_path);
+            continue;
+        }
+        
+        match serde_json::from_str::<InstrumentConfig>(&raw) {
+            Ok(config) => {
+                println!("[SCAN] Successfully parsed: {}", config.instrument);
+                result.push(InstrumentInfo {
+                    name: config.instrument.clone(),
+                    folder: folder
+                        .file_name()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .to_string(),
+                    layers: config.layers().iter().map(|l| l.to_uppercase()).collect(),
+                    format: config.files_format().to_string(),
+                    settings: config.settings.values.iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+                    contribution: config.contribution.clone(),
+                });
+            }
+            Err(e) => {
+                println!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
+                println!("[SCAN] JSON content preview: {}", &raw[..std::cmp::min(200, raw.len())]);
+            }
         }
     }
 
+    println!("[SCAN] Found {} valid instruments", result.len());
     Ok(result)
 }
 

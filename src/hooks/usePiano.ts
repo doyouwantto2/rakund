@@ -20,8 +20,8 @@ export interface Contribution {
 
 export interface LayerRange {
   name: string;
-  lovel: number;
-  hivel: number;
+  lovel: number | string;
+  hivel: number | string;
 }
 
 export interface InstrumentInfo {

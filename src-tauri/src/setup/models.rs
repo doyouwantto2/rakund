@@ -3,11 +3,15 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Debug, Deserialize, Clone)]
+pub struct LayerRange {
+    pub lovel: u8,
+    pub hivel: u8,
+}
+
+#[derive(Debug, Deserialize, Clone)]
 pub struct SampleInfo {
     pub path: String,
     pub layer: String,
-    pub lovel: String,
-    pub hivel: String,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -35,13 +39,14 @@ pub struct Contribution {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct General {
-    pub layers: Vec<String>,
+    pub layers: std::collections::HashMap<String, LayerRange>,
     pub files_format: String,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct InstrumentConfig {
     pub instrument: String,
+    pub description: Option<String>,
     pub contribution: Contribution,
     pub general: General,
     pub settings: Settings,
@@ -50,8 +55,8 @@ pub struct InstrumentConfig {
 }
 
 impl InstrumentConfig {
-    pub fn layers(&self) -> &Vec<String> {
-        &self.general.layers
+    pub fn layers(&self) -> Vec<String> {
+        self.general.layers.keys().cloned().collect()
     }
     pub fn files_format(&self) -> &str {
         &self.general.files_format
@@ -73,10 +78,16 @@ impl InstrumentConfig {
 
         #[derive(Deserialize)]
         struct OldGeneral {
-            layers: Vec<String>,
+            layers: std::collections::HashMap<String, OldLayerRange>,
             files_format: String,
             fast_release: String,
             slow_release: String,
+        }
+
+        #[derive(Deserialize)]
+        struct OldLayerRange {
+            lovel: u8,
+            hivel: u8,
         }
 
         #[derive(Deserialize)]
@@ -84,7 +95,6 @@ impl InstrumentConfig {
             instrument: String,
             contribution: Contribution,
             general: OldGeneral,
-            #[serde(deserialize_with = "deserialize_piano_keys")]
             piano_keys: HashMap<String, KeyData>,
         }
 
@@ -94,11 +104,21 @@ impl InstrumentConfig {
         settings.set("fast_release".to_string(), old_config.general.fast_release);
         settings.set("slow_release".to_string(), old_config.general.slow_release);
 
+        // Convert old layer HashMap to new layer HashMap
+        let mut layers = std::collections::HashMap::new();
+        for (layer_name, layer_range) in &old_config.general.layers {
+            layers.insert(layer_name.clone(), LayerRange {
+                lovel: layer_range.lovel,
+                hivel: layer_range.hivel,
+            });
+        }
+
         Ok(Self {
             instrument: old_config.instrument,
+            description: None,
             contribution: old_config.contribution,
             general: General {
-                layers: old_config.general.layers,
+                layers,
                 files_format: old_config.general.files_format,
             },
             settings,
@@ -113,6 +133,7 @@ fn deserialize_piano_keys<'de, D>(
 where
     D: serde::Deserializer<'de>,
 {
+    // Deserialize as array of objects first
     let raw: Vec<serde_json::Value> = serde::Deserialize::deserialize(deserializer)?;
     let mut map = HashMap::new();
 
