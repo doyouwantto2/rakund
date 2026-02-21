@@ -1,4 +1,4 @@
-use crate::parser::note_name_to_midi;
+use crate::engine::parser::note_name_to_midi;
 
 pub fn pitch_ratio(recorded_pitch: &str, target_midi: u8) -> f32 {
     let recorded_midi = note_name_to_midi(recorded_pitch).unwrap_or(target_midi);

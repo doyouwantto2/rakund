@@ -1,4 +1,4 @@
-use crate::setup::tweak::Settings;
+use crate::engine::optional::settings::Settings;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -162,7 +162,6 @@ fn deserialize_piano_keys<'de, D>(
 where
     D: serde::Deserializer<'de>,
 {
-    // Deserialize as array of objects first
     let raw: Vec<serde_json::Value> = serde::Deserialize::deserialize(deserializer)?;
     let mut map = HashMap::new();
 

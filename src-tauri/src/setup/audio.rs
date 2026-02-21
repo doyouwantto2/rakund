@@ -1,6 +1,6 @@
-use crate::engine::{cache, decoder, volume};
+use crate::engine::optional::volume;
+use crate::engine::{cache, decoder, parser};
 use crate::error::{AudioError, Result};
-use crate::parser;
 use crate::setup::models::InstrumentConfig;
 use crate::setup::state;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
