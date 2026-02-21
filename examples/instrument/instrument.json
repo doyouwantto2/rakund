@@ -36,7 +36,7 @@
       "21": {
         "note": "A0",
         "midi": "21",
-        "pitch": "21",
+        "pitch": "A0",
         "lokey": "21",
         "hikey": "21",
         "samples": [
@@ -63,7 +63,7 @@
       "22": {
         "note": "A#0",
         "midi": "22",
-        "pitch": "22",
+        "pitch": "B1",
         "lokey": "22",
         "hikey": "22",
         "samples": [
