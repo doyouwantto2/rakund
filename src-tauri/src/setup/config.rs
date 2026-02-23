@@ -4,7 +4,7 @@ use std::default::Default;
 
 use crate::extension::instrument::settings::Settings;
 use crate::extension::instrument::{
-    contribution::Contribution, general::General, layer::LayerRange, sample::KeyData,
+    contribution::Contribution, general::General, layer::LayerRangeInfo, sample::KeyData,
 };
 
 pub fn deserialize_piano_keys<'de, D>(
@@ -46,7 +46,7 @@ impl InstrumentConfig {
             .general
             .layers
             .iter()
-            .map(|(name, range)| (name.clone(), range.lovel_num()))
+            .map(|(_name, range)| (range.name.clone(), range.lovel_num()))
             .collect();
         layers.sort_by_key(|(_, lovel)| *lovel);
         layers.into_iter().map(|(name, _)| name).collect()
@@ -111,7 +111,8 @@ impl InstrumentConfig {
         for (layer_name, layer_range) in &old_config.general.layers {
             layers.insert(
                 layer_name.clone(),
-                LayerRange {
+                LayerRangeInfo {
+                    name: layer_name.clone(),
                     lovel: layer_range.lovel,
                     hivel: layer_range.hivel,
                 },

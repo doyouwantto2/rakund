@@ -1,10 +1,11 @@
 use serde::Deserialize;
 use std::collections::HashMap;
 
-use super::layer::LayerRange;
+use super::layer::{LayerRangeInfo, deserialize_layers};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct General {
-    pub layers: HashMap<String, LayerRange>,
+    #[serde(deserialize_with = "deserialize_layers")]
+    pub layers: HashMap<String, LayerRangeInfo>,
     pub files_format: String,
 }

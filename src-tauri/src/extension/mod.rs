@@ -1,3 +1,3 @@
 pub mod account;
+pub mod challenge;
 pub mod instrument;
-pub mod score;
