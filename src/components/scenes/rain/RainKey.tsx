@@ -4,21 +4,17 @@ interface RainKeyProps {
   note: MidiNoteMs;
   x: number;
   width: number;
-  y: number; // top of the rectangle in px
-  height: number; // height of the rectangle in px
+  y: number;
+  height: number;
   isBlack: boolean;
 }
 
 export default function RainKey(props: RainKeyProps) {
-  // Velocity digits stacked vertically, reversed so they read bottom-up.
-  // e.g. 120 → ["0", "2", "1"] displayed top→bottom, read bottom→top = 120
-  const digits = () => String(props.note.velocity).split("").reverse();
-
   const bgColor = () =>
-    props.isBlack ? "rgba(120, 160, 255, 0.85)" : "rgba(160, 200, 255, 0.90)";
+    props.isBlack ? "rgba(194, 90, 0, 0.95)" : "rgba(234, 120, 20, 0.95)";
 
   const borderColor = () =>
-    props.isBlack ? "rgba(100, 140, 240, 1)" : "rgba(180, 210, 255, 1)";
+    props.isBlack ? "rgba(160, 70, 0, 1)" : "rgba(255, 150, 50, 1)";
 
   return (
     <div
@@ -34,36 +30,23 @@ export default function RainKey(props: RainKeyProps) {
         "box-sizing": "border-box",
         overflow: "hidden",
         display: "flex",
-        "flex-direction": "column",
-        "align-items": "center",
-        "justify-content": "flex-end",
+        "align-items": "flex-end",
+        "justify-content": "center",
         "padding-bottom": "2px",
       }}
     >
-      {/* Velocity digits — stacked vertically, reversed (read bottom-up) */}
-      <div
+      <span
         style={{
-          display: "flex",
-          "flex-direction": "column",
-          "align-items": "center",
+          "font-size": "6px",
+          "font-weight": "700",
+          color: "rgba(255, 255, 255, 0.9)",
           "line-height": "1",
-          gap: "0px",
+          "font-variant-numeric": "tabular-nums",
+          "white-space": "nowrap",
         }}
       >
-        {digits().map((d) => (
-          <span
-            style={{
-              "font-size": "7px",
-              "font-weight": "900",
-              color: "rgba(255,255,255,0.85)",
-              "line-height": "1.1",
-              "font-variant-numeric": "tabular-nums",
-            }}
-          >
-            {d}
-          </span>
-        ))}
-      </div>
+        {props.note.velocity}
+      </span>
     </div>
   );
 }
