@@ -66,7 +66,7 @@ impl MidiParser {
 
         let format = smf.header.format;
         let division = match smf.header.timing {
-            Timing::Metrical(ticks_per_quarter) => ticks_per_quarter.as_int() as u16,
+            Timing::Metrical(ticks_per_quarter) => ticks_per_quarter.as_int(),
             Timing::Timecode(fps, ticks_per_frame) => (fps as u16) * (ticks_per_frame as u16),
         };
 
@@ -106,10 +106,10 @@ impl MidiParser {
         for event in track {
             match event.kind {
                 TrackEventKind::Meta(MetaMessage::TrackName(name)) => {
-                    track_name = Some(String::from_utf8_lossy(&name).into_owned());
+                    track_name = Some(String::from_utf8_lossy(name).into_owned());
                 }
                 TrackEventKind::Meta(MetaMessage::InstrumentName(inst_name)) => {
-                    instrument = Some(String::from_utf8_lossy(&inst_name).into_owned());
+                    instrument = Some(String::from_utf8_lossy(inst_name).into_owned());
                 }
                 TrackEventKind::Midi {
                     channel,
