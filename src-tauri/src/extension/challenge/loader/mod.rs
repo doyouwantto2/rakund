@@ -1,4 +1,7 @@
-pub mod movement;
-pub mod pedal;
-pub mod position;
-pub mod velocity;
+pub mod force;
+pub mod interval;
+pub mod note;
+
+pub use force::Force;
+pub use interval::Interval;
+pub use note::Note;
