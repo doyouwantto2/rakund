@@ -102,8 +102,12 @@ impl MidiParser {
         let mut active_notes = std::collections::HashMap::new();
         let mut track_name = None;
         let mut instrument = None;
+        let mut current_tick: u32 = 0;
 
         for event in track {
+            // Accumulate absolute tick position FIRST before processing the event
+            current_tick += event.delta.as_int();
+
             match event.kind {
                 TrackEventKind::Meta(MetaMessage::TrackName(name)) => {
                     track_name = Some(String::from_utf8_lossy(name).into_owned());
@@ -115,18 +119,18 @@ impl MidiParser {
                     channel,
                     message: MidiMessage::NoteOn { key, vel },
                 } => {
+                    let note_id = (channel.as_int(), key.as_int());
                     if vel > 0 {
-                        let note_id = (channel.as_int(), key.as_int());
-                        active_notes.insert(note_id, (event.delta.as_int(), vel.as_int()));
+                        // Store absolute tick as start time
+                        active_notes.insert(note_id, (current_tick, vel.as_int()));
                     } else {
-                        let note_id = (channel.as_int(), key.as_int());
-                        if let Some((start_time, velocity)) = active_notes.remove(&note_id) {
-                            let current_time = start_time + event.delta.as_int();
+                        // NoteOn with velocity 0 is treated as NoteOff
+                        if let Some((start_tick, velocity)) = active_notes.remove(&note_id) {
                             notes.push(MidiNote {
                                 note: key.as_int(),
                                 velocity,
-                                start_time,
-                                duration: current_time - start_time,
+                                start_time: start_tick,
+                                duration: current_tick - start_tick,
                                 channel: channel.as_int(),
                             });
                         }
@@ -137,13 +141,12 @@ impl MidiParser {
                     message: MidiMessage::NoteOff { key, vel: _ },
                 } => {
                     let note_id = (channel.as_int(), key.as_int());
-                    if let Some((start_time, velocity)) = active_notes.remove(&note_id) {
-                        let current_time = start_time + event.delta.as_int();
+                    if let Some((start_tick, velocity)) = active_notes.remove(&note_id) {
                         notes.push(MidiNote {
                             note: key.as_int(),
                             velocity,
-                            start_time,
-                            duration: current_time - start_time,
+                            start_time: start_tick,
+                            duration: current_tick - start_tick,
                             channel: channel.as_int(),
                         });
                     }

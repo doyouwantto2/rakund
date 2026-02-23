@@ -3,6 +3,15 @@ use crate::setup::config::AppState;
 use std::fs;
 use std::path::PathBuf;
 
+pub fn songs_dir() -> Result<PathBuf> {
+    let base = dirs_next::config_dir()
+        .ok_or_else(|| AudioError::InstrumentError("Cannot find config directory".to_string()))?;
+    let dir = base.join("rakund").join("songs");
+    fs::create_dir_all(&dir)
+        .map_err(|e| AudioError::InstrumentError(format!("Cannot create songs dir: {}", e)))?;
+    Ok(dir)
+}
+
 fn state_path() -> Result<PathBuf> {
     let base = dirs_next::data_dir()
         .ok_or_else(|| AudioError::InstrumentError("Cannot find data directory".to_string()))?;

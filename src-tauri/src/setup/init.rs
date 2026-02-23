@@ -54,6 +54,10 @@ pub fn run() -> Result<(), AudioError> {
             core::player::clear_last_instrument,
             core::filter::stop_midi_note,
             core::filter::set_sustain,
+            core::visualizer::scan_songs,
+            core::visualizer::load_midi_session,
+            core::visualizer::get_session_notes,
+            core::visualizer::clear_session,
         ])
         .setup(move |app| {
             if let Some(folder) = validated_last_instrument {
