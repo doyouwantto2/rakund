@@ -1,25 +1,25 @@
 import { For, createMemo } from "solid-js";
-import { getKeyHighlight, type SectionNum } from "@/utils/keyMapping";
+import { getKeyHighlight } from "@/utils/keyMapping";
 import { PIANO_KEYS } from "@/utils/pianoLayout";
 
 interface PianoProps {
   activeNotes: () => Set<number>;
   onNoteOn: (midi: number, hand: "left" | "right") => void;
   onNoteOff: (midi: number) => void;
-  leftSection: () => SectionNum | null;
-  rightSection: () => SectionNum | null;
+  leftOctave: () => number;
+  rightOctave: () => number;
 }
 
 const WHITE_KEYS = PIANO_KEYS.filter((k) => k.type === "white");
 const BLACK_KEYS = PIANO_KEYS.filter((k) => k.type === "black");
 
 export default function PianoContainer(props: PianoProps) {
-  const { activeNotes, onNoteOn, onNoteOff, leftSection, rightSection } = props;
+  const { activeNotes, onNoteOn, onNoteOff, leftOctave, rightOctave } = props;
 
   const highlights = createMemo(() => {
     const map = new Map<number, "left" | "right" | "both">();
     for (const k of PIANO_KEYS) {
-      const h = getKeyHighlight(k.midi, leftSection(), rightSection());
+      const h = getKeyHighlight(k.midi, leftOctave(), rightOctave());
       if (h) map.set(k.midi, h);
     }
     return map;

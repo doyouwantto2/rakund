@@ -28,8 +28,8 @@ export default function Home() {
         loadProgress={piano.loadProgress}
         activeFolder={piano.activeFolder}
         onSelectInstrument={piano.selectInstrument}
-        leftSection={piano.leftSection}
-        rightSection={piano.rightSection}
+        leftOctave={piano.leftOctave}
+        rightOctave={piano.rightOctave}
         leftModifier={piano.leftModifier}
         rightModifier={piano.rightModifier}
         leftLayerIdx={piano.leftLayerIdx}
@@ -95,8 +95,8 @@ export default function Home() {
           activeNotes={piano.activeNotes}
           onNoteOn={piano.noteOn}
           onNoteOff={piano.noteOff}
-          leftSection={piano.leftSection}
-          rightSection={piano.rightSection}
+          leftOctave={piano.leftOctave}
+          rightOctave={piano.rightOctave}
         />
       </div>
     </div>

@@ -3,12 +3,17 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import {
   getMidiForKey,
-  isLeftSectionKey,
-  isRightSectionKey,
   isPianoKey,
-  LEFT_SECTION_KEYS,
-  RIGHT_SECTION_KEYS,
-  type SectionNum,
+  isLeftPianoKey,
+  isRightPianoKey,
+  isLeftOctaveUpKey,
+  isLeftOctaveDownKey,
+  isRightOctaveUpKey,
+  isRightOctaveDownKey,
+  LEFT_OCTAVE_MIN,
+  LEFT_OCTAVE_MAX,
+  RIGHT_OCTAVE_MIN,
+  RIGHT_OCTAVE_MAX,
   type Modifier,
 } from "../utils/keyMapping";
 
@@ -34,24 +39,40 @@ export interface InstrumentInfo {
   contribution?: Contribution;
 }
 
+// Default octave offsets — left hand sits around A2–D4, right hand around F4–B5
+const LEFT_OCTAVE_DEFAULT = 2;
+const RIGHT_OCTAVE_DEFAULT = 0;
+
 export function usePiano() {
   const [activeNotes, setActiveNotes] = createSignal(new Set<number>());
   const [availableLayers, setAvailableLayers] = createSignal<string[]>([]);
-  const [availableLayerRanges, setAvailableLayerRanges] = createSignal<LayerRange[]>([]);
-  const [availableInstruments, setAvailableInstruments] = createSignal<InstrumentInfo[]>([]);
-  const [currentInstrument, setCurrentInstrument] = createSignal<InstrumentInfo | null>(null);
+  const [availableLayerRanges, setAvailableLayerRanges] = createSignal<
+    LayerRange[]
+  >([]);
+  const [availableInstruments, setAvailableInstruments] = createSignal<
+    InstrumentInfo[]
+  >([]);
+  const [currentInstrument, setCurrentInstrument] =
+    createSignal<InstrumentInfo | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
   const [loadProgress, setLoadProgress] = createSignal<number | null>(null);
   const [activeFolder, setActiveFolder] = createSignal<string | null>(null);
 
-  const [leftSection, setLeftSection] = createSignal<SectionNum | null>(null);
-  const [rightSection, setRightSection] = createSignal<SectionNum | null>(null);
+  // Each hand has its own dynamic octave offset
+  const [leftOctave, setLeftOctave] = createSignal(LEFT_OCTAVE_DEFAULT);
+  const [rightOctave, setRightOctave] = createSignal(RIGHT_OCTAVE_DEFAULT);
+
   const [leftModifier, setLeftModifier] = createSignal<Modifier>(null);
   const [rightModifier, setRightModifier] = createSignal<Modifier>(null);
   const [leftLayerIdx, setLeftLayerIdx] = createSignal(0);
   const [rightLayerIdx, setRightLayerIdx] = createSignal(0);
 
-  const heldModifiers = { shiftLeft: false, shiftRight: false, altLeft: false, altRight: false };
+  const heldModifiers = {
+    shiftLeft: false,
+    shiftRight: false,
+    altLeft: false,
+    altRight: false,
+  };
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -59,27 +80,27 @@ export function usePiano() {
     setCurrentInstrument(info);
     setAvailableLayers(info.layers);
     setAvailableLayerRanges(info.layer_ranges ?? []);
-    const defaultIdx = info.layers.findIndex(l => l.toUpperCase() === "MP");
+    const defaultIdx = info.layers.findIndex((l) => l.toUpperCase() === "MP");
     const idx = defaultIdx >= 0 ? defaultIdx : 0;
     setLeftLayerIdx(idx);
     setRightLayerIdx(idx);
     if (info.folder) setActiveFolder(info.folder);
   };
 
-  const layerForHand = (hand: 'left' | 'right'): string => {
+  const layerForHand = (hand: "left" | "right"): string => {
     const layers = availableLayers();
     if (layers.length === 0) return "";
-    const idx = hand === 'left' ? leftLayerIdx() : rightLayerIdx();
+    const idx = hand === "left" ? leftLayerIdx() : rightLayerIdx();
     return layers[Math.min(idx, layers.length - 1)];
   };
 
-  const cycleLayer = (hand: 'left' | 'right', direction: 1 | -1) => {
+  const cycleLayer = (hand: "left" | "right", direction: 1 | -1) => {
     const total = availableLayers().length;
     if (total === 0) return;
-    if (hand === 'left') {
-      setLeftLayerIdx(i => Math.max(0, Math.min(total - 1, i + direction)));
+    if (hand === "left") {
+      setLeftLayerIdx((i) => Math.max(0, Math.min(total - 1, i + direction)));
     } else {
-      setRightLayerIdx(i => Math.max(0, Math.min(total - 1, i + direction)));
+      setRightLayerIdx((i) => Math.max(0, Math.min(total - 1, i + direction)));
     }
   };
 
@@ -88,15 +109,21 @@ export function usePiano() {
     const lower = layer.toLowerCase();
     const layers = availableLayers();
     const base =
-      lower === "pp" ? 20 :
-        lower === "mp" ? 54 :
-          lower === "mf" ? 76 :
-            lower === "ff" ? 106 :
-              (() => {
-                const idx = layers.indexOf(layer);
-                const total = layers.length;
-                return total === 0 ? 54 : Math.round(20 + (idx / Math.max(total - 1, 1)) * 86);
-              })();
+      lower === "pp"
+        ? 20
+        : lower === "mp"
+          ? 54
+          : lower === "mf"
+            ? 76
+            : lower === "ff"
+              ? 106
+              : (() => {
+                  const idx = layers.indexOf(layer);
+                  const total = layers.length;
+                  return total === 0
+                    ? 54
+                    : Math.round(20 + (idx / Math.max(total - 1, 1)) * 86);
+                })();
     return Math.min(127, base);
   };
 
@@ -104,7 +131,9 @@ export function usePiano() {
 
   const loadAvailableInstruments = async () => {
     try {
-      const instruments = await invoke<InstrumentInfo[]>("get_available_instruments");
+      const instruments = await invoke<InstrumentInfo[]>(
+        "get_available_instruments",
+      );
       setAvailableInstruments(instruments);
       return instruments;
     } catch (e) {
@@ -121,11 +150,13 @@ export function usePiano() {
     setIsLoading(true);
     setLoadProgress(0);
 
-    const placeholder = availableInstruments().find(i => i.folder === folder);
+    const placeholder = availableInstruments().find((i) => i.folder === folder);
     if (placeholder && !currentInstrument()) {
       setAvailableLayers(placeholder.layers);
       setAvailableLayerRanges(placeholder.layer_ranges ?? []);
-      const defaultIdx = placeholder.layers.findIndex(l => l.toUpperCase() === "MP");
+      const defaultIdx = placeholder.layers.findIndex(
+        (l) => l.toUpperCase() === "MP",
+      );
       setLeftLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
       setRightLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
     }
@@ -133,7 +164,6 @@ export function usePiano() {
     try {
       const info = await invoke<InstrumentInfo>("load_instrument", { folder });
       applyInstrument(info);
-      // Reset loading state immediately after successful load
       setIsLoading(false);
       setLoadProgress(null);
     } catch (e) {
@@ -146,9 +176,9 @@ export function usePiano() {
 
   // ── Audio ─────────────────────────────────────────────────────────────────────
 
-  const noteOn = async (midi: number, hand: 'left' | 'right') => {
+  const noteOn = async (midi: number, hand: "left" | "right") => {
     if (activeNotes().has(midi)) return;
-    setActiveNotes(prev => new Set(prev).add(midi));
+    setActiveNotes((prev) => new Set(prev).add(midi));
     const layer = layerForHand(hand);
     try {
       await invoke("play_midi_note", {
@@ -156,50 +186,57 @@ export function usePiano() {
         velocity: velocityForLayer(layer),
         layer,
       });
-    } catch (e) { console.error("[PIANO] play error:", e); }
+    } catch (e) {
+      console.error("[PIANO] play error:", e);
+    }
   };
 
   const noteOff = async (midi: number) => {
-    setActiveNotes(prev => { const n = new Set(prev); n.delete(midi); return n; });
+    setActiveNotes((prev) => {
+      const n = new Set(prev);
+      n.delete(midi);
+      return n;
+    });
     try {
       await invoke("stop_midi_note", { midiNum: midi });
-    } catch (e) { console.error("[PIANO] stop error:", e); }
+    } catch (e) {
+      console.error("[PIANO] stop error:", e);
+    }
   };
 
   // ── Startup ───────────────────────────────────────────────────────────────────
 
   onMount(async () => {
-    // Set initial loading state immediately
     setIsLoading(true);
     setLoadProgress(0);
-    
+
     const instruments = await loadAvailableInstruments();
 
     try {
-      const appState = await invoke<{ last_instrument: string | null }>("get_app_state");
+      const appState = await invoke<{ last_instrument: string | null }>(
+        "get_app_state",
+      );
       const lastFolder = appState.last_instrument;
       if (lastFolder) {
-        // Check if last instrument still exists
-        const placeholder = instruments.find(i => i.folder === lastFolder);
+        const placeholder = instruments.find((i) => i.folder === lastFolder);
         if (placeholder) {
-          // Instrument exists, set up loading state immediately
           setAvailableLayers(placeholder.layers);
           setAvailableLayerRanges(placeholder.layer_ranges ?? []);
-          const defaultIdx = placeholder.layers.findIndex(l => l.toUpperCase() === "MP");
+          const defaultIdx = placeholder.layers.findIndex(
+            (l) => l.toUpperCase() === "MP",
+          );
           setLeftLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
           setRightLayerIdx(defaultIdx >= 0 ? defaultIdx : 0);
           setActiveFolder(lastFolder);
-          // Loading state already set above
         } else {
-          // Instrument no longer exists, clear state
-          console.log("[INIT] Last instrument no longer exists, clearing state");
+          console.log(
+            "[INIT] Last instrument no longer exists, clearing state",
+          );
           await invoke("clear_last_instrument");
-          // Clear loading state since no instrument to load
           setIsLoading(false);
           setLoadProgress(null);
         }
       } else {
-        // No last instrument, clear loading state
         setIsLoading(false);
         setLoadProgress(null);
       }
@@ -216,17 +253,15 @@ export function usePiano() {
         setIsLoading(false);
         setLoadProgress(null);
       } else if (activeFolder()) {
-        // If we have an active folder but no instrument info, it means loading is in progress
-        // Don't clear loading state - let progress events handle it
-        console.log("[INIT] Background preload in progress, keeping loading state");
+        console.log(
+          "[INIT] Background preload in progress, keeping loading state",
+        );
       } else {
-        // No active folder and no info, clear loading state
         setIsLoading(false);
         setLoadProgress(null);
       }
     } catch (e) {
       console.error("[INIT] get_instrument_info error:", e);
-      // Only clear loading state if no active folder
       if (!activeFolder()) {
         setIsLoading(false);
         setLoadProgress(null);
@@ -245,12 +280,15 @@ export function usePiano() {
       } else if (status === "done") {
         setLoadProgress(100);
         try {
-          const info = await invoke<InstrumentInfo | null>("get_instrument_info");
-          // Only apply instrument if it matches the currently active folder
+          const info = await invoke<InstrumentInfo | null>(
+            "get_instrument_info",
+          );
           if (info && info.folder && info.folder === activeFolder()) {
             applyInstrument(info);
           }
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
         setTimeout(() => {
           setIsLoading(false);
           setLoadProgress(null);
@@ -265,72 +303,164 @@ export function usePiano() {
 
     // ── Keyboard ──────────────────────────────────────────────────────────────
 
+    // Maps a held key → the MIDI notes it started (supports chords)
+    const keyToMidis = new Map<string, number[]>();
     const heldKeys = new Set<string>();
-    const keyToMidi = new Map<string, number>();
 
     const recomputeModifiers = () => {
-      const lm: Modifier = heldModifiers.altLeft ? 'flat' : heldModifiers.shiftLeft ? 'sharp' : null;
-      const rm: Modifier = heldModifiers.altRight ? 'flat' : heldModifiers.shiftRight ? 'sharp' : null;
+      const lm: Modifier = heldModifiers.altLeft
+        ? "flat"
+        : heldModifiers.shiftLeft
+          ? "sharp"
+          : null;
+      const rm: Modifier = heldModifiers.altRight
+        ? "flat"
+        : heldModifiers.shiftRight
+          ? "sharp"
+          : null;
       setLeftModifier(lm);
       setRightModifier(rm);
     };
 
     const normalizeKey = (k: string) => {
-      if (k === '?') return '/';
-      if (k === '<') return ',';
-      if (k === '>') return '.';
-      if (k === ':') return ';';
+      if (k === "?") return "/";
+      if (k === "<") return ",";
+      if (k === ">") return ".";
+      if (k === ":") return ";";
       return k.toLowerCase();
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "ShiftLeft") { heldModifiers.shiftLeft = true; recomputeModifiers(); return; }
-      if (e.code === "ShiftRight") { heldModifiers.shiftRight = true; recomputeModifiers(); return; }
-      if (e.code === "AltLeft") { heldModifiers.altLeft = true; recomputeModifiers(); e.preventDefault(); return; }
-      if (e.code === "AltRight") { heldModifiers.altRight = true; recomputeModifiers(); e.preventDefault(); return; }
+      // ── Modifier keys ──
+      if (e.code === "ShiftLeft") {
+        heldModifiers.shiftLeft = true;
+        recomputeModifiers();
+        return;
+      }
+      if (e.code === "ShiftRight") {
+        heldModifiers.shiftRight = true;
+        recomputeModifiers();
+        return;
+      }
+      if (e.code === "AltLeft") {
+        heldModifiers.altLeft = true;
+        recomputeModifiers();
+        e.preventDefault();
+        return;
+      }
+      if (e.code === "AltRight") {
+        heldModifiers.altRight = true;
+        recomputeModifiers();
+        e.preventDefault();
+        return;
+      }
       if (e.repeat) return;
 
+      // ── Layer cycling (Space) ──
       if (e.code === "Space") {
         e.preventDefault();
-        const dir: 1 | -1 = (heldModifiers.shiftLeft || heldModifiers.shiftRight) ? 1 : -1;
-        if (heldModifiers.shiftLeft || heldModifiers.altLeft) cycleLayer('left', dir);
-        if (heldModifiers.shiftRight || heldModifiers.altRight) cycleLayer('right', dir);
+        const dir: 1 | -1 =
+          heldModifiers.shiftLeft || heldModifiers.shiftRight ? 1 : -1;
+        if (heldModifiers.shiftLeft || heldModifiers.altLeft)
+          cycleLayer("left", dir);
+        if (heldModifiers.shiftRight || heldModifiers.altRight)
+          cycleLayer("right", dir);
         return;
       }
 
       const key = normalizeKey(e.key);
+      if (heldKeys.has(key)) return;
 
-      if (isLeftSectionKey(key)) { setLeftSection(LEFT_SECTION_KEYS[key] as SectionNum); return; }
-      if (isRightSectionKey(key)) { setRightSection(RIGHT_SECTION_KEYS[key] as SectionNum); return; }
-      if (key === 'escape') { setLeftSection(null); setRightSection(null); return; }
-      if (!isPianoKey(key) || heldKeys.has(key)) return;
+      // ── Octave navigation ──
+      if (isLeftOctaveUpKey(key)) {
+        heldKeys.add(key);
+        setLeftOctave((o) => Math.min(LEFT_OCTAVE_MAX, o + 1));
+        e.preventDefault();
+        return;
+      }
+      if (isLeftOctaveDownKey(key)) {
+        heldKeys.add(key);
+        setLeftOctave((o) => Math.max(LEFT_OCTAVE_MIN, o - 1));
+        e.preventDefault();
+        return;
+      }
+      if (isRightOctaveUpKey(key)) {
+        heldKeys.add(key);
+        setRightOctave((o) => Math.min(RIGHT_OCTAVE_MAX, o + 1));
+        e.preventDefault();
+        return;
+      }
+      if (isRightOctaveDownKey(key)) {
+        heldKeys.add(key);
+        setRightOctave((o) => Math.max(RIGHT_OCTAVE_MIN, o - 1));
+        e.preventDefault();
+        return;
+      }
+
+      // ── Escape: reset octaves ──
+      if (key === "escape") {
+        setLeftOctave(LEFT_OCTAVE_DEFAULT);
+        setRightOctave(RIGHT_OCTAVE_DEFAULT);
+        return;
+      }
+
+      // ── Regular piano keys ──
+      if (!isPianoKey(key)) return;
 
       heldKeys.add(key);
 
-      const leftMidi = getMidiForKey(key, leftSection(), 'left', leftModifier());
-      const rightMidi = getMidiForKey(key, rightSection(), 'right', rightModifier());
-
-      if (leftMidi !== null) {
-        e.preventDefault();
-        keyToMidi.set(key, leftMidi);
-        noteOn(leftMidi, 'left');
-      } else if (rightMidi !== null) {
-        e.preventDefault();
-        keyToMidi.set(key, rightMidi);
-        noteOn(rightMidi, 'right');
+      if (isLeftPianoKey(key)) {
+        const midi = getMidiForKey(key, "left", leftOctave(), leftModifier());
+        if (midi !== null) {
+          e.preventDefault();
+          keyToMidis.set(key, [midi]);
+          noteOn(midi, "left");
+        }
+      } else if (isRightPianoKey(key)) {
+        const midi = getMidiForKey(
+          key,
+          "right",
+          rightOctave(),
+          rightModifier(),
+        );
+        if (midi !== null) {
+          e.preventDefault();
+          keyToMidis.set(key, [midi]);
+          noteOn(midi, "right");
+        }
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === "ShiftLeft") { heldModifiers.shiftLeft = false; recomputeModifiers(); return; }
-      if (e.code === "ShiftRight") { heldModifiers.shiftRight = false; recomputeModifiers(); return; }
-      if (e.code === "AltLeft") { heldModifiers.altLeft = false; recomputeModifiers(); return; }
-      if (e.code === "AltRight") { heldModifiers.altRight = false; recomputeModifiers(); return; }
+      if (e.code === "ShiftLeft") {
+        heldModifiers.shiftLeft = false;
+        recomputeModifiers();
+        return;
+      }
+      if (e.code === "ShiftRight") {
+        heldModifiers.shiftRight = false;
+        recomputeModifiers();
+        return;
+      }
+      if (e.code === "AltLeft") {
+        heldModifiers.altLeft = false;
+        recomputeModifiers();
+        return;
+      }
+      if (e.code === "AltRight") {
+        heldModifiers.altRight = false;
+        recomputeModifiers();
+        return;
+      }
 
       const key = normalizeKey(e.key);
       heldKeys.delete(key);
-      const midi = keyToMidi.get(key);
-      if (midi !== undefined) { noteOff(midi); keyToMidi.delete(key); }
+
+      const midis = keyToMidis.get(key);
+      if (midis) {
+        midis.forEach((m) => noteOff(m));
+        keyToMidis.delete(key);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -344,16 +474,26 @@ export function usePiano() {
   });
 
   return {
-    activeNotes, noteOn, noteOff,
+    activeNotes,
+    noteOn,
+    noteOff,
     availableLayers,
     availableLayerRanges,
-    leftLayerIdx, rightLayerIdx,
+    leftLayerIdx,
+    rightLayerIdx,
     layerForHand,
     velocityForLayer,
-    availableInstruments, currentInstrument,
+    availableInstruments,
+    currentInstrument,
     activeFolder,
-    selectInstrument, isLoading, loadProgress,
-    leftSection, rightSection,
-    leftModifier, rightModifier,
+    selectInstrument,
+    isLoading,
+    loadProgress,
+    leftOctave,
+    rightOctave,
+    setLeftOctave,
+    setRightOctave,
+    leftModifier,
+    rightModifier,
   };
 }

@@ -1,5 +1,5 @@
 import type { InstrumentInfo, LayerRange } from "../../hooks/usePiano";
-import type { Modifier, SectionNum } from "../../utils/keyMapping";
+import type { Modifier } from "../../utils/keyMapping";
 import type {
   SongInfo,
   SessionStatus,
@@ -20,8 +20,8 @@ interface HeaderContainerProps {
   loadProgress: () => number | null;
   activeFolder: () => string | null;
   onSelectInstrument: (folder: string) => void;
-  leftSection: () => SectionNum | null;
-  rightSection: () => SectionNum | null;
+  leftOctave: () => number;
+  rightOctave: () => number;
   leftModifier: () => Modifier;
   rightModifier: () => Modifier;
   leftLayerIdx: () => number;
@@ -55,8 +55,8 @@ export default function HeaderContainer(props: HeaderContainerProps) {
             layerRanges={props.availableLayerRanges}
             leftLayerIdx={props.leftLayerIdx}
             rightLayerIdx={props.rightLayerIdx}
-            leftActive={() => props.leftSection() !== null}
-            rightActive={() => props.rightSection() !== null}
+            leftOctave={props.leftOctave}
+            rightOctave={props.rightOctave}
           />
         </div>
       </div>
