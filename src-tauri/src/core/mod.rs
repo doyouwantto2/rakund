@@ -1,3 +1,3 @@
-pub mod filter;
+pub mod manager;
 pub mod player;
 pub mod visualizer;

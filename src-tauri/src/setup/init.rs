@@ -52,8 +52,6 @@ pub fn run() -> Result<(), AudioError> {
             core::player::get_instrument_info,
             core::player::get_app_state,
             core::player::clear_last_instrument,
-            core::filter::stop_midi_note,
-            core::filter::set_sustain,
             core::visualizer::scan_songs,
             core::visualizer::load_midi_session,
             core::visualizer::get_session_notes,
