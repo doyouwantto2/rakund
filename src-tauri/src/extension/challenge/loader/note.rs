@@ -51,7 +51,6 @@ impl Note {
             return None;
         }
 
-        // Detect sharp: second byte is '#', e.g. "C#4"
         let is_sharp = name.len() >= 3 && name.as_bytes().get(1) == Some(&b'#');
         let split_at = if is_sharp { 2 } else { name.len() - 1 };
 

@@ -354,7 +354,6 @@ export function usePiano() {
         e.preventDefault();
         return;
       }
-      if (e.repeat) return;
 
       // ── Layer cycling (Space) ──
       if (e.code === "Space") {
@@ -369,7 +368,7 @@ export function usePiano() {
       }
 
       const key = normalizeKey(e.key);
-      if (heldKeys.has(key)) return;
+      if (e.repeat && heldKeys.has(key)) return;
 
       // ── Octave navigation ──
       if (isLeftOctaveUpKey(key)) {
@@ -407,6 +406,7 @@ export function usePiano() {
       // ── Regular piano keys ──
       if (!isPianoKey(key)) return;
 
+      if (heldKeys.has(key)) return;
       heldKeys.add(key);
 
       if (isLeftPianoKey(key)) {

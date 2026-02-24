@@ -10,11 +10,33 @@ interface RainKeyProps {
 }
 
 export default function RainKey(props: RainKeyProps) {
-  const bgColor = () =>
-    props.isBlack ? "rgba(194, 90, 0, 0.95)" : "rgba(234, 120, 20, 0.95)";
-
-  const borderColor = () =>
-    props.isBlack ? "rgba(160, 70, 0, 1)" : "rgba(255, 150, 50, 1)";
+  // Calculate background brightness/darkness based on velocity (0-127)
+  // Velocity 64 = base color, lower = lighter, higher = darker
+  const velocityRatio = props.note.velocity / 127;
+  
+  // Base RGB values
+  const baseR = 255;
+  const baseG = 121;
+  const baseB = 64;
+  
+  let r, g, b;
+  
+  if (velocityRatio < 0.5) {
+    // Low velocity: make it lighter (0-63)
+    const lightnessFactor = 1 + ((0.5 - velocityRatio) * 0.4); // Range: 1.0 to 1.2
+    r = Math.min(255, Math.floor(baseR * lightnessFactor));
+    g = Math.min(255, Math.floor(baseG * lightnessFactor));
+    b = Math.min(255, Math.floor(baseB * lightnessFactor));
+  } else {
+    // High velocity: make it darker (64-127)
+    const darknessFactor = 1 - ((velocityRatio - 0.5) * 0.4); // Range: 1.0 to 0.8
+    r = Math.floor(baseR * darknessFactor);
+    g = Math.floor(baseG * darknessFactor);
+    b = Math.floor(baseB * darknessFactor);
+  }
+  
+  const bgColor = () => `rgba(${r}, ${g}, ${b}, 0.9)`;
+  const borderColor = () => `rgba(${r}, ${g}, ${b}, 1)`;
 
   return (
     <div
@@ -30,14 +52,13 @@ export default function RainKey(props: RainKeyProps) {
         "box-sizing": "border-box",
         overflow: "hidden",
         display: "flex",
-        "align-items": "flex-end",
+        "align-items": "center",
         "justify-content": "center",
-        "padding-bottom": "2px",
       }}
     >
       <span
         style={{
-          "font-size": "6px",
+          "font-size": "0.6rem",
           "font-weight": "700",
           color: "rgba(255, 255, 255, 0.9)",
           "line-height": "1",

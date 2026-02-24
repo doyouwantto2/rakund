@@ -4,9 +4,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use thiserror::Error;
 
-/// A single MIDI note with timing converted to milliseconds.
-/// This is the in-RAM representation of a loaded MIDI file's notes,
-/// mirroring how cache.rs stores decoded audio samples for instruments.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MidiNoteMs {
     pub midi: u8,
@@ -67,13 +64,11 @@ pub enum BufferData {
 }
 
 pub struct MidiBuffer {
-    // ── Loaded MIDI data (populated once at load time, never mutated) ──────────
     pub all_notes: Vec<MidiNoteMs>,
     pub total_duration_ms: u32,
     pub tempo_bpm: f32,
     pub file_path: String,
 
-    // ── Runtime state (mutated during playback) ────────────────────────────────
     pub active_notes: HashMap<u8, Note>,
     pub chord_history: Vec<ChordEvent>,
     pub score: f32,
@@ -96,8 +91,6 @@ impl MidiBuffer {
         }
     }
 
-    /// Load from a parsed MidiFile — mirrors cache::insert_by_index for instruments.
-    /// Converts all tick timings to milliseconds and stores the full note list in RAM.
     pub fn from_midi_file(midi_file: &MidiFile, file_path: String) -> Self {
         let tempo_bpm = midi_file.get_tempo_bpm();
         let ticks_per_quarter = midi_file.division;
@@ -140,7 +133,6 @@ impl MidiBuffer {
         }
     }
 
-    /// Reset only the runtime state, keeping the loaded note data intact.
     pub fn reset_runtime(&mut self) {
         self.active_notes.clear();
         self.chord_history.clear();
@@ -254,7 +246,6 @@ impl MidiBuffer {
         signals
     }
 
-    /// Clear everything — both loaded data and runtime state.
     pub fn clear(&mut self) {
         self.all_notes.clear();
         self.total_duration_ms = 0;

@@ -158,8 +158,12 @@ export function useBuffer() {
 
   const stopPlayback = () => {
     stopTick();
-    resetPlayback();
-    setSessionStatus("ready"); // back to ready so user can replay or switch mode
+    setCurrentTime(0);
+    setScore(0);
+    sessionStartMs = 0;
+    setAllNotes([]);
+    setSessionInfo(null);
+    setSessionStatus("idle");
     setSessionMode(null);
   };
 

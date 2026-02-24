@@ -62,9 +62,8 @@ export default function SongSelect(props: SongSelectProps) {
       {/* Song button */}
       <button
         onClick={() => setShowList((v) => !v)}
-        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${
-          displayName() ? "text-zinc-200" : "text-zinc-400"
-        }`}
+        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${displayName() ? "text-zinc-200" : "text-zinc-400"
+          }`}
       >
         <Show when={displayName()}>
           <span
@@ -134,19 +133,17 @@ export default function SongSelect(props: SongSelectProps) {
                           }
                         }}
                         disabled={isOtherLoading()}
-                        class={`w-full text-left px-4 py-3 transition-colors group ${
-                          isActive()
+                        class={`w-full text-left px-4 py-3 transition-colors group ${isActive()
                             ? "bg-zinc-700/50"
                             : isOtherLoading()
                               ? "opacity-50 cursor-not-allowed"
                               : "cursor-pointer hover:bg-zinc-700/30"
-                        }`}
+                          }`}
                       >
                         <div class="flex items-center gap-3">
                           {/* Status dot */}
                           <span
-                            class={`w-2 h-2 rounded-full shrink-0 transition-colors ${
-                              isThisLoading()
+                            class={`w-2 h-2 rounded-full shrink-0 transition-colors ${isThisLoading()
                                 ? "bg-amber-400 animate-pulse"
                                 : isPlaying()
                                   ? "bg-emerald-400 shadow-[0_0_6px_2px_rgba(52,211,153,0.4)]"
@@ -155,7 +152,7 @@ export default function SongSelect(props: SongSelectProps) {
                                     : isFinished()
                                       ? "bg-zinc-400"
                                       : "bg-zinc-600 group-hover:bg-zinc-400"
-                            }`}
+                              }`}
                           />
                           <span class="text-sm font-medium text-zinc-200 truncate flex-1">
                             {song.display_name}
@@ -216,7 +213,7 @@ export default function SongSelect(props: SongSelectProps) {
                       <Show when={isPlaying() || isPaused() || isFinished()}>
                         <div class="px-4 pb-3">
                           <button
-                            class="w-full px-3 py-1.5 rounded text-xs font-medium bg-zinc-700 hover:bg-zinc-600 text-zinc-300 transition-colors"
+                            class="w-full px-3 py-1.5 mt-2 rounded text-xs font-medium bg-zinc-700 hover:bg-zinc-600 text-zinc-300 transition-colors"
                             onClick={() => {
                               props.onStop();
                               setShowList(false);
