@@ -68,14 +68,14 @@ const MIDI_MAX = 108; // C8
 
 // ── Octave offset clamp limits ────────────────────────────────────────────────
 // Valid = all 12 notes in range. We allow 1 extra "fake" octave on each side.
-//   Left  valid [0..5]  → clamp [-1..6]
-//     offset 0: F1(29)–C3(48)   offset 5: F6(89)–C8(108)
+//   Left  valid [0..4]  → clamp [-1..5]
+//     offset 0: F1(29)–C3(48)   offset 4: F5(77)–C7(96)
 //   Right valid [-3..2] → clamp [-4..3]
 //     offset -3: F1(29)–C3(48)  offset 2: F6(89)–C8(108)
 export const LEFT_OCTAVE_MIN = -1;
-export const LEFT_OCTAVE_MAX = 6;
+export const LEFT_OCTAVE_MAX = 5;
 export const RIGHT_OCTAVE_MIN = -4;
-export const RIGHT_OCTAVE_MAX = 3;
+export const RIGHT_OCTAVE_MAX = 2;
 
 // ── Modifier ──────────────────────────────────────────────────────────────────
 export type Modifier = "sharp" | "flat" | null;
