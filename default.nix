@@ -27,7 +27,7 @@ let
 
   # Tools needed only during build time
   buildTools = with pkgs; [
-    rustup
+    # rustup
     pkg-config
     git
     nodejs
