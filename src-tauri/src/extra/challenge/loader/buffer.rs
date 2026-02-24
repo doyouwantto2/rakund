@@ -1,5 +1,5 @@
 use super::{force::Force, note::Note};
-use crate::external::challenge::converter::midi::MidiFile;
+use crate::extra::challenge::converter::midi::MidiFile;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use thiserror::Error;

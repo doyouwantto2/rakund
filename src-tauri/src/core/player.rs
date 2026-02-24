@@ -1,6 +1,6 @@
 use crate::engine::cache;
 use crate::error::AudioError;
-use crate::external::sketch::instrument::response::InstrumentInfoResponse;
+use crate::extra::sketch::instrument::response::InstrumentInfoResponse;
 use crate::setup::audio::{self, AudioHandle};
 use crate::setup::config::{AppState, InstrumentConfig};
 use crate::setup::state;

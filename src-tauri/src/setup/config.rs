@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::default::Default;
 
-use crate::external::sketch::instrument::settings::Settings;
-use crate::external::sketch::instrument::{
+use crate::extra::sketch::instrument::settings::Settings;
+use crate::extra::sketch::instrument::{
     contribution::Contribution, general::General, layer::LayerRangeInfo, sample::KeyData,
 };
 
