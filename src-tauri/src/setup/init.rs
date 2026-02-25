@@ -48,7 +48,6 @@ pub fn run() -> Result<(), AudioError> {
             core::manager::get_file_metadata,
         ])
         .setup(|_app| {
-            println!("[INIT] No auto-loading - waiting for user selection");
             Ok(())
         })
         .run(tauri::generate_context!())

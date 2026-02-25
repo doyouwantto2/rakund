@@ -1,6 +1,5 @@
 use crate::engine::cache;
 use crate::error::AudioError;
-use crate::extra::sketch::instrument::response::InstrumentInfoResponse;
 use crate::setup::audio::{self, AudioHandle};
 use crate::setup::config::{AppState, InstrumentConfig};
 use crate::state;
@@ -79,7 +78,7 @@ pub async fn stop_midi_note(
     let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
     let config = config_guard.as_ref().ok_or("No instrument loaded")?;
 
-    let key_data = config
+    let _key_data = config
         .piano_keys
         .get(&midi_num.to_string())
         .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
@@ -101,26 +100,19 @@ pub async fn get_available_instruments(
 ) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
     use crate::storage::handler::FileHandler;
 
-    println!("[SCAN] Starting instrument scan...");
-    
     let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
 
-    println!("[SCAN] Getting instrument directories...");
     let directories = file_handler
         .scan_instrument_directories()
         .await
         .map_err(|e| e.to_string())?;
 
-    println!("[SCAN] Found {} directories to process", directories.len());
-
     let mut result = Vec::new();
-    for (index, folder) in directories.iter().enumerate() {
+    for (_index, folder) in directories.iter().enumerate() {
         let folder_name = folder
             .file_name()
             .and_then(|name| name.to_str())
             .unwrap_or("unknown");
-
-        println!("[SCAN] Processing directory {}/{}: {}", index + 1, directories.len(), folder_name);
 
         // Read the instrument.json to get full instrument data
         let json_path = folder.join("instrument.json");
@@ -128,7 +120,6 @@ pub async fn get_available_instruments(
             .map_err(|e| e.to_string())?;
 
         if raw.is_empty() {
-            println!("[SCAN] Empty instrument.json in {}", folder_name);
             continue;
         }
 
@@ -140,15 +131,13 @@ pub async fn get_available_instruments(
                         folder_name,
                     );
                 result.push(info);
-                println!("[SCAN] Successfully loaded: {}", config.instrument);
             }
             Err(e) => {
-                println!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
+                eprintln!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
             }
         }
     }
 
-    println!("[SCAN] Found {} valid instruments", result.len());
     Ok(result)
 }
 
@@ -164,27 +153,22 @@ pub async fn get_available_instruments_files(
 pub async fn load_instrument(
     folder: String,
     app: AppHandle,
-    state: State<'_, AppState>,
+    _state: State<'_, AppState>,
 ) -> Result<crate::extra::sketch::instrument::response::InstrumentInfoResponse, String> {
     use crate::storage::handler::FileHandler;
-
-    println!("[LOAD] Starting instrument load: {}", folder);
 
     // Validate instrument exists using FileHandler
     let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
 
-    println!("[LOAD] Checking if instrument exists...");
     let instrument_exists = file_handler
         .instrument_exists(&folder)
         .await
         .map_err(|e| e.to_string())?;
 
     if !instrument_exists {
-        println!("[LOAD] Instrument '{}' does not exist", folder);
         return Err(format!("Instrument '{}' does not exist", folder));
     }
 
-    println!("[LOAD] Validating instrument structure...");
     file_handler
         .validate_instrument_structure(&folder)
         .await
@@ -193,14 +177,6 @@ pub async fn load_instrument(
     // Use the original progress-enabled loading function
     let config = crate::setup::audio::load_instrument_with_progress(&folder, &app)
         .map_err(|e| e.to_string())?;
-
-    println!(
-        "[LOAD] {} — format: {} — {} keys — layers: [{}]",
-        config.instrument,
-        config.files_format(),
-        config.piano_keys.len(),
-        config.layers().join(", ")
-    );
 
     *CURRENT_INSTRUMENT.lock().unwrap() = Some(config.clone());
     *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
@@ -211,7 +187,6 @@ pub async fn load_instrument(
 
     state::set_last_instrument(&folder).map_err(|e: AudioError| e.to_string())?;
 
-    println!("[LOAD] Successfully loaded instrument: {}", config.instrument);
     Ok(info)
 }
 
