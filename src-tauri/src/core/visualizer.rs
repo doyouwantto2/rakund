@@ -1,10 +1,11 @@
+use crate::extra::challenge::buffer::{MidiBuffer, MidiNoteMs};
 use crate::extra::challenge::engine::decoder::MidiParser;
-use crate::extra::sketch::song::{MidiBuffer, MidiNoteMs};
 use crate::state;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
 use thiserror::Error;
+use futures_util::future::TryFutureExt;
 
 #[derive(Debug, Error)]
 pub enum VisualizerError {
@@ -35,28 +36,19 @@ lazy_static! {
 }
 
 #[tauri::command]
-pub fn scan_songs() -> Result<Vec<SongInfo>, String> {
-    let dir = state::songs_dir().map_err(|e| e.to_string())?;
+pub async fn scan_songs() -> Result<Vec<SongInfo>, String> {
+    use crate::storage::handler::FileHandler;
+    
+    let file_handler = FileHandler::new()
+        .map_err(|e| e.to_string())?;
+    
+    let song_files = file_handler.scan_song_files().await
+        .map_err(|e| e.to_string())?;
 
-    let entries =
-        std::fs::read_dir(&dir).map_err(|e| format!("Cannot read songs directory: {}", e))?;
-
-    let songs: Vec<SongInfo> = entries
-        .flatten()
-        .filter(|e| {
-            e.path()
-                .extension()
-                .and_then(|ext| ext.to_str())
-                .map(|ext| ext.eq_ignore_ascii_case("mid") || ext.eq_ignore_ascii_case("midi"))
-                .unwrap_or(false)
-        })
-        .map(|e| {
-            let path = e.path();
-            let file_name = path
-                .file_name()
-                .unwrap_or_default()
-                .to_string_lossy()
-                .to_string();
+    let songs: Vec<SongInfo> = song_files
+        .into_iter()
+        .map(|song_file| {
+            let path = std::path::PathBuf::from(&song_file.path);
             let display_name = path
                 .file_stem()
                 .unwrap_or_default()
@@ -73,8 +65,8 @@ pub fn scan_songs() -> Result<Vec<SongInfo>, String> {
                 .collect::<Vec<_>>()
                 .join(" ");
             SongInfo {
-                file_name,
-                file_path: path.to_string_lossy().to_string(),
+                file_name: song_file.name,
+                file_path: song_file.path,
                 display_name,
             }
         })
@@ -84,8 +76,32 @@ pub fn scan_songs() -> Result<Vec<SongInfo>, String> {
     Ok(songs)
 }
 
+// Backward compatibility alias
 #[tauri::command]
-pub fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, String> {
+pub async fn scan_song_files() -> Result<Vec<SongInfo>, String> {
+    // Just call the main function
+    scan_songs().await
+}
+
+#[tauri::command]
+pub async fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, String> {
+    use crate::storage::handler::FileHandler;
+    
+    // Validate song file exists using FileHandler
+    let file_handler = FileHandler::new()
+        .map_err(|e| e.to_string())?;
+    
+    let song_exists = file_handler.song_exists(&file_path).await
+        .map_err(|e| e.to_string())?;
+    
+    if !song_exists {
+        return Err(format!("Song file '{}' does not exist", file_path));
+    }
+    
+    // Validate song file
+    file_handler.validate_song_file(&file_path).await
+        .map_err(|e| e.to_string())?;
+    
     let midi_file = MidiParser::parse_file(&file_path)
         .map_err(|e| format!("Failed to parse MIDI file: {}", e))?;
 

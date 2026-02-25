@@ -3156,6 +3156,7 @@ dependencies = [
  "cpal",
  "dirs-next",
  "fundsp",
+ "futures-util",
  "lazy_static",
  "midly",
  "regex",

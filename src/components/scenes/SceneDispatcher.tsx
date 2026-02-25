@@ -16,13 +16,12 @@ export default function SceneDispatcher(props: SceneDispatcherProps) {
     <div class="flex-1 relative overflow-hidden">
       <Switch>
         {/* Blank — no session active */}
-        <Match
-          when={
-            props.sessionStatus() === "idle" ||
-            props.sessionStatus() === "loading"
-          }
-        >
-          <div class="w-full h-full" />
+        <Match when={props.sessionStatus() === "idle"}>
+          <div class="w-full h-full flex items-center justify-center">
+            <span class="text-zinc-700 text-sm select-none">
+              Select an instrument and a song to begin
+            </span>
+          </div>
         </Match>
 
         {/* Rain — session is ready/playing/paused/finished */}

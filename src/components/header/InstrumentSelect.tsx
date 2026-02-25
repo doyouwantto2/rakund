@@ -28,6 +28,12 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
     const cur = props.currentInstrument();
     if (cur) return cur.name;
 
+    // During instrument loading, show the loading instrument name
+    if (props.isLoading() && !af) {
+      // This shouldn't happen with our current flow, but keep for safety
+      return "Loading...";
+    }
+
     return null;
   };
 
@@ -62,9 +68,11 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
               {progressPct().toFixed(0)}%
             </span>
           </Show>
-          <span class="text-xs px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-400 uppercase font-medium shrink-0">
-            {displayFormat()}
-          </span>
+          <Show when={displayFormat()}>
+            <span class="text-xs px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-400 uppercase font-medium shrink-0">
+              {displayFormat()}
+            </span>
+          </Show>
         </Show>
         <Show when={!displayName()}>
           <span class="text-zinc-400">Select instrument</span>
@@ -86,7 +94,12 @@ export default function InstrumentSelect(props: InstrumentSelectProps) {
                 <div class="mb-1 border-b border-zinc-700/60 last:border-b-0">
                   <button
                     onClick={() => {
-                      if (isOtherLoading()) return;
+                      console.log("[CLICK] Instrument clicked:", inst.folder, inst.name);
+                      if (isOtherLoading()) {
+                        console.log("[CLICK] Other instrument loading, ignoring");
+                        return;
+                      }
+                      console.log("[CLICK] Calling onSelectInstrument");
                       props.onSelectInstrument(inst.folder);
                       setShowList(false);
                     }}

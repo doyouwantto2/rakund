@@ -70,6 +70,9 @@ pub fn start_stream() -> Result<AudioHandle> {
                     }
                 }
 
+                // Remove voices that have finished their release envelope
+                voices.retain(|v| v.volume > 0.001); // Remove when volume is essentially silent
+
                 let num_voices = voices.len().max(1) as f32;
                 let gain = (1.0 / num_voices.sqrt()).min(1.0) * 0.8;
 

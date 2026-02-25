@@ -1,5 +1,5 @@
-use super::{force::Force, note::Note};
 use crate::extra::challenge::engine::cache::MidiFile;
+use crate::extra::sketch::song::{force::Force, note::Note};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use thiserror::Error;

@@ -47,6 +47,14 @@ pub async fn play_midi_note(
     let data = cache::get_by_index(midi_num, sample_idx)
         .ok_or_else(|| format!("Sample not cached: midi={} layer={}", midi_num, layer))?;
 
+    // Debug: Check if sample data is valid
+    if data.is_empty() {
+        return Err(format!("Empty sample data for midi={} layer={}", midi_num, layer));
+    }
+    
+    println!("[PLAY] Playing midi={} layer={} samples={} data_len={}", 
+             midi_num, layer, data.len(), data.len() * 4);
+
     let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
     let ratio = audio::pitch_ratio(recorded_midi, midi_num);
 
@@ -65,36 +73,81 @@ pub async fn play_midi_note(
 }
 
 #[tauri::command]
-pub async fn get_available_instruments() -> Result<Vec<InstrumentInfoResponse>, String> {
-    let folders = audio::scan_instruments().map_err(|e| e.to_string())?;
+pub async fn stop_midi_note(
+    midi_num: u8,
+    handle: State<'_, AudioHandle>,
+    _app: AppHandle,
+    _state: State<'_, AppState>,
+) -> Result<(), String> {
+    let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
+    let config = config_guard.as_ref().ok_or("No instrument loaded")?;
+
+    let key_data = config
+        .piano_keys
+        .get(&midi_num.to_string())
+        .ok_or_else(|| AudioError::NoteNotFound(midi_num).to_string())?;
+
+    // Start release envelope instead of immediately removing the voice
+    if let Ok(mut voices) = handle.active_voices.lock() {
+        for voice in voices.iter_mut() {
+            if voice.midi_note == midi_num {
+                voice.is_releasing = true;
+                println!("[STOP] Starting release for midi={}", midi_num);
+            }
+        }
+    }
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn get_available_instruments(
+) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
+    use crate::storage::handler::FileHandler;
+
+    println!("[SCAN] Starting instrument scan...");
+    
+    let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
+
+    println!("[SCAN] Getting instrument directories...");
+    let directories = file_handler
+        .scan_instrument_directories()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    println!("[SCAN] Found {} directories to process", directories.len());
 
     let mut result = Vec::new();
-    for folder in folders {
-        let json_path = folder.join("instrument.json");
-        println!("[SCAN] Checking instrument at: {:?}", json_path);
+    for (index, folder) in directories.iter().enumerate() {
+        let folder_name = folder
+            .file_name()
+            .and_then(|name| name.to_str())
+            .unwrap_or("unknown");
 
-        let raw = std::fs::read_to_string(&json_path).unwrap_or_default();
+        println!("[SCAN] Processing directory {}/{}: {}", index + 1, directories.len(), folder_name);
+
+        // Read the instrument.json to get full instrument data
+        let json_path = folder.join("instrument.json");
+        let raw = crate::storage::basic::BasicFileOperations::read_file_content(&json_path)
+            .map_err(|e| e.to_string())?;
+
         if raw.is_empty() {
-            println!("[SCAN] Empty JSON file at: {:?}", json_path);
+            println!("[SCAN] Empty instrument.json in {}", folder_name);
             continue;
         }
 
         match serde_json::from_str::<InstrumentConfig>(&raw) {
             Ok(config) => {
-                let folder_name = folder
-                    .file_name()
-                    .unwrap_or_default()
-                    .to_string_lossy()
-                    .to_string();
-                let info = InstrumentInfoResponse::from_config(&config, &folder_name);
+                let info =
+                    crate::extra::sketch::instrument::response::InstrumentInfoResponse::from_config(
+                        &config,
+                        folder_name,
+                    );
                 result.push(info);
+                println!("[SCAN] Successfully loaded: {}", config.instrument);
             }
             Err(e) => {
                 println!("[SCAN] Failed to parse JSON at {:?}: {}", json_path, e);
-                println!(
-                    "[SCAN] JSON content preview: {}",
-                    &raw[..std::cmp::min(200, raw.len())]
-                );
             }
         }
     }
@@ -103,32 +156,66 @@ pub async fn get_available_instruments() -> Result<Vec<InstrumentInfoResponse>, 
     Ok(result)
 }
 
+// Backward compatibility alias
+#[tauri::command]
+pub async fn get_available_instruments_files(
+) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
+    // Just call the main function
+    get_available_instruments().await
+}
+
 #[tauri::command]
 pub async fn load_instrument(
     folder: String,
     app: AppHandle,
-) -> Result<InstrumentInfoResponse, String> {
-    {
-        let current = CURRENT_FOLDER.lock().unwrap();
-        if current.as_deref() == Some(folder.as_str()) {
-            let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
-            if let Some(config) = config_guard.as_ref() {
-                return Ok(InstrumentInfoResponse::from_config(config, &folder));
-            }
-        }
+    state: State<'_, AppState>,
+) -> Result<crate::extra::sketch::instrument::response::InstrumentInfoResponse, String> {
+    use crate::storage::handler::FileHandler;
+
+    println!("[LOAD] Starting instrument load: {}", folder);
+
+    // Validate instrument exists using FileHandler
+    let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
+
+    println!("[LOAD] Checking if instrument exists...");
+    let instrument_exists = file_handler
+        .instrument_exists(&folder)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    if !instrument_exists {
+        println!("[LOAD] Instrument '{}' does not exist", folder);
+        return Err(format!("Instrument '{}' does not exist", folder));
     }
 
-    let info = audio::load_instrument_with_progress(&folder, &app)
-        .map_err(|e| e.to_string())
-        .map(|config| {
-            let info = InstrumentInfoResponse::from_config(&config, &folder);
-            *CURRENT_INSTRUMENT.lock().unwrap() = Some(config);
-            *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
-            info
-        })?;
+    println!("[LOAD] Validating instrument structure...");
+    file_handler
+        .validate_instrument_structure(&folder)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    // Use the original progress-enabled loading function
+    let config = crate::setup::audio::load_instrument_with_progress(&folder, &app)
+        .map_err(|e| e.to_string())?;
+
+    println!(
+        "[LOAD] {} — format: {} — {} keys — layers: [{}]",
+        config.instrument,
+        config.files_format(),
+        config.piano_keys.len(),
+        config.layers().join(", ")
+    );
+
+    *CURRENT_INSTRUMENT.lock().unwrap() = Some(config.clone());
+    *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
+
+    let info = crate::extra::sketch::instrument::response::InstrumentInfoResponse::from_config(
+        &config, &folder,
+    );
 
     state::set_last_instrument(&folder).map_err(|e: AudioError| e.to_string())?;
 
+    println!("[LOAD] Successfully loaded instrument: {}", config.instrument);
     Ok(info)
 }
 
@@ -138,13 +225,17 @@ pub async fn get_app_state() -> Result<AppState, String> {
 }
 
 #[tauri::command]
-pub async fn get_instrument_info() -> Result<Option<InstrumentInfoResponse>, String> {
+pub async fn get_instrument_info(
+) -> Result<Option<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
     let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
     let folder_guard = CURRENT_FOLDER.lock().unwrap();
 
     Ok(config_guard.as_ref().map(|config| {
         let folder_name = folder_guard.clone().unwrap_or_default();
-        InstrumentInfoResponse::from_config(config, &folder_name)
+        crate::extra::sketch::instrument::response::InstrumentInfoResponse::from_config(
+            config,
+            &folder_name,
+        )
     }))
 }
 
