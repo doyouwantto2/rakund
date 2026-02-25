@@ -51,9 +51,6 @@ pub async fn play_midi_note(
     if data.is_empty() {
         return Err(format!("Empty sample data for midi={} layer={}", midi_num, layer));
     }
-    
-    println!("[PLAY] Playing midi={} layer={} samples={} data_len={}", 
-             midi_num, layer, data.len(), data.len() * 4);
 
     let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
     let ratio = audio::pitch_ratio(recorded_midi, midi_num);
@@ -92,7 +89,6 @@ pub async fn stop_midi_note(
         for voice in voices.iter_mut() {
             if voice.midi_note == midi_num {
                 voice.is_releasing = true;
-                println!("[STOP] Starting release for midi={}", midi_num);
             }
         }
     }
