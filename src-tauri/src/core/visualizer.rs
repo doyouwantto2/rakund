@@ -1,6 +1,6 @@
 use crate::extra::challenge::engine::decoder::MidiParser;
 use crate::extra::sketch::song::{MidiBuffer, MidiNoteMs};
-use crate::storage::state;
+use crate::state;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
