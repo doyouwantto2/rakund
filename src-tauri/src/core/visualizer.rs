@@ -1,5 +1,5 @@
-use crate::extra::challenge::loader::buffer::{MidiBuffer, MidiNoteMs};
-use crate::extra::challenge::parser::decoder::MidiParser;
+use crate::extra::challenge::engine::decoder::MidiParser;
+use crate::extra::sketch::song::{MidiBuffer, MidiNoteMs};
 use crate::setup::state;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
@@ -9,7 +9,7 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum VisualizerError {
     #[error("Failed to load MIDI file: {0}")]
-    LoadError(#[from] crate::extra::challenge::parser::decoder::MidiParseError),
+    LoadError(#[from] crate::extra::challenge::engine::decoder::MidiParseError),
 
     #[error("Invalid file path")]
     InvalidPath,
