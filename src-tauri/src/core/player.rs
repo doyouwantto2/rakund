@@ -3,7 +3,7 @@ use crate::error::AudioError;
 use crate::extra::sketch::instrument::response::InstrumentInfoResponse;
 use crate::setup::audio::{self, AudioHandle};
 use crate::setup::config::{AppState, InstrumentConfig};
-use crate::setup::state;
+use crate::storage::state;
 use lazy_static::lazy_static;
 use std::sync::{Arc, Mutex};
 use tauri::{AppHandle, State};

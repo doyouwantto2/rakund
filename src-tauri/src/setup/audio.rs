@@ -2,7 +2,7 @@ use crate::engine::{cache, decoder, parser};
 use crate::error::{AudioError, Result};
 use crate::extra::sketch::instrument::release;
 use crate::setup::config::InstrumentConfig;
-use crate::setup::state;
+use crate::storage::state;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
 use std::collections::HashMap;
 use std::fs;

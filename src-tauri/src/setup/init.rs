@@ -1,6 +1,7 @@
 use crate::core;
 use crate::error::AudioError;
-use crate::setup::{audio, state};
+use crate::setup::audio;
+use crate::storage::state;
 use tauri::Emitter;
 
 pub fn run() -> Result<(), AudioError> {
