@@ -12,7 +12,8 @@ pub use items::{
 };
 
 pub use logic::{
-    InstrumentFileManagerImpl, SongFileManagerImpl
+    InstrumentFileManagerImpl, SongFileManagerImpl,
+    CURRENT_INSTRUMENT, CURRENT_FOLDER
 };
 
 pub use basic::BasicFileOperations;

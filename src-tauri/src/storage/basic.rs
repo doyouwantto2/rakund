@@ -1,28 +1,24 @@
 use crate::state;
 use crate::storage::items::*;
-use std::path::{Path, PathBuf};
 use std::fs;
+use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 
-// Basic file operations that don't require complex logic
 pub struct BasicFileOperations;
 
 impl BasicFileOperations {
-    // Directory operations
     pub fn get_instruments_dir() -> Result<PathBuf, StorageError> {
-        state::instruments_dir()
-            .map_err(|e| StorageError {
-                message: format!("Failed to get instruments directory: {}", e),
-                error_type: StorageErrorType::IoError,
-            })
+        state::instruments_dir().map_err(|e| StorageError {
+            message: format!("Failed to get instruments directory: {}", e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn get_songs_dir() -> Result<PathBuf, StorageError> {
-        state::songs_dir()
-            .map_err(|e| StorageError {
-                message: format!("Failed to get songs directory: {}", e),
-                error_type: StorageErrorType::IoError,
-            })
+        state::songs_dir().map_err(|e| StorageError {
+            message: format!("Failed to get songs directory: {}", e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn directory_exists(path: &Path) -> bool {
@@ -34,11 +30,10 @@ impl BasicFileOperations {
     }
 
     pub fn create_directory(path: &Path) -> Result<(), StorageError> {
-        fs::create_dir_all(path)
-            .map_err(|e| StorageError {
-                message: format!("Failed to create directory {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+        fs::create_dir_all(path).map_err(|e| StorageError {
+            message: format!("Failed to create directory {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn create_file(path: &Path, content: &str) -> Result<(), StorageError> {
@@ -47,51 +42,50 @@ impl BasicFileOperations {
                 Self::create_directory(parent)?;
             }
         }
-        
-        fs::write(path, content)
-            .map_err(|e| StorageError {
-                message: format!("Failed to create file {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+
+        fs::write(path, content).map_err(|e| StorageError {
+            message: format!("Failed to create file {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn delete_directory(path: &Path) -> Result<(), StorageError> {
-        fs::remove_dir_all(path)
-            .map_err(|e| StorageError {
-                message: format!("Failed to delete directory {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+        fs::remove_dir_all(path).map_err(|e| StorageError {
+            message: format!("Failed to delete directory {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn delete_file(path: &Path) -> Result<(), StorageError> {
-        fs::remove_file(path)
-            .map_err(|e| StorageError {
-                message: format!("Failed to delete file {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+        fs::remove_file(path).map_err(|e| StorageError {
+            message: format!("Failed to delete file {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     // File metadata operations
     pub fn get_file_metadata(path: &Path) -> Result<FileMetadata, StorageError> {
-        let metadata = fs::metadata(path)
-            .map_err(|e| StorageError {
-                message: format!("Failed to get metadata for {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })?;
+        let metadata = fs::metadata(path).map_err(|e| StorageError {
+            message: format!("Failed to get metadata for {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })?;
 
-        let name = path.file_name()
+        let name = path
+            .file_name()
             .and_then(|name| name.to_str())
             .unwrap_or("unknown")
             .to_string();
 
         let path_str = path.to_string_lossy().to_string();
 
-        let created_at = metadata.created()
+        let created_at = metadata
+            .created()
             .ok()
             .and_then(|time| time.duration_since(SystemTime::UNIX_EPOCH).ok())
             .map(|duration| duration.as_secs().to_string());
 
-        let modified_at = metadata.modified()
+        let modified_at = metadata
+            .modified()
             .ok()
             .and_then(|time| time.duration_since(SystemTime::UNIX_EPOCH).ok())
             .map(|duration| duration.as_secs().to_string());
@@ -120,11 +114,10 @@ impl BasicFileOperations {
             return Ok(vec![]);
         }
 
-        let entries = fs::read_dir(base_dir)
-            .map_err(|e| StorageError {
-                message: format!("Failed to read directory {:?}: {}", base_dir, e),
-                error_type: StorageErrorType::IoError,
-            })?;
+        let entries = fs::read_dir(base_dir).map_err(|e| StorageError {
+            message: format!("Failed to read directory {:?}: {}", base_dir, e),
+            error_type: StorageErrorType::IoError,
+        })?;
 
         let mut directories = Vec::new();
         for entry in entries {
@@ -147,11 +140,10 @@ impl BasicFileOperations {
             return Ok(vec![]);
         }
 
-        let entries = fs::read_dir(base_dir)
-            .map_err(|e| StorageError {
-                message: format!("Failed to read directory {:?}: {}", base_dir, e),
-                error_type: StorageErrorType::IoError,
-            })?;
+        let entries = fs::read_dir(base_dir).map_err(|e| StorageError {
+            message: format!("Failed to read directory {:?}: {}", base_dir, e),
+            error_type: StorageErrorType::IoError,
+        })?;
 
         let mut files = Vec::new();
         for entry in entries {
@@ -171,11 +163,10 @@ impl BasicFileOperations {
 
     // File content operations
     pub fn read_file_content(path: &Path) -> Result<String, StorageError> {
-        fs::read_to_string(path)
-            .map_err(|e| StorageError {
-                message: format!("Failed to read file {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+        fs::read_to_string(path).map_err(|e| StorageError {
+            message: format!("Failed to read file {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     pub fn write_file_content(path: &Path, content: &str) -> Result<(), StorageError> {
@@ -185,11 +176,10 @@ impl BasicFileOperations {
             }
         }
 
-        fs::write(path, content)
-            .map_err(|e| StorageError {
-                message: format!("Failed to write file {:?}: {}", path, e),
-                error_type: StorageErrorType::IoError,
-            })
+        fs::write(path, content).map_err(|e| StorageError {
+            message: format!("Failed to write file {:?}: {}", path, e),
+            error_type: StorageErrorType::IoError,
+        })
     }
 
     // Path utilities
@@ -229,8 +219,89 @@ impl BasicFileOperations {
                 path.extension()
                     .and_then(|ext| ext.to_str())
                     .unwrap_or("unknown")
-                    .to_string()
+                    .to_string(),
             )
         }
+    }
+
+    // Instrument validation operations
+    pub fn validate_instrument_structure(path: &Path) -> Result<(), StorageError> {
+        if !Self::directory_exists(path) {
+            return Err(StorageError {
+                message: "Instrument directory does not exist".to_string(),
+                error_type: StorageErrorType::NotFound,
+            });
+        }
+
+        let json_file = path.join("instrument.json");
+        if !Self::file_exists(&json_file) {
+            return Err(StorageError {
+                message: "instrument.json not found".to_string(),
+                error_type: StorageErrorType::InvalidStructure,
+            });
+        }
+
+        // That's it! The instrument.json contains all the sample paths,
+        // so we don't need to validate directory structure
+        Ok(())
+    }
+
+    // Song validation operations
+    pub fn validate_song_file(path: &Path) -> Result<(), StorageError> {
+        if !Self::file_exists(path) {
+            return Err(StorageError {
+                message: "Song file does not exist".to_string(),
+                error_type: StorageErrorType::NotFound,
+            });
+        }
+
+        Ok(())
+    }
+
+    // Instrument item creation
+    pub fn create_instrument_item(path: &Path) -> Result<InstrumentItem, StorageError> {
+        let metadata = Self::get_file_metadata(path)?;
+
+        let folder_name = path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .unwrap_or("unknown")
+            .to_string();
+
+        let json_file = path.join("instrument.json");
+        let samples_dir = path.join("samples");
+
+        Ok(InstrumentItem {
+            name: folder_name.clone(),
+            folder: folder_name,
+            path: path.to_path_buf(),
+            json_file,
+            samples_dir,
+            created_at: metadata.created_at,
+            modified_at: metadata.modified_at,
+            size: metadata.size,
+        })
+    }
+
+    // Song item creation
+    pub fn create_song_item(path: &Path) -> Option<SongFile> {
+        let metadata = Self::get_file_metadata(path).ok()?;
+
+        let file_name = path
+            .file_name()
+            .and_then(|name| name.to_str())
+            .unwrap_or("unknown")
+            .to_string();
+
+        let file_type = Self::get_song_file_type(path);
+
+        Some(SongFile {
+            name: file_name.clone(),
+            path: path.to_string_lossy().to_string(),
+            file_type,
+            created_at: metadata.created_at,
+            modified_at: metadata.modified_at,
+            size: metadata.size,
+        })
     }
 }

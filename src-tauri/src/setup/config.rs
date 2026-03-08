@@ -4,7 +4,7 @@ use std::default::Default;
 
 use crate::extra::sketch::instrument::settings::Settings;
 use crate::extra::sketch::instrument::{
-    contribution::Contribution, general::General, layer::LayerRangeInfo, sample::KeyData,
+    contribution::Contribution, general::General, layer::LayerRangeInfo, samples::KeyData,
 };
 
 pub fn deserialize_piano_keys<'de, D>(

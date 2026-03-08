@@ -1,3 +1,4 @@
+use crate::engine::parser;
 use crate::error::{AudioError, Result};
 use std::sync::Arc;
 use symphonia::core::audio::SampleBuffer;
@@ -83,4 +84,12 @@ pub fn decode(path: &str) -> Result<Arc<Vec<f32>>> {
     }
 
     Ok(Arc::new(samples))
+}
+
+pub fn pitch_ratio(recorded_midi: u8, target_midi: u8) -> f32 {
+    2.0f32.powf((target_midi as f32 - recorded_midi as f32) / 12.0)
+}
+
+pub fn pitch_to_midi(pitch: &str) -> Option<u8> {
+    parser::note_name_to_midi(pitch)
 }

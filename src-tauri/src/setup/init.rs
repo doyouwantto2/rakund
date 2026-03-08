@@ -1,9 +1,9 @@
 use crate::core;
-use crate::storage::handler::FileHandler;
 use crate::error::AudioError;
 use crate::setup::audio;
 use crate::setup::config::AppState;
 use crate::state;
+use crate::storage::handler::FileHandler;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
@@ -15,9 +15,9 @@ pub fn run() -> Result<(), AudioError> {
         Err(e) => eprintln!("[INIT] Cannot resolve instruments dir: {}", e),
     }
 
-    let file_handler = Arc::new(RwLock::new(
-    FileHandler::new().map_err(|e| AudioError::InstrumentError(format!("Failed to initialize FileHandler: {}", e)))?
-));
+    let file_handler = Arc::new(RwLock::new(FileHandler::new().map_err(|e| {
+        AudioError::InstrumentError(format!("Failed to initialize FileHandler: {}", e))
+    })?));
 
     // Create initial app state
     let app_state = AppState::default();
@@ -29,12 +29,12 @@ pub fn run() -> Result<(), AudioError> {
         .invoke_handler(tauri::generate_handler![
             core::player::play_midi_note,
             core::player::stop_midi_note,
-            core::player::load_instrument,
-            core::player::get_available_instruments,
-            core::player::get_available_instruments_files,
-            core::player::get_instrument_info,
-            core::player::get_app_state,
-            core::player::clear_last_instrument,
+            core::sampler::load_instrument,
+            core::sampler::get_available_instruments,
+            core::sampler::get_available_instruments_files,
+            core::sampler::get_instrument_info,
+            core::sampler::get_app_state,
+            core::sampler::clear_last_instrument,
             core::visualizer::scan_songs,
             core::visualizer::scan_song_files,
             core::visualizer::load_midi_session,
@@ -47,9 +47,7 @@ pub fn run() -> Result<(), AudioError> {
             core::manager::delete_song,
             core::manager::get_file_metadata,
         ])
-        .setup(|_app| {
-            Ok(())
-        })
+        .setup(|_app| Ok(()))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 

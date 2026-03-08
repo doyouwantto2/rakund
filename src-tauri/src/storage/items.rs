@@ -55,67 +55,56 @@ pub trait FileManager {
     type Error;
 
     // Read operations
-    fn list_files(
-        &self,
-    ) -> impl std::future::Future<Output = Result<Vec<FileMetadata>, Self::Error>> + Send;
-    fn get_file(
-        &self,
-        path: &str,
-    ) -> impl std::future::Future<Output = Result<Self::Item, Self::Error>> + Send;
-    fn file_exists(
-        &self,
-        path: &str,
-    ) -> impl std::future::Future<Output = Result<bool, Self::Error>> + Send;
+    fn list_files(&self) -> impl std::future::Future<Output = Result<Vec<FileMetadata>, Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
+    fn get_file(&self, path: &str) -> impl std::future::Future<Output = Result<Self::Item, Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
+    fn file_exists(&self, path: &str) -> impl std::future::Future<Output = Result<bool, Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
 
     // Write operations
-    fn create_file(
-        &self,
-        item: &Self::Item,
-    ) -> impl std::future::Future<Output = Result<String, Self::Error>> + Send;
-    fn update_file(
-        &self,
-        path: &str,
-        item: &Self::Item,
-    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
-    fn delete_file(
-        &self,
-        path: &str,
-    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
+    fn create_file(&self, item: &Self::Item) -> impl std::future::Future<Output = Result<String, Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
+    fn update_file(&self, path: &str, item: &Self::Item) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
+    fn delete_file(&self, path: &str) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
 
     // File validation
-    fn validate_file(
-        &self,
-        item: &Self::Item,
-    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
+    fn validate_file(&self, item: &Self::Item) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send {
+        async move { unimplemented!() }
+    }
 }
 
 // Specific traits for different file types
 pub trait InstrumentFileManager: FileManager<Item = InstrumentItem, Error = StorageError> {
-    fn scan_instrument_directories(
-        &self,
-    ) -> impl std::future::Future<Output = Result<Vec<PathBuf>, StorageError>> + Send;
-    fn get_instrument_directory(
-        &self,
-        folder: &str,
-    ) -> impl std::future::Future<Output = Result<InstrumentItem, StorageError>> + Send;
-    fn validate_instrument_structure(
-        &self,
-        path: &PathBuf,
-    ) -> impl std::future::Future<Output = Result<(), StorageError>> + Send;
+    fn scan_instrument_directories(&self) -> impl std::future::Future<Output = Result<Vec<PathBuf>, StorageError>> + Send {
+        async move { unimplemented!() }
+    }
+    fn get_instrument_directory(&self, folder: &str) -> impl std::future::Future<Output = Result<InstrumentItem, StorageError>> + Send {
+        async move { unimplemented!() }
+    }
+    fn validate_instrument_structure(&self, path: &PathBuf) -> impl std::future::Future<Output = Result<(), StorageError>> + Send {
+        async move { unimplemented!() }
+    }
 }
 
 pub trait SongFileManager: FileManager<Item = SongItem, Error = StorageError> {
-    fn scan_song_files(
-        &self,
-    ) -> impl std::future::Future<Output = Result<Vec<SongFile>, StorageError>> + Send;
-    fn get_song_file(
-        &self,
-        path: &str,
-    ) -> impl std::future::Future<Output = Result<SongItem, StorageError>> + Send;
-    fn validate_song_file(
-        &self,
-        path: &PathBuf,
-    ) -> impl std::future::Future<Output = Result<(), StorageError>> + Send;
+    fn scan_song_files(&self) -> impl std::future::Future<Output = Result<Vec<SongFile>, StorageError>> + Send {
+        async move { unimplemented!() }
+    }
+    fn get_song_file(&self, path: &str) -> impl std::future::Future<Output = Result<SongItem, StorageError>> + Send {
+        async move { unimplemented!() }
+    }
+    fn validate_song_file(&self, path: &PathBuf) -> impl std::future::Future<Output = Result<(), StorageError>> + Send {
+        async move { unimplemented!() }
+    }
 }
 
 // File operation results

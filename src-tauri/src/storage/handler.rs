@@ -1,10 +1,11 @@
+use crate::setup::config::InstrumentConfig;
+use crate::storage::basic::BasicFileOperations;
 use crate::storage::items::{FileManager as FileManagerTrait, *};
 use crate::storage::logic::{InstrumentFileManagerImpl, SongFileManagerImpl};
+use std::path::PathBuf;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-// File handler responsible for folder and file fetching operations
-// Used by player.rs, visualizer.rs, and manager.rs
 pub struct FileHandler {
     pub instrument_manager: Arc<RwLock<InstrumentFileManagerImpl>>,
     pub song_manager: Arc<RwLock<SongFileManagerImpl>>,
@@ -21,7 +22,36 @@ impl FileHandler {
         })
     }
 
-    // Instrument operations for player.rs and visualizer.rs
+    // Instrument loading operations
+    pub async fn load_instrument_with_progress(
+        &self,
+        folder: &str,
+        app: &tauri::AppHandle,
+    ) -> Result<InstrumentConfig, StorageError> {
+        let manager = self.instrument_manager.read().await;
+        manager
+            .load_instrument_with_progress(folder, app)
+            .map_err(|e| StorageError {
+                message: e.to_string(),
+                error_type: StorageErrorType::InvalidFile,
+            })
+    }
+
+    pub async fn load_instrument(&self, folder: &str) -> Result<InstrumentConfig, StorageError> {
+        let manager = self.instrument_manager.read().await;
+        manager.load_instrument(folder).map_err(|e| StorageError {
+            message: e.to_string(),
+            error_type: StorageErrorType::InvalidFile,
+        })
+    }
+
+    pub async fn scan_instruments(&self) -> Result<Vec<PathBuf>, StorageError> {
+        let manager = self.instrument_manager.read().await;
+        manager.scan_instruments().map_err(|e| StorageError {
+            message: e.to_string(),
+            error_type: StorageErrorType::IoError,
+        })
+    }
     pub async fn scan_instrument_directories(
         &self,
     ) -> Result<Vec<std::path::PathBuf>, StorageError> {
@@ -38,9 +68,11 @@ impl FileHandler {
     }
 
     pub async fn instrument_exists(&self, folder: &str) -> Result<bool, StorageError> {
-        let instrument_path =
-            crate::storage::basic::BasicFileOperations::get_instrument_path(folder)?;
-        Ok(crate::storage::basic::BasicFileOperations::directory_exists(&instrument_path))
+        let manager = self.instrument_manager.read().await;
+        let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
+        manager
+            .file_exists(&instrument_path.to_string_lossy())
+            .await
     }
 
     // Song operations for visualizer.rs
@@ -65,11 +97,11 @@ impl FileHandler {
         folder: &str,
     ) -> Result<FileMetadata, StorageError> {
         let manager = self.instrument_manager.read().await;
-        let path = crate::storage::basic::BasicFileOperations::get_instrument_path(folder)?;
+        let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
         let files = manager.list_files().await?;
         files
             .into_iter()
-            .find(|f| f.path == path.to_string_lossy())
+            .find(|f| f.path == instrument_path.to_string_lossy())
             .ok_or(StorageError {
                 message: "Instrument not found".to_string(),
                 error_type: StorageErrorType::NotFound,
@@ -91,8 +123,10 @@ impl FileHandler {
     // Validation operations
     pub async fn validate_instrument_structure(&self, folder: &str) -> Result<(), StorageError> {
         let manager = self.instrument_manager.read().await;
-        let path = crate::storage::basic::BasicFileOperations::get_instrument_path(folder)?;
-        manager.validate_instrument_structure(&path).await
+        let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
+        manager
+            .validate_instrument_structure(&instrument_path)
+            .await
     }
 
     pub async fn validate_song_file(&self, path: &str) -> Result<(), StorageError> {
@@ -251,4 +285,3 @@ impl Default for FileHandler {
 
 // Type alias for backward compatibility
 pub type FileManager = FileHandler;
-
