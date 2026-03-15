@@ -2,6 +2,7 @@ use crate::extra::challenge::buffer::{MidiBuffer, MidiNoteMs};
 use crate::extra::challenge::engine::decoder::MidiParser;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 use thiserror::Error;
 
@@ -40,7 +41,7 @@ pub async fn scan_songs() -> Result<Vec<SongInfo>, String> {
     let file_handler = FileHandler::new()
         .map_err(|e| e.to_string())?;
     
-    let song_files = file_handler.scan_song_files().await
+    let song_files = file_handler.scan_song_files()
         .map_err(|e| e.to_string())?;
 
     let songs: Vec<SongInfo> = song_files
@@ -89,7 +90,7 @@ pub async fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, Str
     let file_handler = FileHandler::new()
         .map_err(|e| e.to_string())?;
     
-    let song_exists = file_handler.song_exists(&file_path).await
+    let song_exists = file_handler.song_exists(&file_path)
         .map_err(|e| e.to_string())?;
     
     if !song_exists {
@@ -97,7 +98,7 @@ pub async fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, Str
     }
     
     // Validate song file
-    file_handler.validate_song_file(&file_path).await
+    file_handler.validate_song_file(&PathBuf::from(&file_path))
         .map_err(|e| e.to_string())?;
     
     let midi_file = MidiParser::parse_file(&file_path)

@@ -1,4 +1,4 @@
-use crate::storage::items::*;
+use crate::storage::*;
 use crate::storage::handler::FileHandler;
 use tauri::State;
 use std::sync::Arc;
@@ -14,8 +14,23 @@ pub async fn create_instrument(
     file_handler: State<'_, Arc<RwLock<FileHandler>>>,
 ) -> Result<InstrumentFileResponse, String> {
     let handler = file_handler.read().await;
-    handler.create_instrument(&folder).await
-        .map_err(|e| e.to_string())
+    let item = InstrumentItem {
+        name: folder.clone(),
+        folder: folder.clone(),
+        path: crate::storage::basic::BasicFileOperations::get_instrument_path(&folder).unwrap(),
+        json_file: crate::storage::basic::BasicFileOperations::get_instrument_json_path(&folder).unwrap(),
+        samples_dir: crate::storage::basic::BasicFileOperations::get_instrument_samples_path(&folder).unwrap(),
+        created_at: None,
+        modified_at: None,
+        size: None,
+    };
+    
+    handler.create_instrument_file_sync(&item)
+        .map_err(|e| e.to_string())?;
+    
+    Ok(InstrumentFileResponse {
+        instruments: vec![item],
+    })
 }
 
 #[tauri::command]
@@ -24,7 +39,7 @@ pub async fn delete_instrument(
     file_handler: State<'_, Arc<RwLock<FileHandler>>>,
 ) -> Result<(), String> {
     let handler = file_handler.read().await;
-    handler.delete_instrument(&folder).await
+    handler.delete_instrument_file_sync(&folder)
         .map_err(|e| e.to_string())
 }
 
@@ -38,11 +53,31 @@ pub async fn create_song(
     let song_type = if file_type == "midi" {
         SongFileType::Midi
     } else {
-        SongFileType::Other(file_type)
+        SongFileType::Other(file_type.clone())
     };
     
-    handler.create_song(&name, song_type).await
-        .map_err(|e| e.to_string())
+    let item = SongItem {
+        name: name.clone(),
+        path: crate::storage::basic::BasicFileOperations::get_song_path(&name, &file_type).unwrap(),
+        file_type: song_type,
+        created_at: None,
+        modified_at: None,
+        size: None,
+    };
+    
+    handler.create_song_file_sync(&item)
+        .map_err(|e| e.to_string())?;
+    
+    Ok(SongFileResponse {
+        songs: vec![SongFile {
+            name: item.name,
+            path: item.path.to_string_lossy().to_string(),
+            file_type: item.file_type,
+            created_at: item.created_at,
+            modified_at: item.modified_at,
+            size: item.size,
+        }],
+    })
 }
 
 #[tauri::command]
@@ -51,7 +86,7 @@ pub async fn delete_song(
     file_handler: State<'_, Arc<RwLock<FileHandler>>>,
 ) -> Result<(), String> {
     let handler = file_handler.read().await;
-    handler.delete_song(&path).await
+    handler.delete_song_file_sync(&path)
         .map_err(|e| e.to_string())
 }
 
@@ -61,13 +96,24 @@ pub async fn get_file_metadata(
     file_type: String,
     file_handler: State<'_, Arc<RwLock<FileHandler>>>,
 ) -> Result<FileMetadata, String> {
-    let handler = file_handler.read().await;
-    let type_enum = match file_type.as_str() {
-        "instrument" => FileType::Instrument,
-        "song" => FileType::Song,
-        _ => return Err("Invalid file type".to_string()),
+    let _handler = file_handler.read().await;
+    
+    let path_buf = std::path::PathBuf::from(&path);
+    let metadata = crate::storage::basic::BasicFileOperations::get_file_metadata(&path_buf)
+        .map_err(|e| e.to_string())?;
+    
+    let file_type_enum = if file_type == "instrument" {
+        FileType::Instrument
+    } else if file_type == "song" {
+        FileType::Song
+    } else if path_buf.is_dir() {
+        FileType::Directory
+    } else {
+        FileType::File
     };
     
-    handler.get_file_metadata(&path, type_enum).await
-        .map_err(|e| e.to_string())
+    Ok(FileMetadata {
+        file_type: file_type_enum,
+        ..metadata
+    })
 }

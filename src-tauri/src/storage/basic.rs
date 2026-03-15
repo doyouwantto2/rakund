@@ -1,5 +1,4 @@
-use crate::state;
-use crate::storage::items::*;
+use crate::storage::*;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::SystemTime;
@@ -8,17 +7,31 @@ pub struct BasicFileOperations;
 
 impl BasicFileOperations {
     pub fn get_instruments_dir() -> Result<PathBuf, StorageError> {
-        state::instruments_dir().map_err(|e| StorageError {
-            message: format!("Failed to get instruments directory: {}", e),
+        let base = dirs_next::config_dir()
+            .ok_or_else(|| StorageError {
+                message: "Cannot find config directory".to_string(),
+                error_type: StorageErrorType::IoError,
+            })?;
+        let dir = base.join("rakund").join("instruments");
+        fs::create_dir_all(&dir).map_err(|e| StorageError {
+            message: format!("Cannot create instruments dir: {}", e),
             error_type: StorageErrorType::IoError,
-        })
+        })?;
+        Ok(dir)
     }
 
     pub fn get_songs_dir() -> Result<PathBuf, StorageError> {
-        state::songs_dir().map_err(|e| StorageError {
-            message: format!("Failed to get songs directory: {}", e),
+        let base = dirs_next::config_dir()
+            .ok_or_else(|| StorageError {
+                message: "Cannot find config directory".to_string(),
+                error_type: StorageErrorType::IoError,
+            })?;
+        let dir = base.join("rakund").join("songs");
+        fs::create_dir_all(&dir).map_err(|e| StorageError {
+            message: format!("Cannot create songs dir: {}", e),
             error_type: StorageErrorType::IoError,
-        })
+        })?;
+        Ok(dir)
     }
 
     pub fn directory_exists(path: &Path) -> bool {
@@ -163,8 +176,15 @@ impl BasicFileOperations {
 
     // File content operations
     pub fn read_file_content(path: &Path) -> Result<String, StorageError> {
-        fs::read_to_string(path).map_err(|e| StorageError {
-            message: format!("Failed to read file {:?}: {}", path, e),
+        std::fs::read_to_string(path).map_err(|e| StorageError {
+            message: format!("Failed to read file {}: {}", path.display(), e),
+            error_type: StorageErrorType::IoError,
+        })
+    }
+
+    pub fn read_file_bytes(path: &Path) -> Result<Vec<u8>, StorageError> {
+        std::fs::read(path).map_err(|e| StorageError {
+            message: format!("Failed to read file {}: {}", path.display(), e),
             error_type: StorageErrorType::IoError,
         })
     }

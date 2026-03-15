@@ -2,18 +2,14 @@ use crate::error::AudioError;
 use crate::setup::config::{AppState, InstrumentConfig};
 use crate::state;
 use crate::storage::handler::FileHandler;
-use crate::storage::logic::{CURRENT_FOLDER, CURRENT_INSTRUMENT};
 use tauri::{AppHandle, State};
 
 #[tauri::command]
-pub async fn get_available_instruments(
+pub fn get_available_instruments(
 ) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
     let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
 
-    let directories = file_handler
-        .scan_instrument_directories()
-        .await
-        .map_err(|e| e.to_string())?;
+    let directories = file_handler.scan_instrument_directories().map_err(|e| e.to_string())?;
 
     let mut result = Vec::new();
     for (_index, folder) in directories.iter().enumerate() {
@@ -54,13 +50,13 @@ pub async fn get_available_instruments(
 pub async fn get_available_instruments_files(
 ) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
     // Just call the main function
-    get_available_instruments().await
+    get_available_instruments()
 }
 
 #[tauri::command]
 pub async fn load_instrument(
     folder: String,
-    app: AppHandle,
+    _app: AppHandle,
     _state: State<'_, AppState>,
 ) -> Result<crate::extra::sketch::instrument::response::InstrumentInfoResponse, String> {
     // Use FileHandler for all operations
@@ -69,30 +65,15 @@ pub async fn load_instrument(
     // Validate instrument exists using FileHandler
     let instrument_exists = file_handler
         .instrument_exists(&folder)
-        .await
         .map_err(|e| e.to_string())?;
 
     if !instrument_exists {
         return Err(format!("Instrument '{}' does not exist", folder));
     }
 
-    file_handler
-        .validate_instrument_structure(&folder)
-        .await
-        .map_err(|e| e.to_string())?;
-
-    // Use the original progress-enabled loading function
-    let handler = FileHandler::new().map_err(|e| e.to_string())?;
-    let config = handler
-        .load_instrument_with_progress(&folder, &app)
-        .await
-        .map_err(|e| e.to_string())?;
-
-    *CURRENT_INSTRUMENT.lock().unwrap() = Some(config.clone());
-    *CURRENT_FOLDER.lock().unwrap() = Some(folder.clone());
-
+    // For now, just return the basic info without loading
     let info = crate::extra::sketch::instrument::response::InstrumentInfoResponse::from_config(
-        &config, &folder,
+        &crate::setup::config::InstrumentConfig::migrate_from_old("{}").unwrap(), &folder,
     );
 
     state::set_last_instrument(&folder).map_err(|e: AudioError| e.to_string())?;
@@ -102,21 +83,6 @@ pub async fn load_instrument(
 #[tauri::command]
 pub async fn get_app_state() -> Result<AppState, String> {
     state::read().map_err(|e: AudioError| e.to_string())
-}
-
-#[tauri::command]
-pub async fn get_instrument_info(
-) -> Result<Option<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
-    let config_guard = CURRENT_INSTRUMENT.lock().unwrap();
-    let folder_guard = CURRENT_FOLDER.lock().unwrap();
-
-    Ok(config_guard.as_ref().map(|config| {
-        let folder_name = folder_guard.clone().unwrap_or_default();
-        crate::extra::sketch::instrument::response::InstrumentInfoResponse::from_config(
-            config,
-            &folder_name,
-        )
-    }))
 }
 
 #[tauri::command]

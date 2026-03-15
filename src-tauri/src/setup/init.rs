@@ -32,7 +32,6 @@ pub fn run() -> Result<(), AudioError> {
             core::sampler::load_instrument,
             core::sampler::get_available_instruments,
             core::sampler::get_available_instruments_files,
-            core::sampler::get_instrument_info,
             core::sampler::get_app_state,
             core::sampler::clear_last_instrument,
             core::visualizer::scan_songs,

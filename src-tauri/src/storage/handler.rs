@@ -1,287 +1,72 @@
-use crate::setup::config::InstrumentConfig;
 use crate::storage::basic::BasicFileOperations;
-use crate::storage::items::{FileManager as FileManagerTrait, *};
-use crate::storage::logic::{InstrumentFileManagerImpl, SongFileManagerImpl};
+use crate::storage::*;
+use crate::storage::logic::*;
 use std::path::PathBuf;
-use std::sync::Arc;
-use tokio::sync::RwLock;
 
+// File handler responsible for folder and file fetching operations
+// Used by player.rs, visualizer.rs, and manager.rs
 pub struct FileHandler {
-    pub instrument_manager: Arc<RwLock<InstrumentFileManagerImpl>>,
-    pub song_manager: Arc<RwLock<SongFileManagerImpl>>,
+    // No internal state - just orchestrates the pure functions
 }
 
 impl FileHandler {
     pub fn new() -> Result<Self, StorageError> {
-        let instrument_manager = Arc::new(RwLock::new(InstrumentFileManagerImpl::new()?));
-        let song_manager = Arc::new(RwLock::new(SongFileManagerImpl::new()?));
-
-        Ok(Self {
-            instrument_manager,
-            song_manager,
-        })
+        Ok(Self {})
     }
 
-    // Instrument loading operations
-    pub async fn load_instrument_with_progress(
-        &self,
-        folder: &str,
-        app: &tauri::AppHandle,
-    ) -> Result<InstrumentConfig, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        manager
-            .load_instrument_with_progress(folder, app)
-            .map_err(|e| StorageError {
-                message: e.to_string(),
-                error_type: StorageErrorType::InvalidFile,
-            })
-    }
-
-    pub async fn load_instrument(&self, folder: &str) -> Result<InstrumentConfig, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        manager.load_instrument(folder).map_err(|e| StorageError {
-            message: e.to_string(),
-            error_type: StorageErrorType::InvalidFile,
-        })
-    }
-
-    pub async fn scan_instruments(&self) -> Result<Vec<PathBuf>, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        manager.scan_instruments().map_err(|e| StorageError {
-            message: e.to_string(),
-            error_type: StorageErrorType::IoError,
-        })
-    }
-    pub async fn scan_instrument_directories(
-        &self,
-    ) -> Result<Vec<std::path::PathBuf>, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        manager.scan_instrument_directories().await
-    }
-
-    pub async fn get_instrument_directory(
-        &self,
-        folder: &str,
-    ) -> Result<InstrumentItem, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        manager.get_instrument_directory(folder).await
-    }
-
-    pub async fn instrument_exists(&self, folder: &str) -> Result<bool, StorageError> {
-        let manager = self.instrument_manager.read().await;
+    // Instrument file operations
+    pub fn instrument_exists(&self, folder: &str) -> Result<bool, StorageError> {
         let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
-        manager
-            .file_exists(&instrument_path.to_string_lossy())
-            .await
+        instrument_file_exists_sync(&instrument_path.to_string_lossy())
+    }
+
+    pub fn scan_instrument_directories(&self) -> Result<Vec<PathBuf>, StorageError> {
+        scan_instrument_directories_sync()
+    }
+
+    pub fn get_instrument_directory(&self, folder: &str) -> Result<InstrumentItem, StorageError> {
+        get_instrument_item_sync(folder)
     }
 
     // Song operations for visualizer.rs
-    pub async fn scan_song_files(&self) -> Result<Vec<SongFile>, StorageError> {
-        let manager = self.song_manager.read().await;
-        manager.scan_song_files().await
+    pub fn scan_song_files(&self) -> Result<Vec<SongFile>, StorageError> {
+        scan_song_files_sync()
     }
 
-    pub async fn get_song_file(&self, path: &str) -> Result<SongItem, StorageError> {
-        let manager = self.song_manager.read().await;
-        manager.get_song_file(path).await
+    pub fn get_song_file(&self, path: &str) -> Result<SongItem, StorageError> {
+        get_song_file_sync(path)
     }
 
-    pub async fn song_exists(&self, path: &str) -> Result<bool, StorageError> {
-        let manager = self.song_manager.read().await;
-        manager.file_exists(path).await
+    pub fn song_exists(&self, path: &str) -> Result<bool, StorageError> {
+        song_file_exists_sync(path)
     }
 
-    // File metadata operations
-    pub async fn get_instrument_metadata(
-        &self,
-        folder: &str,
-    ) -> Result<FileMetadata, StorageError> {
-        let manager = self.instrument_manager.read().await;
+    pub fn validate_instrument_structure(&self, folder: &str) -> Result<(), StorageError> {
         let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
-        let files = manager.list_files().await?;
-        files
-            .into_iter()
-            .find(|f| f.path == instrument_path.to_string_lossy())
-            .ok_or(StorageError {
-                message: "Instrument not found".to_string(),
-                error_type: StorageErrorType::NotFound,
-            })
+        validate_instrument_structure(&instrument_path)
     }
 
-    pub async fn get_song_metadata(&self, path: &str) -> Result<FileMetadata, StorageError> {
-        let manager = self.song_manager.read().await;
-        let files = manager.list_files().await?;
-        files
-            .into_iter()
-            .find(|f| f.path == path)
-            .ok_or(StorageError {
-                message: "Song not found".to_string(),
-                error_type: StorageErrorType::NotFound,
-            })
+    pub fn validate_song_file(&self, path_buf: &PathBuf) -> Result<(), StorageError> {
+        validate_song_file(path_buf)
     }
 
-    // Validation operations
-    pub async fn validate_instrument_structure(&self, folder: &str) -> Result<(), StorageError> {
-        let manager = self.instrument_manager.read().await;
-        let instrument_path = BasicFileOperations::get_instrument_path(folder)?;
-        manager
-            .validate_instrument_structure(&instrument_path)
-            .await
+    // Additional methods needed by manager.rs
+    pub fn create_instrument_file_sync(&self, item: &InstrumentItem) -> Result<String, StorageError> {
+        create_instrument_file_sync(item)
     }
 
-    pub async fn validate_song_file(&self, path: &str) -> Result<(), StorageError> {
-        let manager = self.song_manager.read().await;
-        let path_buf = std::path::PathBuf::from(path);
-        manager.validate_song_file(&path_buf).await
+    pub fn delete_instrument_file_sync(&self, path: &str) -> Result<(), StorageError> {
+        delete_instrument_file_sync(path)
     }
 
-    // CRUD operations for manager.rs
-    pub async fn list_instruments(&self) -> Result<Vec<InstrumentFileResponse>, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        let files = manager.list_files().await?;
-
-        let mut responses = Vec::new();
-        for file_metadata in files {
-            if let FileType::Instrument = file_metadata.file_type {
-                let instrument_item = manager.get_file(&file_metadata.path).await?;
-                responses.push(InstrumentFileResponse::from(&instrument_item));
-            }
-        }
-
-        Ok(responses)
+    pub fn create_song_file_sync(&self, item: &SongItem) -> Result<String, StorageError> {
+        create_song_file_sync(item)
     }
 
-    pub async fn list_songs(&self) -> Result<Vec<SongFileResponse>, StorageError> {
-        let manager = self.song_manager.read().await;
-        let files = manager.scan_song_files().await?;
-
-        let mut responses = Vec::new();
-        for song_file in files {
-            responses.push(SongFileResponse {
-                name: song_file.name,
-                path: song_file.path,
-                file_type: match song_file.file_type {
-                    SongFileType::Midi => "midi".to_string(),
-                    SongFileType::Other(other) => other,
-                },
-                created_at: song_file.created_at,
-                modified_at: song_file.modified_at,
-                size: song_file.size,
-            });
-        }
-
-        Ok(responses)
-    }
-
-    pub async fn create_instrument(
-        &self,
-        folder: &str,
-    ) -> Result<InstrumentFileResponse, StorageError> {
-        let manager = self.instrument_manager.read().await;
-        let instruments_dir = &manager.instruments_dir;
-
-        let instrument_path = instruments_dir.join(folder);
-        let json_file = instrument_path.join("instrument.json");
-        let samples_dir = instrument_path.join("samples");
-
-        let instrument_item = InstrumentItem {
-            name: folder.to_string(),
-            folder: folder.to_string(),
-            path: instrument_path,
-            json_file,
-            samples_dir,
-            created_at: None,
-            modified_at: None,
-            size: None,
-        };
-
-        manager.create_file(&instrument_item).await?;
-        Ok(InstrumentFileResponse::from(&instrument_item))
-    }
-
-    pub async fn delete_instrument(&self, folder: &str) -> Result<(), StorageError> {
-        let manager = self.instrument_manager.read().await;
-        let instrument_path = manager.instruments_dir.join(folder);
-        manager
-            .delete_file(&instrument_path.to_string_lossy())
-            .await
-    }
-
-    pub async fn create_song(
-        &self,
-        name: &str,
-        file_type: SongFileType,
-    ) -> Result<SongFileResponse, StorageError> {
-        let manager = self.song_manager.read().await;
-        let songs_dir = &manager.songs_dir;
-
-        let extension = match &file_type {
-            SongFileType::Midi => "mid",
-            SongFileType::Other(ext) => ext,
-        };
-
-        let song_path = songs_dir.join(format!("{}.{}", name, extension));
-
-        let song_item = SongItem {
-            name: name.to_string(),
-            path: song_path.clone(),
-            file_type,
-            created_at: None,
-            modified_at: None,
-            size: None,
-        };
-
-        manager.create_file(&song_item).await?;
-        Ok(SongFileResponse::from(&song_item))
-    }
-
-    pub async fn delete_song(&self, path: &str) -> Result<(), StorageError> {
-        let manager = self.song_manager.read().await;
-        manager.delete_file(path).await
-    }
-
-    pub async fn get_file_metadata(
-        &self,
-        path: &str,
-        file_type: FileType,
-    ) -> Result<FileMetadata, StorageError> {
-        match file_type {
-            FileType::Instrument => {
-                let manager = self.instrument_manager.read().await;
-                let files: Vec<FileMetadata> = manager.list_files().await?;
-                files
-                    .into_iter()
-                    .find(|f| f.path == path)
-                    .ok_or(StorageError {
-                        message: "File not found".to_string(),
-                        error_type: StorageErrorType::NotFound,
-                    })
-            }
-            FileType::Song => {
-                let manager = self.song_manager.read().await;
-                let files: Vec<FileMetadata> = manager.list_files().await?;
-                files
-                    .into_iter()
-                    .find(|f| f.path == path)
-                    .ok_or(StorageError {
-                        message: "File not found".to_string(),
-                        error_type: StorageErrorType::NotFound,
-                    })
-            }
-            _ => Err(StorageError {
-                message: "Unsupported file type".to_string(),
-                error_type: StorageErrorType::InvalidFile,
-            }),
-        }
+    pub fn delete_song_file_sync(&self, path: &str) -> Result<(), StorageError> {
+        delete_song_file_sync(path)
     }
 }
 
-// Tauri state management
-impl Default for FileHandler {
-    fn default() -> Self {
-        Self::new().expect("Failed to initialize FileHandler")
-    }
-}
-
-// Type alias for backward compatibility
+// Re-export for convenience
 pub type FileManager = FileHandler;
