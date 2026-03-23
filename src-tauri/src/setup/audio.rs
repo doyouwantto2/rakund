@@ -127,23 +127,13 @@ fn load_instrument_from_path(
         .map_err(|e| AudioError::InstrumentError(format!("Invalid instrument.json: {}", e)))?;
 
     let fast_release = config.fast_release().unwrap_or_else(|| {
-        println!("[LOAD] Using default fast_release (not specified in JSON)");
         0.9998
     });
     let slow_release = config.slow_release().unwrap_or_else(|| {
-        println!("[LOAD] Using default slow_release (not specified in JSON)");
         0.99999
     });
 
     release::set(fast_release, slow_release);
-
-    println!(
-        "[LOAD] {} — format: {} — {} keys — layers: {:?}",
-        config.instrument,
-        config.files_format(),
-        config.piano_keys.len(),
-        config.layers(),
-    );
 
     cache::clear();
 
@@ -205,8 +195,6 @@ fn load_instrument_from_path(
         }
     }
 
-    println!("[LOAD] Done — {} entries cached", done);
-
     if let Some(handle) = app {
         let _ = handle.emit(
             "load_progress",
@@ -214,7 +202,7 @@ fn load_instrument_from_path(
                 "progress": 100.0,
                 "loaded": done,
                 "total": total,
-                "status": "done"
+                "status": "complete"
             }),
         );
     }

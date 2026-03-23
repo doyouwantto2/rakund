@@ -55,30 +55,67 @@ pub trait FileManager {
     type Error;
 
     // Read operations
-    async fn list_files(&self) -> Result<Vec<FileMetadata>, Self::Error>;
-    async fn get_file(&self, path: &str) -> Result<Self::Item, Self::Error>;
-    async fn file_exists(&self, path: &str) -> Result<bool, Self::Error>;
+    fn list_files(
+        &self,
+    ) -> impl std::future::Future<Output = Result<Vec<FileMetadata>, Self::Error>> + Send;
+    fn get_file(
+        &self,
+        path: &str,
+    ) -> impl std::future::Future<Output = Result<Self::Item, Self::Error>> + Send;
+    fn file_exists(
+        &self,
+        path: &str,
+    ) -> impl std::future::Future<Output = Result<bool, Self::Error>> + Send;
 
     // Write operations
-    async fn create_file(&self, item: &Self::Item) -> Result<String, Self::Error>;
-    async fn update_file(&self, path: &str, item: &Self::Item) -> Result<(), Self::Error>;
-    async fn delete_file(&self, path: &str) -> Result<(), Self::Error>;
+    fn create_file(
+        &self,
+        item: &Self::Item,
+    ) -> impl std::future::Future<Output = Result<String, Self::Error>> + Send;
+    fn update_file(
+        &self,
+        path: &str,
+        item: &Self::Item,
+    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
+    fn delete_file(
+        &self,
+        path: &str,
+    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
 
     // File validation
-    async fn validate_file(&self, item: &Self::Item) -> Result<(), Self::Error>;
+    fn validate_file(
+        &self,
+        item: &Self::Item,
+    ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
 }
 
 // Specific traits for different file types
 pub trait InstrumentFileManager: FileManager<Item = InstrumentItem, Error = StorageError> {
-    async fn scan_instrument_directories(&self) -> Result<Vec<PathBuf>, StorageError>;
-    async fn get_instrument_directory(&self, folder: &str) -> Result<InstrumentItem, StorageError>;
-    async fn validate_instrument_structure(&self, path: &PathBuf) -> Result<(), StorageError>;
+    fn scan_instrument_directories(
+        &self,
+    ) -> impl std::future::Future<Output = Result<Vec<PathBuf>, StorageError>> + Send;
+    fn get_instrument_directory(
+        &self,
+        folder: &str,
+    ) -> impl std::future::Future<Output = Result<InstrumentItem, StorageError>> + Send;
+    fn validate_instrument_structure(
+        &self,
+        path: &PathBuf,
+    ) -> impl std::future::Future<Output = Result<(), StorageError>> + Send;
 }
 
 pub trait SongFileManager: FileManager<Item = SongItem, Error = StorageError> {
-    async fn scan_song_files(&self) -> Result<Vec<SongFile>, StorageError>;
-    async fn get_song_file(&self, path: &str) -> Result<SongItem, StorageError>;
-    async fn validate_song_file(&self, path: &PathBuf) -> Result<(), StorageError>;
+    fn scan_song_files(
+        &self,
+    ) -> impl std::future::Future<Output = Result<Vec<SongFile>, StorageError>> + Send;
+    fn get_song_file(
+        &self,
+        path: &str,
+    ) -> impl std::future::Future<Output = Result<SongItem, StorageError>> + Send;
+    fn validate_song_file(
+        &self,
+        path: &PathBuf,
+    ) -> impl std::future::Future<Output = Result<(), StorageError>> + Send;
 }
 
 // File operation results
@@ -178,9 +215,11 @@ impl InstrumentFileResponse {
             json_file: crate::storage::basic::BasicFileOperations::get_instrument_json_path(folder)
                 .map(|p| p.to_string_lossy().to_string())
                 .unwrap_or_default(),
-            samples_dir: crate::storage::basic::BasicFileOperations::get_instrument_samples_path(folder)
-                .map(|p| p.to_string_lossy().to_string())
-                .unwrap_or_default(),
+            samples_dir: crate::storage::basic::BasicFileOperations::get_instrument_samples_path(
+                folder,
+            )
+            .map(|p| p.to_string_lossy().to_string())
+            .unwrap_or_default(),
             created_at: None,
             modified_at: None,
             size: None,

@@ -1,11 +1,9 @@
 use crate::extra::challenge::buffer::{MidiBuffer, MidiNoteMs};
 use crate::extra::challenge::engine::decoder::MidiParser;
-use crate::state;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
 use thiserror::Error;
-use futures_util::future::TryFutureExt;
 
 #[derive(Debug, Error)]
 pub enum VisualizerError {
@@ -131,6 +129,5 @@ pub fn get_session_notes() -> Result<Vec<MidiNoteMs>, String> {
 #[tauri::command]
 pub fn clear_session() -> Result<(), String> {
     *CURRENT_BUFFER.lock().unwrap() = None;
-    println!("[MIDI] Session cleared");
     Ok(())
 }
