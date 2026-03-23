@@ -17,9 +17,9 @@ export default function SceneDispatcher(props: SceneDispatcherProps) {
       <Switch>
         {/* Blank — no session active */}
         <Match when={props.sessionStatus() === "idle"}>
-          <div class="w-full h-full flex items-center justify-center">
-            <span class="text-zinc-700 text-sm select-none">
-              Select an instrument and a song to begin
+          <div class="w-full h-full flex items-center justify-center pb-40">
+            <span class="font-bold text-zinc-400 text-3xl select-none">
+              HAPPY APRIL FOOLS' DAY
             </span>
           </div>
         </Match>
@@ -45,7 +45,6 @@ export default function SceneDispatcher(props: SceneDispatcherProps) {
         <Match when={props.sessionStatus() === "ready"}>
           <div class="w-full h-full flex items-center justify-center">
             <span class="text-zinc-700 text-sm select-none">
-              Select a mode to begin
             </span>
           </div>
         </Match>

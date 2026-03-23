@@ -65,8 +65,8 @@ export default function PianoContainer(props: PianoProps) {
               onMouseDown={() => onNoteOn(key.midi, handForMidi(key.midi))}
               onMouseUp={() => onNoteOff(key.midi)}
               onMouseLeave={() => onNoteOff(key.midi)}
-              class={`h-full flex-1 border border-zinc-400 rounded-b-sm
-                    flex items-end justify-center pb-1
+              class={`h-full flex-1 border border-zinc-400
+                    flex items-end justify-center pb-0
                     text-[7px] font-black text-zinc-400
                     transition-all duration-75 ${whiteClass(key.midi)}`}
             >
