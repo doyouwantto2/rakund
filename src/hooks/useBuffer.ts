@@ -36,14 +36,14 @@ export type SessionStatus =
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const VISUAL_LEAD_MS = 2000;
-const AUDIO_LEAD_MS = 700;
+const AUDIO_LEAD_MS = 595;
 
 // Rolling scheduler: how far ahead to schedule at a time.
 // Keeps only ~SCHEDULE_WINDOW_MS worth of timers active at once instead
 // of dumping the entire song's worth of timeouts up front.
-const SCHEDULE_WINDOW_MS = 2000;
+const SCHEDULE_WINDOW_MS = 3000;
 // How often the rolling scheduler refills the window.
-const SCHEDULER_TICK_MS = 50;
+const SCHEDULER_TICK_MS = 500;
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 

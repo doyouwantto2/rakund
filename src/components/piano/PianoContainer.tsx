@@ -55,7 +55,7 @@ export default function PianoContainer(props: PianoProps) {
 
   return (
     <div
-      class="fixed bottom-1 w-full select-none"
+      class="fixed w-full select-none"
       style="height: 25vh; min-height: 2rem; max-height: 10rem;"
     >
       <div class="absolute inset-0 flex">
@@ -66,7 +66,7 @@ export default function PianoContainer(props: PianoProps) {
               onMouseUp={() => onNoteOff(key.midi)}
               onMouseLeave={() => onNoteOff(key.midi)}
               class={`h-full flex-1 border border-zinc-400
-                    flex items-end justify-center pb-0
+                    flex items-end justify-center 
                     text-[7px] font-black text-zinc-400
                     transition-all duration-75 ${whiteClass(key.midi)}`}
             >
