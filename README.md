@@ -23,7 +23,6 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 ## 🚀 Key Features
 
 * **Dual Input Modes:** * **Manual Mode:** Play using a standard computer keyboard or external MIDI controller.
-  * **Automated Parser:** Load `.mid` files to let the engine parse and auto-play complex compositions perfectly.
 * **Low Latency:** Rust backend ensures zero-lag communication between the audio thread and the visual rendering thread.
 
 ---
@@ -38,11 +37,14 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 ## 💻 Installation & Build
 
 ### Prerequisites
-Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system.
+Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system. You should either install [direnv].
 
 ### Build Instructions
 
-1. **Clone the repository:**
+1. **Clone the repository: (NixOS)**
    ```bash
    git clone https://github.com/doyouwantto2/rakund.git
    cd rakund
+   direnv allow
+   bun run tauri dev
+
