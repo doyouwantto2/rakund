@@ -8,12 +8,12 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## ✨ Demo & Showcase
+## ✨ Showcase
 
 
 ### Interface Preview
 
-| Manual Play Mode | Visualizer (MIDI Auto-play) |
+| Manual Play Mode | Visualizer |
 | :---: | :---: |
 | <img src="./examples/img/swappy-20260324-173943.png" width="400"/> | <img src="./examples/img/swappy-20260324-174920.png" width="400"/> |
 | *Clean UI for manual QWERTY/MIDI input.* | *Real-time color rendering based on note frequencies.* |
@@ -23,7 +23,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 ## 🚀 Key Features
 
 * **Dual Input Modes:** Play using a standard computer keyboard or external MIDI controller.
-* **Low Latency:** Rust backend ensures zero-lag communication between the audio thread and the visual rendering thread.
+* **Low Latency:** Rust backend ensures fast communication between the audio thread and the visual rendering thread.
 
 ---
 
@@ -37,12 +37,13 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 ## 💻 Installation & Build
 
 ### Prerequisites
-Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system. You should either install [direnv](https://direnv.net/) and [bun](https://bun.com/).
+Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system, along with [direnv](https://direnv.net/) and [bun](https://bun.com/).
 
 ### Build Instructions
 ```bash
 git clone https://github.com/doyouwantto2/rakund.git
 cd rakund
 direnv allow
+bun install
 bun run tauri dev
 

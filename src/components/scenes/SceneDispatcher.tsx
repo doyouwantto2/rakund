@@ -19,7 +19,7 @@ export default function SceneDispatcher(props: SceneDispatcherProps) {
         <Match when={props.sessionStatus() === "idle"}>
           <div class="w-full h-full flex items-center justify-center pb-40">
             <span class="font-bold text-zinc-400 text-3xl select-none">
-              HAPPY APRIL FOOLS' DAY
+              HAPPY APRIL FOOLS' DAY🥀
             </span>
           </div>
         </Match>
