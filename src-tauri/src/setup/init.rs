@@ -28,7 +28,7 @@ pub fn run() -> Result<(), AudioError> {
         .invoke_handler(tauri::generate_handler![
             core::player::play_midi_note,
             core::player::stop_midi_note,
-            core::player::play_note_auto, // ← new: velocity-aware auto play
+            core::player::play_note_auto, 
             core::player::load_instrument,
             core::player::get_available_instruments,
             core::player::get_available_instruments_files,

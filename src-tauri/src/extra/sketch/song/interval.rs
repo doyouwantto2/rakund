@@ -1,8 +1,8 @@
 #[derive(Debug, Clone)]
 pub struct Interval {
-    pub start: u32, // Start time in ticks
-    pub duration: u32, // Duration in ticks
-    pub end: u32, // End time (start + duration)
+    pub start: u32, 
+    pub duration: u32, 
+    pub end: u32, 
 }
 
 impl Interval {
@@ -32,10 +32,10 @@ impl Interval {
     }
     
     pub fn is_short(&self) -> bool {
-        self.duration < 24 // Less than a 16th note at 96 PPQ
+        self.duration < 24 
     }
     
     pub fn is_long(&self) -> bool {
-        self.duration >= 96 // Quarter note or longer at 96 PPQ
+        self.duration >= 96 
     }
 }

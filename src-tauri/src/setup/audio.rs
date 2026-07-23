@@ -11,42 +11,20 @@ use std::sync::mpsc::{self, Receiver, SyncSender};
 use std::sync::{Arc, Mutex};
 use tauri::Emitter;
 
-// ── Constants ─────────────────────────────────────────────────────────────────
-
-/// Hard cap on simultaneous voices. Oldest releasing voice is evicted when full.
 const MAX_VOICES: usize = 64;
 
-/// Bounded command queue depth. If producers send faster than the audio thread
-/// drains (shouldn't happen in practice), old commands are dropped rather than
-/// blocking the command handlers.
 const CMD_QUEUE_DEPTH: usize = 512;
-
-// ── Command channel ───────────────────────────────────────────────────────────
-//
-// This is the key architectural change:
-//
-//   BEFORE: play_midi_note → lock Mutex<Vec<Voice>> → push
-//           audio callback → lock same Mutex         → read + mix
-//           → contention every time a note fires while audio is mixing
-//
-//   AFTER:  play_midi_note → sender.send(PlayNote)   (non-blocking, no lock)
-//           audio callback → drain receiver           (only consumer, no contention)
-//           → zero contention between command handlers and the audio thread
 
 #[derive(Debug)]
 pub enum AudioCommand {
-    /// Play one note. Data and pitch_ratio pre-resolved by the command handler.
     PlayNote {
         midi: u8,
         velocity: u8,
         data: Arc<Vec<f32>>,
         pitch_ratio: f32,
     },
-    /// Begin release envelope for a note.
     StopNote { midi: u8 },
 }
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 #[derive(Clone)]
 pub struct Voice {
@@ -58,14 +36,11 @@ pub struct Voice {
     pub volume: f32,
 }
 
-/// Passed to Tauri's state manager. Command handlers clone `cmd_tx` to send.
 pub struct AudioHandle {
     pub cmd_tx: SyncSender<AudioCommand>,
     pub is_sustained: Arc<Mutex<bool>>,
     pub _stream: cpal::Stream,
 }
-
-// ── Stream ────────────────────────────────────────────────────────────────────
 
 pub fn start_stream() -> Result<AudioHandle> {
     let host = cpal::default_host();
@@ -75,15 +50,12 @@ pub fn start_stream() -> Result<AudioHandle> {
     let config = device.default_output_config()?;
     let channels = config.channels() as usize;
 
-    // Bounded MPSC channel — sender is cloneable (one per Tauri command), only
-    // the audio callback holds the receiver.
     let (cmd_tx, cmd_rx): (SyncSender<AudioCommand>, Receiver<AudioCommand>) =
         mpsc::sync_channel(CMD_QUEUE_DEPTH);
 
     let is_sustained = Arc::new(Mutex::new(false));
     let sustained_clone = Arc::clone(&is_sustained);
 
-    // ── Pre-allocated buffers that live inside the closure ────────────────
     let mut voices: Vec<Voice> = Vec::with_capacity(MAX_VOICES);
     let mut mix: Vec<f32> = Vec::new();
 
@@ -95,9 +67,6 @@ pub fn start_stream() -> Result<AudioHandle> {
 
                 let sustained = sustained_clone.try_lock().map(|g| *g).unwrap_or(false);
 
-                // ── 1. Drain all pending commands (non-blocking) ──────────
-                //    This is now the ONLY place voices are mutated — no mutex
-                //    needed because cmd_rx is exclusively owned by this closure.
                 while let Ok(cmd) = cmd_rx.try_recv() {
                     match cmd {
                         AudioCommand::PlayNote {
@@ -106,13 +75,11 @@ pub fn start_stream() -> Result<AudioHandle> {
                             data,
                             pitch_ratio,
                         } => {
-                            // Release any existing voice for this note first
                             for v in voices.iter_mut() {
                                 if v.midi_note == midi && !v.is_releasing {
                                     v.is_releasing = true;
                                 }
                             }
-                            // Enforce voice cap — evict oldest releasing voice
                             if voices.len() >= MAX_VOICES {
                                 if let Some(idx) = voices.iter().position(|v| v.is_releasing) {
                                     voices.remove(idx);
@@ -143,7 +110,6 @@ pub fn start_stream() -> Result<AudioHandle> {
                 let slow = release::get_slow();
                 let num_frames = output.len() / channels;
 
-                // ── 2. Resize mix buffer only when frame size changes ─────
                 if mix.len() < num_frames {
                     mix.resize(num_frames, 0.0);
                 }
@@ -151,7 +117,6 @@ pub fn start_stream() -> Result<AudioHandle> {
                     *s = 0.0;
                 }
 
-                // ── 3. Mix voices ─────────────────────────────────────────
                 for v in voices.iter_mut() {
                     for frame_idx in 0..num_frames {
                         let pos = v.playhead as usize;
@@ -170,10 +135,8 @@ pub fn start_stream() -> Result<AudioHandle> {
                     }
                 }
 
-                // ── 4. Single retain — remove finished/silent voices ──────
                 voices.retain(|v| v.volume > 0.001 && (v.playhead as usize + 1) < v.data.len());
 
-                // ── 5. Apply gain + soft clip ─────────────────────────────
                 let num_voices = voices.len().max(1) as f32;
                 let gain = (1.0 / num_voices.sqrt()).min(1.0) * 0.8;
 
@@ -199,8 +162,6 @@ pub fn start_stream() -> Result<AudioHandle> {
         _stream: stream,
     })
 }
-
-// ── Instrument loading (unchanged) ────────────────────────────────────────────
 
 pub fn load_instrument(folder: &str) -> Result<InstrumentConfig> {
     let instrument_dir = state::instruments_dir()?.join(folder);

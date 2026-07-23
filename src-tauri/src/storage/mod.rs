@@ -4,7 +4,6 @@ pub mod handler;
 pub mod items;
 pub mod logic;
 
-// Re-export commonly used types
 pub use items::{
     InstrumentItem, SongItem, FileMetadata, FileType, SongFileType,
     FileManager, InstrumentFileManager, SongFileManager,

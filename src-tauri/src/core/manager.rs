@@ -4,10 +4,6 @@ use tauri::State;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-// Tauri commands for frontend integration only
-// Manager is just for Tauri commands, no pure functions
-
-// CRUD operations for file management
 #[tauri::command]
 pub async fn create_instrument(
     folder: String,

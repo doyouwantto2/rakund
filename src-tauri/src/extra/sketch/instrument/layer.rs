@@ -18,7 +18,6 @@ impl LayerRangeInfo {
     }
 }
 
-// Custom deserializer to handle both old format (name as key) and new format (name as field)
 pub fn deserialize_layers<'de, D>(
     deserializer: D,
 ) -> std::result::Result<HashMap<String, LayerRangeInfo>, D::Error>
@@ -35,15 +34,12 @@ where
     let mut layers = HashMap::new();
 
     for (name, value) in raw {
-        // Try new format first (with name field)
         if let Ok(mut layer_info) = serde_json::from_value::<LayerRangeInfo>(value.clone()) {
-            // If name field is missing or empty, use the key as name
             if layer_info.name.is_empty() {
                 layer_info.name = name.clone();
             }
             layers.insert(name, layer_info);
         } else {
-            // Try old format (name as key, no name field inside)
             if let Ok(old_layer) = serde_json::from_value::<OldLayerFormat>(value) {
                 layers.insert(
                     name.clone(),

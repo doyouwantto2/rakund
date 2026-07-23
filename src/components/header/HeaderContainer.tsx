@@ -90,7 +90,9 @@ export default function HeaderContainer(props: HeaderContainerProps) {
               }`}
               title={isPaused() ? "Resume" : "Pause"}
             >
-              <span class="text-sm leading-none">{isPaused() ? "▶" : "⏸"}</span>
+              <span class="text-sm leading-none">
+                {isPaused() ? "▶" : "⏸"}
+              </span>
             </button>
           </Show>
 

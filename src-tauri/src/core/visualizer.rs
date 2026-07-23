@@ -74,10 +74,8 @@ pub async fn scan_songs() -> Result<Vec<SongInfo>, String> {
     Ok(songs)
 }
 
-// Backward compatibility alias
 #[tauri::command]
 pub async fn scan_song_files() -> Result<Vec<SongInfo>, String> {
-    // Just call the main function
     scan_songs().await
 }
 
@@ -85,7 +83,6 @@ pub async fn scan_song_files() -> Result<Vec<SongInfo>, String> {
 pub async fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, String> {
     use crate::storage::handler::FileHandler;
     
-    // Validate song file exists using FileHandler
     let file_handler = FileHandler::new()
         .map_err(|e| e.to_string())?;
     
@@ -96,7 +93,6 @@ pub async fn load_midi_session(file_path: String) -> Result<MidiSessionInfo, Str
         return Err(format!("Song file '{}' does not exist", file_path));
     }
     
-    // Validate song file
     file_handler.validate_song_file(&file_path).await
         .map_err(|e| e.to_string())?;
     

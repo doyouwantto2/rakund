@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-// Core file item structures for maintainability
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct InstrumentItem {
     pub name: String,
@@ -30,7 +29,6 @@ pub enum SongFileType {
     Other(String),
 }
 
-// Common file metadata for all items
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileMetadata {
     pub name: String,
@@ -49,12 +47,10 @@ pub enum FileType {
     File,
 }
 
-// File operations interface
 pub trait FileManager {
     type Item;
     type Error;
 
-    // Read operations
     fn list_files(
         &self,
     ) -> impl std::future::Future<Output = Result<Vec<FileMetadata>, Self::Error>> + Send;
@@ -67,7 +63,6 @@ pub trait FileManager {
         path: &str,
     ) -> impl std::future::Future<Output = Result<bool, Self::Error>> + Send;
 
-    // Write operations
     fn create_file(
         &self,
         item: &Self::Item,
@@ -82,14 +77,12 @@ pub trait FileManager {
         path: &str,
     ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
 
-    // File validation
     fn validate_file(
         &self,
         item: &Self::Item,
     ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send;
 }
 
-// Specific traits for different file types
 pub trait InstrumentFileManager: FileManager<Item = InstrumentItem, Error = StorageError> {
     fn scan_instrument_directories(
         &self,
@@ -118,7 +111,6 @@ pub trait SongFileManager: FileManager<Item = SongItem, Error = StorageError> {
     ) -> impl std::future::Future<Output = Result<(), StorageError>> + Send;
 }
 
-// File operation results
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SongFile {
     pub name: String,
@@ -166,7 +158,6 @@ impl std::fmt::Display for StorageErrorType {
 
 impl std::error::Error for StorageError {}
 
-// Response types for Tauri commands (file info only)
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct InstrumentFileResponse {
     pub name: String,

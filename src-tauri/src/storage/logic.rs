@@ -2,7 +2,6 @@ use crate::storage::basic::BasicFileOperations;
 use crate::storage::items::*;
 use std::path::{Path, PathBuf};
 
-// Instrument file manager implementation - specific logic only
 pub struct InstrumentFileManagerImpl {
     pub instruments_dir: PathBuf,
 }
@@ -86,7 +85,6 @@ impl FileManager for InstrumentFileManagerImpl {
             BasicFileOperations::create_directory(&item.path)?;
             BasicFileOperations::create_directory(&item.samples_dir)?;
 
-            // Create empty instrument.json if it doesn't exist
             if !BasicFileOperations::file_exists(&item.json_file) {
                 BasicFileOperations::create_file(&item.json_file, "{}")?;
             }
@@ -101,8 +99,6 @@ impl FileManager for InstrumentFileManagerImpl {
         _item: &Self::Item,
     ) -> impl std::future::Future<Output = Result<(), Self::Error>> + Send {
         async move {
-            // For instruments, updating typically means updating the JSON file
-            // This would be handled by the data layer, not the file layer
             self.validate_instrument_structure(&PathBuf::from(path))
                 .await
         }
@@ -174,14 +170,11 @@ impl InstrumentFileManager for InstrumentFileManagerImpl {
                 });
             }
 
-            // That's it! The instrument.json contains all the sample paths,
-            // so we don't need to validate directory structure
             Ok(())
         }
     }
 }
 
-// Song file manager implementation - specific logic only
 pub struct SongFileManagerImpl {
     pub songs_dir: PathBuf,
 }

@@ -18,6 +18,7 @@
       },
       "devDependencies": {
         "@tauri-apps/cli": "^2",
+        "tailwindcss-language-server": "^0.0.1",
         "typescript": "~5.6.2",
         "vite": "^6.0.3",
         "vite-plugin-solid": "^2.11.0",
@@ -360,6 +361,8 @@
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
 
     "tailwindcss": ["tailwindcss@4.2.0", "", {}, "sha512-yYzTZ4++b7fNYxFfpnberEEKu43w44aqDMNM9MHMmcKuCH7lL8jJ4yJ7LGHv7rSwiqM0nkiobF9I6cLlpS2P7Q=="],
+
+    "tailwindcss-language-server": ["tailwindcss-language-server@0.0.1", "", { "bin": { "tailwindcss-language-server": "dist/index.js" } }, "sha512-lMoncp8ICeUA1kLVaiKARRUKQxRndKtIelydoMgg3P2ZjAIfcptN8Nin848+VClr2wGoM3+9RZ71sDG1YrnX1g=="],
 
     "tapable": ["tapable@2.3.0", "", {}, "sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg=="],
 

@@ -6,7 +6,7 @@ use crate::setup::config::{AppState, InstrumentConfig};
 use crate::state;
 use lazy_static::lazy_static;
 use std::sync::{Arc, Mutex};
-use tauri::{AppHandle, State}; // add this import at the top of player.rs
+use tauri::{AppHandle, State}; 
 
 lazy_static! {
     pub static ref CURRENT_INSTRUMENT: Arc<Mutex<Option<InstrumentConfig>>> =
@@ -31,7 +31,6 @@ pub async fn play_note_auto(
         .get(&midi_num.to_string())
         .ok_or_else(|| format!("Note {} not found in piano configuration", midi_num))?;
 
-    // Resolve velocity → layer → sample index entirely on the Rust side
     let sample_idx: usize = {
         let mut ranges: Vec<_> = config.general.layers.values().collect();
         ranges.sort_by_key(|r| r.lovel);
@@ -48,7 +47,6 @@ pub async fn play_note_auto(
                 .position(|s| s.layer.to_uppercase() == layer_upper)
                 .unwrap_or(0)
         } else {
-            // Pick closest layer by distance
             let best = ranges
                 .iter()
                 .min_by_key(|r| {
@@ -75,7 +73,6 @@ pub async fn play_note_auto(
     let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
     let ratio = audio::pitch_ratio(recorded_midi, midi_num);
 
-    // ← only change from old version: send via channel instead of locking Mutex
     handle
         .cmd_tx
         .try_send(AudioCommand::PlayNote {
@@ -108,7 +105,6 @@ pub async fn get_available_instruments(
             .and_then(|name| name.to_str())
             .unwrap_or("unknown");
 
-        // Read the instrument.json to get full instrument data
         let json_path = folder.join("instrument.json");
         let raw = crate::storage::basic::BasicFileOperations::read_file_content(&json_path)
             .map_err(|e| e.to_string())?;
@@ -135,11 +131,9 @@ pub async fn get_available_instruments(
     Ok(result)
 }
 
-// Backward compatibility alias
 #[tauri::command]
 pub async fn get_available_instruments_files(
 ) -> Result<Vec<crate::extra::sketch::instrument::response::InstrumentInfoResponse>, String> {
-    // Just call the main function
     get_available_instruments().await
 }
 
@@ -151,7 +145,6 @@ pub async fn load_instrument(
 ) -> Result<crate::extra::sketch::instrument::response::InstrumentInfoResponse, String> {
     use crate::storage::handler::FileHandler;
 
-    // Validate instrument exists using FileHandler
     let file_handler = FileHandler::new().map_err(|e| e.to_string())?;
 
     let instrument_exists = file_handler
@@ -168,7 +161,6 @@ pub async fn load_instrument(
         .await
         .map_err(|e| e.to_string())?;
 
-    // Use the original progress-enabled loading function
     let config = crate::setup::audio::load_instrument_with_progress(&folder, &app)
         .map_err(|e| e.to_string())?;
 
@@ -213,16 +205,6 @@ pub fn set_current_folder(folder: String) {
     *CURRENT_FOLDER.lock().unwrap() = Some(folder);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// REPLACE play_midi_note and stop_midi_note in src-tauri/src/core/player.rs,
-// and ADD play_notes_batch (also register it in init.rs invoke_handler).
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// All three commands now just resolve the sample data and send an AudioCommand
-// over the channel — no Mutex lock, no contention with the audio thread.
-
-// ── Single note on ────────────────────────────────────────────────────────────
-
 #[tauri::command]
 pub async fn play_midi_note(
     midi_num: u8,
@@ -252,7 +234,6 @@ pub async fn play_midi_note(
     let recorded_midi = audio::pitch_to_midi(&key_data.pitch).unwrap_or(key_data.midi_num());
     let ratio = audio::pitch_ratio(recorded_midi, midi_num);
 
-    // Non-blocking send — no Mutex, no contention with audio callback
     handle
         .cmd_tx
         .try_send(AudioCommand::PlayNote {
@@ -261,12 +242,10 @@ pub async fn play_midi_note(
             data,
             pitch_ratio: ratio,
         })
-        .ok(); // silently drop if queue is full (extremely rare)
+        .ok(); 
 
     Ok(())
 }
-
-// ── Single note off ───────────────────────────────────────────────────────────
 
 #[tauri::command]
 pub async fn stop_midi_note(
@@ -281,13 +260,6 @@ pub async fn stop_midi_note(
         .ok();
     Ok(())
 }
-
-// ── Batch note on — key change for chord performance ─────────────────────────
-//
-// Plays multiple notes in a single IPC call. The frontend scheduler groups
-// notes with the same start_ms into one invoke("play_notes_batch", { notes })
-// instead of firing N separate invoke calls for each note in a chord.
-// This cuts IPC roundtrips from N per chord to 1.
 
 #[derive(serde::Deserialize)]
 pub struct BatchNote {
@@ -308,7 +280,7 @@ pub async fn play_notes_batch(
     for note in notes {
         let key_data = match config.piano_keys.get(&note.midi_num.to_string()) {
             Some(k) => k,
-            None => continue, // skip unknown notes silently
+            None => continue, 
         };
 
         let layer_upper = note.layer.to_uppercase();

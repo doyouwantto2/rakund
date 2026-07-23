@@ -4,11 +4,9 @@ use std::path::{Path, PathBuf};
 use std::fs;
 use std::time::SystemTime;
 
-// Basic file operations that don't require complex logic
 pub struct BasicFileOperations;
 
 impl BasicFileOperations {
-    // Directory operations
     pub fn get_instruments_dir() -> Result<PathBuf, StorageError> {
         state::instruments_dir()
             .map_err(|e| StorageError {
@@ -71,7 +69,6 @@ impl BasicFileOperations {
             })
     }
 
-    // File metadata operations
     pub fn get_file_metadata(path: &Path) -> Result<FileMetadata, StorageError> {
         let metadata = fs::metadata(path)
             .map_err(|e| StorageError {
@@ -114,7 +111,6 @@ impl BasicFileOperations {
         })
     }
 
-    // Directory listing operations
     pub fn list_directories(base_dir: &Path) -> Result<Vec<PathBuf>, StorageError> {
         if !base_dir.exists() {
             return Ok(vec![]);
@@ -169,7 +165,6 @@ impl BasicFileOperations {
         Ok(files)
     }
 
-    // File content operations
     pub fn read_file_content(path: &Path) -> Result<String, StorageError> {
         fs::read_to_string(path)
             .map_err(|e| StorageError {
@@ -192,7 +187,6 @@ impl BasicFileOperations {
             })
     }
 
-    // Path utilities
     pub fn get_instrument_path(folder: &str) -> Result<PathBuf, StorageError> {
         let instruments_dir = Self::get_instruments_dir()?;
         Ok(instruments_dir.join(folder))
@@ -213,7 +207,6 @@ impl BasicFileOperations {
         Ok(songs_dir.join(format!("{}.{}", name, extension)))
     }
 
-    // File type detection
     pub fn is_midi_file(path: &Path) -> bool {
         path.extension()
             .and_then(|ext| ext.to_str())
