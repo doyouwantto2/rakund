@@ -8,7 +8,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## ✨ Showcase
+## Showcase
 
 [![Demo Video](https://img.youtube.com/vi/eoPtckVYc3c/0.jpg)](https://www.youtube.com/watch?v=eoPtckVYc3c)
 
@@ -21,7 +21,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 * **Dual Input Modes:** Play using a standard computer keyboard or external MIDI controller.
 * **Low Latency:** Rust backend ensures fast communication between the audio thread and the visual rendering thread.
@@ -35,7 +35,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## 💻 Installation & Build
+## Installation & Build
 
 ### Prerequisites
 Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system, along with [direnv](https://direnv.net/) and [bun](https://bun.com/).
