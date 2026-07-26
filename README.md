@@ -8,7 +8,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## Showcase
+## Video
 
 [![Demo Video](https://img.youtube.com/vi/eoPtckVYc3c/0.jpg)](https://www.youtube.com/watch?v=eoPtckVYc3c)
 
