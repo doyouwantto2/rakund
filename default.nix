@@ -3,9 +3,7 @@
 }:
 
 let
-  # Libraries required at runtime (shared objects .so)
   runtimeLibs = with pkgs; [
-    # Tauri / GUI deps
     gtk3
     gdk-pixbuf
     cairo
@@ -20,12 +18,10 @@ let
     gst_all_1.gst-plugins-base
     gst_all_1.gst-plugins-good
 
-    # Audio / Hardware deps
     alsa-lib
     udev
   ];
 
-  # Tools needed only during build time
   buildTools = with pkgs; [
     # rustup
     pkg-config
@@ -39,10 +35,8 @@ let
 
 in
 pkgs.mkShell {
-  # nativeBuildInputs are for tools that run on the build host (like pkg-config)
   nativeBuildInputs = buildTools;
 
-  # buildInputs are for libraries that the program links against
   buildInputs = runtimeLibs;
 
   shellHook = ''
