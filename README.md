@@ -28,11 +28,6 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## Tech Stack
-
-* **Backend:** Rust (Core logic, Audio processing, MIDI parsing).
-* **Frontend:** SolidJS (Cross-platform GUI bridging).
-
 ---
 
 ## Installation & Build
@@ -47,3 +42,27 @@ cd rakund
 direnv allow
 bun install
 bun run tauri dev
+```
+
+
+## Setup
+
+### Linux
+On linux you need to extract tar files such as salamander.tar and splendid.tar, into config/rakund/instruments so that it would look like this:
+
+.config/
+  ├── rakund/
+    ├── instruments/
+    │   └── salamander/
+    │   └── splendid/
+    └── songs/
+
+### Window
+On window it should be:
+
+.AppData/
+  ├── rakund/
+    ├── instruments/
+    │   └── salamander/
+    │   └── splendid/
+    └── songs/
