@@ -34,16 +34,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ## 🛠 Installation & Build
 
-### Prerequisites
-
-Make sure you have the following tools installed:
-
-- [Rust](https://www.rust-lang.org/tools/install)
-- [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/)
-- [direnv](https://direnv.net/)
-- [Bun](https://bun.com/)
-
-### Development 
+### Development (NixOS)
 
 ```bash
 git clone https://github.com/doyouwantto2/rakund.git
