@@ -45,22 +45,26 @@ bun run tauri dev
 
 ### Linux
 
-Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.  
+Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.
 
-./.config/
-└── rakund
-    ├── instruments
-    │   ├── salamander
-    │   └── splendid
-    └── songs
+```text
+~/.config/
+└── rakund/
+    ├── instruments/
+    │   ├── salamander/
+    │   └── splendid/
+    └── songs/
+```
 
 ### Windows
 
-On Windows, use `%APPDATA%\rakund` as the base directory.  
+On Windows, use `%APPDATA%\rakund` as the base directory.
 
-AppData/
-└── rakund
-    ├── instruments
-    │   ├── salamander
-    │   └── splendid
-    └── songs
+```text
+%APPDATA%/
+└── rakund/
+    ├── instruments/
+    │   ├── salamander/
+    │   └── splendid/
+    └── songs/
+```
