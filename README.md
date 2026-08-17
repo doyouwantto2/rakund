@@ -57,10 +57,15 @@ bun run tauri dev
 
 Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.  
 
+.config\rakund\
+├── instruments\
+│   ├── salamander\
+│   └── splendid\
+└── songs\
+
 ### Windows
 
 On Windows, use `%APPDATA%\rakund` as the base directory.  
-`%APPDATA%` usually resolves to `C:\Users\<your-username>\AppData\Roaming`.
 
 %APPDATA%\rakund\
 ├── instruments\
