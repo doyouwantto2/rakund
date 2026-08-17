@@ -16,25 +16,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Linux x86_64
           - name: Linux x86_64
             os: ubuntu-22.04
 
+          # Windows x86_64
           - name: Windows x86_64
             os: windows-latest
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      # --------------------------------------------------
+      # ==================================================
       # Checkout
-      # --------------------------------------------------
+      # ==================================================
 
       - name: Checkout
         uses: actions/checkout@v4
 
-      # --------------------------------------------------
+      # ==================================================
       # Linux dependencies
-      # --------------------------------------------------
+      # ==================================================
 
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-22.04'
@@ -51,19 +53,23 @@ jobs:
             libasound2-dev \
             libudev-dev
 
-      # --------------------------------------------------
+      # ==================================================
       # Bun
-      # --------------------------------------------------
+      # ==================================================
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      # --------------------------------------------------
+      # ==================================================
       # Rust
-      # --------------------------------------------------
+      # ==================================================
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+
+      # ==================================================
+      # Rust cache
+      # ==================================================
 
       - name: Cache Rust
         uses: swatinem/rust-cache@v2
@@ -71,29 +77,118 @@ jobs:
           workspaces: |
             src-tauri -> target
 
-      # --------------------------------------------------
-      # Frontend
-      # --------------------------------------------------
+      # ==================================================
+      # Frontend dependencies
+      # ==================================================
 
       - name: Install frontend dependencies
         run: bun install --frozen-lockfile
 
-      # --------------------------------------------------
+      # ==================================================
       # Build Tauri
-      # --------------------------------------------------
+      # ==================================================
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v1
-        with:
-          args: ""
 
-      # --------------------------------------------------
-      # Upload build artifact
-      # --------------------------------------------------
+      # ==================================================
+      # Upload bundle as GitHub Actions artifact
+      # ==================================================
 
-      - name: Upload Tauri bundle
+      - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
           name: rakund-${{ matrix.os }}
-          path: |
-            src-tauri/target/release/bundle/**
+          path: src-tauri/target/release/bundle/
+          if-no-files-found: error
+
+  # ======================================================
+  # Create GitHub Release
+  # ======================================================
+
+  release:
+    name: Create GitHub Release
+
+    needs: build
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      # --------------------------------------------------
+      # Download Linux bundle
+      # --------------------------------------------------
+
+      - name: Download Linux bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: rakund-ubuntu-22.04
+          path: release/linux
+
+      # --------------------------------------------------
+      # Download Windows bundle
+      # --------------------------------------------------
+
+      - name: Download Windows bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: rakund-windows-latest
+          path: release/windows
+
+      # --------------------------------------------------
+      # Show generated files
+      # --------------------------------------------------
+
+      - name: List release files
+        run: |
+          echo "Generated bundles:"
+          find release -type f -print
+
+      # --------------------------------------------------
+      # Create GitHub Release
+      # --------------------------------------------------
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Rakund ${{ github.ref_name }}" \
+            --generate-notes \
+            --draft
+
+      # --------------------------------------------------
+      # Upload application bundles
+      # --------------------------------------------------
+
+      - name: Upload Linux packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          find release/linux -type f \
+            \( \
+              -name "*.deb" \
+              -o -name "*.AppImage" \
+              -o -name "*.AppImage.tar.gz" \
+              -o -name "*.sig" \
+            \) \
+            -exec gh release upload \
+              "${{ github.ref_name }}" \
+              {} \
+              --clobber \;
+
+      - name: Upload Windows packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          find release/windows -type f \
+            \( \
+              -name "*.exe" \
+              -o -name "*.msi" \
+              -o -name "*.nsis.zip" \
+              -o -name "*.msi.zip" \
+              -o -name "*.sig" \
+            \) \
+            -exec gh release upload \
+              "${{ github.ref_name }}" \
+              {} \
+              --clobber \;
