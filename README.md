@@ -1,3 +1,5 @@
+# Rakund
+
 [![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)]()
 [![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)]()
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge)]()
@@ -8,7 +10,7 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## Video
+## 🎥 Video
 
 [![Demo Video](https://img.youtube.com/vi/eoPtckVYc3c/0.jpg)](https://www.youtube.com/watch?v=eoPtckVYc3c)
 
@@ -21,48 +23,31 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ---
 
-## Key Features
+## ✨ Key Features
 
-* **Dual Input Modes:** Play using a standard computer keyboard or external MIDI controller.
-* **Low Latency:** Rust backend ensures fast communication between the audio thread and the visual rendering thread.
+- **Dual Input Modes** – Play using a standard computer keyboard or an external MIDI controller.
+- **Low Latency** – Rust backend ensures fast communication between the audio thread and the visual rendering thread.
+- **Audio-Visual Sync** – Notes are mapped to colors and particles in real time.
+- **Cross-Platform** – Runs on Windows, macOS, and Linux.
 
 ---
 
----
-
-## Installation & Build
+## 🛠 Installation & Build
 
 ### Prerequisites
-Make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/) installed on your system, along with [direnv](https://direnv.net/) and [bun](https://bun.com/).
+
+Make sure you have the following tools installed:
+
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Tauri CLI](https://tauri.app/v1/guides/getting-started/setup/)
+- [direnv](https://direnv.net/)
+- [Bun](https://bun.com/)
 
 ### Build Instructions
+
 ```bash
 git clone https://github.com/doyouwantto2/rakund.git
 cd rakund
 direnv allow
 bun install
 bun run tauri dev
-```
-
-
-## Setup
-
-### Linux
-On linux you need to extract tar files such as salamander.tar and splendid.tar, into config/rakund/instruments so that it would look like this:
-
-.config/
-  ├── rakund/
-    ├── instruments/
-    │   └── salamander/
-    │   └── splendid/
-    └── songs/
-
-### Window
-On window it should be:
-
-.AppData/
-  ├── rakund/
-    ├── instruments/
-    │   └── salamander/
-    │   └── splendid/
-    └── songs/
