@@ -43,7 +43,7 @@ Make sure you have the following tools installed:
 - [direnv](https://direnv.net/)
 - [Bun](https://bun.com/)
 
-### Build Instructions
+### Development 
 
 ```bash
 git clone https://github.com/doyouwantto2/rakund.git
@@ -51,3 +51,26 @@ cd rakund
 direnv allow
 bun install
 bun run tauri dev
+```
+
+### Linux
+
+Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.  
+The directory structure should look like this:
+
+~/.config/rakund/
+├── instruments/
+│   ├── salamander/
+│   └── splendid/
+└── songs/
+
+### Windows
+
+On Windows, use `%APPDATA%\rakund` as the base directory.  
+`%APPDATA%` usually resolves to `C:\Users\<your-username>\AppData\Roaming`.
+
+%APPDATA%\rakund\
+├── instruments\
+│   ├── salamander\
+│   └── splendid\
+└── songs\
