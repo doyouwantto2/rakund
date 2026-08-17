@@ -56,13 +56,6 @@ bun run tauri dev
 ### Linux
 
 Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.  
-The directory structure should look like this:
-
-~/.config/rakund/
-├── instruments/
-│   ├── salamander/
-│   └── splendid/
-└── songs/
 
 ### Windows
 
