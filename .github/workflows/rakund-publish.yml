@@ -1,0 +1,99 @@
+name: Publish Rakund
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux x86_64
+            os: ubuntu-22.04
+
+          - name: Windows x86_64
+            os: windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # --------------------------------------------------
+      # Checkout
+      # --------------------------------------------------
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # Linux dependencies
+      # --------------------------------------------------
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            build-essential \
+            pkg-config \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libasound2-dev \
+            libudev-dev
+
+      # --------------------------------------------------
+      # Bun
+      # --------------------------------------------------
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      # --------------------------------------------------
+      # Rust
+      # --------------------------------------------------
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            src-tauri -> target
+
+      # --------------------------------------------------
+      # Frontend
+      # --------------------------------------------------
+
+      - name: Install frontend dependencies
+        run: bun install --frozen-lockfile
+
+      # --------------------------------------------------
+      # Build Tauri
+      # --------------------------------------------------
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v1
+        with:
+          args: ""
+
+      # --------------------------------------------------
+      # Upload build artifact
+      # --------------------------------------------------
+
+      - name: Upload Tauri bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: rakund-${{ matrix.os }}
+          path: |
+            src-tauri/target/release/bundle/**
