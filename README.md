@@ -28,7 +28,6 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 - **Dual Input Modes** – Play using a standard computer keyboard or an external MIDI controller.
 - **Low Latency** – Rust backend ensures fast communication between the audio thread and the visual rendering thread.
 - **Audio-Visual Sync** – Notes are mapped to colors and particles in real time.
-- **Cross-Platform** – Runs on Windows, macOS, and Linux.
 
 ---
 
@@ -48,18 +47,20 @@ bun run tauri dev
 
 Extract the tar files (e.g. `salamander.tar`, `splendid.tar`) into `~/.config/rakund/instruments`.  
 
-.config\rakund\
-├── instruments\
-│   ├── salamander\
-│   └── splendid\
-└── songs\
+./.config/
+└── rakund
+    ├── instruments
+    │   ├── salamander
+    │   └── splendid
+    └── songs
 
 ### Windows
 
 On Windows, use `%APPDATA%\rakund` as the base directory.  
 
-%APPDATA%\rakund\
-├── instruments\
-│   ├── salamander\
-│   └── splendid\
-└── songs\
+AppData/
+└── rakund
+    ├── instruments
+    │   ├── salamander
+    │   └── splendid
+    └── songs
