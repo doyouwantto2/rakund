@@ -1,17 +1,12 @@
-// ── Piano Layout ──────────────────────────────────────────────────────────────
-// Single source of truth for all 88-key positions.
-// Used by both PianoContainer (rendering keys) and RainLayout (aligning rain keys).
-// All `left` and `width` values are percentages (0–100) of the total piano width.
-
 export interface KeyLayout {
   midi: number;
   type: "white" | "black";
-  left: number;  // % of total piano width
+  left: number; // % of total piano width
   width: number; // % of total piano width
 }
 
 export const PIANO_KEYS: KeyLayout[] = [
-  { midi: 21, type: "white", left: 0.0000, width: 1.9231 },
+  { midi: 21, type: "white", left: 0.0, width: 1.9231 },
   { midi: 22, type: "black", left: 1.3462, width: 1.1538 },
   { midi: 23, type: "white", left: 1.9231, width: 1.9231 },
   { midi: 24, type: "white", left: 3.8462, width: 1.9231 },
@@ -33,7 +28,7 @@ export const PIANO_KEYS: KeyLayout[] = [
   { midi: 40, type: "white", left: 21.1538, width: 1.9231 },
   { midi: 41, type: "white", left: 23.0769, width: 1.9231 },
   { midi: 42, type: "black", left: 24.4231, width: 1.1538 },
-  { midi: 43, type: "white", left: 25.0000, width: 1.9231 },
+  { midi: 43, type: "white", left: 25.0, width: 1.9231 },
   { midi: 44, type: "black", left: 26.3462, width: 1.1538 },
   { midi: 45, type: "white", left: 26.9231, width: 1.9231 },
   { midi: 46, type: "black", left: 28.2692, width: 1.1538 },
@@ -53,9 +48,9 @@ export const PIANO_KEYS: KeyLayout[] = [
   { midi: 60, type: "white", left: 44.2308, width: 1.9231 },
   { midi: 61, type: "black", left: 45.5769, width: 1.1538 },
   { midi: 62, type: "white", left: 46.1538, width: 1.9231 },
-  { midi: 63, type: "black", left: 47.5000, width: 1.1538 },
+  { midi: 63, type: "black", left: 47.5, width: 1.1538 },
   { midi: 64, type: "white", left: 48.0769, width: 1.9231 },
-  { midi: 65, type: "white", left: 50.0000, width: 1.9231 },
+  { midi: 65, type: "white", left: 50.0, width: 1.9231 },
   { midi: 66, type: "black", left: 51.3462, width: 1.1538 },
   { midi: 67, type: "white", left: 51.9231, width: 1.9231 },
   { midi: 68, type: "black", left: 53.2692, width: 1.1538 },
@@ -75,10 +70,10 @@ export const PIANO_KEYS: KeyLayout[] = [
   { midi: 82, type: "black", left: 68.6538, width: 1.1538 },
   { midi: 83, type: "white", left: 69.2308, width: 1.9231 },
   { midi: 84, type: "white", left: 71.1538, width: 1.9231 },
-  { midi: 85, type: "black", left: 72.5000, width: 1.1538 },
+  { midi: 85, type: "black", left: 72.5, width: 1.1538 },
   { midi: 86, type: "white", left: 73.0769, width: 1.9231 },
   { midi: 87, type: "black", left: 74.4231, width: 1.1538 },
-  { midi: 88, type: "white", left: 75.0000, width: 1.9231 },
+  { midi: 88, type: "white", left: 75.0, width: 1.9231 },
   { midi: 89, type: "white", left: 76.9231, width: 1.9231 },
   { midi: 90, type: "black", left: 78.2692, width: 1.1538 },
   { midi: 91, type: "white", left: 78.8462, width: 1.9231 },
@@ -101,15 +96,11 @@ export const PIANO_KEYS: KeyLayout[] = [
   { midi: 108, type: "white", left: 98.0769, width: 1.9231 },
 ];
 
-// ── Lookup ────────────────────────────────────────────────────────────────────
-
-const KEY_MAP = new Map<number, KeyLayout>(PIANO_KEYS.map(k => [k.midi, k]));
+const KEY_MAP = new Map<number, KeyLayout>(PIANO_KEYS.map((k) => [k.midi, k]));
 
 export function getKeyLayout(midi: number): KeyLayout | undefined {
   return KEY_MAP.get(midi);
 }
-
-// ── Pixel conversion ──────────────────────────────────────────────────────────
 
 export interface KeyLayoutPx {
   x: number;
@@ -130,23 +121,18 @@ export function getKeyLayoutPx(
   };
 }
 
-// ── Octave boundaries ─────────────────────────────────────────────────────────
-// The right edge of each B note = the left edge of the next C.
-// These are the vertical divider lines shown in the rain scene.
-// B notes in the 88-key range: B0–B7
+export const OCTAVE_BOUNDARY_MIDIS: number[] = [
+  23, 35, 47, 59, 71, 83, 95, 107,
+];
 
-export const OCTAVE_BOUNDARY_MIDIS: number[] = [23, 35, 47, 59, 71, 83, 95, 107];
-
-// Returns right-edge percentages for each octave boundary
 export function getOctaveBoundariesPct(): number[] {
-  return OCTAVE_BOUNDARY_MIDIS.map(midi => {
+  return OCTAVE_BOUNDARY_MIDIS.map((midi) => {
     const key = KEY_MAP.get(midi);
     if (!key) return 0;
     return key.left + key.width;
   });
 }
 
-// Returns right-edge pixel positions for each octave boundary
 export function getOctaveBoundariesPx(totalWidthPx: number): number[] {
-  return getOctaveBoundariesPct().map(pct => (pct / 100) * totalWidthPx);
+  return getOctaveBoundariesPct().map((pct) => (pct / 100) * totalWidthPx);
 }

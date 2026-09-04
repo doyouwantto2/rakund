@@ -12,7 +12,6 @@ import SongSelect from "./SongSelect";
 import { Show } from "solid-js";
 
 interface HeaderContainerProps {
-  // Instrument
   currentInstrument: () => InstrumentInfo | null;
   availableInstruments: () => InstrumentInfo[];
   availableLayers: () => string[];
@@ -29,7 +28,6 @@ interface HeaderContainerProps {
   availableLayerRanges: () => LayerRange[];
   velocityForLayer: (layer: string) => number;
 
-  // Song
   availableSongs: () => SongInfo[];
   activeSong: () => SongInfo | null;
   isSongLoading: () => boolean;
@@ -48,7 +46,6 @@ export default function HeaderContainer(props: HeaderContainerProps) {
 
   return (
     <header class="w-full bg-zinc-900 border-b border-zinc-800 px-4 py-3 relative">
-      {/* ── True center: layer indicator absolutely centered in the window ── */}
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div class="pointer-events-auto">
           <LayerIndicator
@@ -62,7 +59,6 @@ export default function HeaderContainer(props: HeaderContainerProps) {
       </div>
 
       <div class="flex items-center justify-between gap-4">
-        {/* ── Left: instrument selector ── */}
         <div class="flex items-center gap-3 flex-shrink-0">
           <InstrumentSelect
             currentInstrument={props.currentInstrument}
@@ -74,12 +70,9 @@ export default function HeaderContainer(props: HeaderContainerProps) {
           />
         </div>
 
-        {/* ── Spacer so justify-between still pushes right section to the edge ── */}
         <div class="flex-1" />
 
-        {/* ── Right: song selector + pause/resume ── */}
         <div class="flex items-center gap-2 flex-shrink-0">
-          {/* Pause / Resume button — only visible when playing or paused */}
           <Show when={showPauseResume()}>
             <button
               onClick={props.onPauseResume}
@@ -90,9 +83,7 @@ export default function HeaderContainer(props: HeaderContainerProps) {
               }`}
               title={isPaused() ? "Resume" : "Pause"}
             >
-              <span class="text-sm leading-none">
-                {isPaused() ? "▶" : "⏸"}
-              </span>
+              <span class="text-sm leading-none">{isPaused() ? "▶" : "⏸"}</span>
             </button>
           </Show>
 

@@ -16,7 +16,6 @@ import {
   RIGHT_OCTAVE_MAX,
 } from "../utils/keyMapping";
 
-// Define InstrumentInfo to match backend's InstrumentInfoResponse
 export interface InstrumentInfo {
   name: string;
   folder: string;
@@ -41,7 +40,6 @@ export interface LayerRange {
 
 export type Modifier = "sharp" | "flat" | null;
 
-// Default octave offsets — left hand sits around A2–D4, right hand around F4–B5
 const LEFT_OCTAVE_DEFAULT = 2;
 const RIGHT_OCTAVE_DEFAULT = 0;
 
@@ -66,7 +64,6 @@ export function usePiano() {
   const [leftLayerIdx, setLeftLayerIdx] = createSignal(0);
   const [rightLayerIdx, setRightLayerIdx] = createSignal(0);
 
-  // Add flag to prevent concurrent loading
   const [isScanning, setIsScanning] = createSignal(false);
 
   const heldModifiers = {
@@ -75,8 +72,6 @@ export function usePiano() {
     altLeft: false,
     altRight: false,
   };
-
-  // ── Helpers ──────────────────────────────────────────────────────────────────
 
   const applyInstrument = (info: InstrumentInfo) => {
     console.log("[INSTRUMENTS] Applying instrument:", info.name);
@@ -122,19 +117,16 @@ export function usePiano() {
             : lower === "ff"
               ? 106
               : (() => {
-                const idx = layers.indexOf(layer);
-                const total = layers.length;
-                return total === 0
-                  ? 54
-                  : Math.round(20 + (idx / Math.max(total - 1, 1)) * 86);
-              })();
+                  const idx = layers.indexOf(layer);
+                  const total = layers.length;
+                  return total === 0
+                    ? 54
+                    : Math.round(20 + (idx / Math.max(total - 1, 1)) * 86);
+                })();
     return Math.min(127, base);
   };
 
-  // ── Instrument management ─────────────────────────────────────────────────────
-
   const loadAvailableInstruments = async () => {
-    // Prevent concurrent scanning
     if (isScanning()) {
       console.log("[INSTRUMENTS] Already scanning, skipping...");
       return availableInstruments();
@@ -144,8 +136,7 @@ export function usePiano() {
       setIsScanning(true);
       console.log("[INSTRUMENTS] Starting scan...");
 
-      // Add a small delay to make loading visible
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const instruments = await invoke<InstrumentInfo[]>(
         "get_available_instruments",
@@ -153,8 +144,7 @@ export function usePiano() {
 
       console.log(`[INSTRUMENTS] Found ${instruments.length} instruments`);
 
-      // Add another small delay
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       setAvailableInstruments(instruments);
 
@@ -199,7 +189,6 @@ export function usePiano() {
     try {
       console.log("[SELECT] Calling load_instrument backend command");
 
-      // Listen for real progress events from backend
       const unlisten = await listen("load_progress", (event) => {
         const { progress, loaded, total, status } = event.payload as {
           progress: number;
@@ -213,7 +202,6 @@ export function usePiano() {
 
       const info = await invoke<InstrumentInfo>("load_instrument", { folder });
 
-      // Stop listening for progress events
       unlisten();
 
       console.log("[SELECT] Backend response received:", info);
@@ -229,8 +217,6 @@ export function usePiano() {
       setLoadProgress(null);
     }
   };
-
-  // ── Audio ─────────────────────────────────────────────────────────────────────
 
   const noteOn = async (midi: number, hand: "left" | "right") => {
     if (activeNotes().has(midi)) return;
@@ -264,21 +250,14 @@ export function usePiano() {
     noteOn(midi, "right");
   };
 
-  // ── Startup ───────────────────────────────────────────────────────────────────
-
   onMount(async () => {
-    // Don't set loading state on startup - just load instruments silently
     console.log("[INIT] Starting app initialization...");
 
-    // Load available instruments silently
     await loadAvailableInstruments();
 
     console.log("[INIT] App ready - waiting for user to select instrument");
   });
 
-  // ── Keyboard ──────────────────────────────────────────────────────────────────
-
-  // Maps a held key → the MIDI notes it started (supports chords)
   const keyToMidis = new Map<string, number[]>();
   const heldKeys = new Set<string>();
 
@@ -306,7 +285,6 @@ export function usePiano() {
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    // ── Modifier keys ──
     if (e.code === "ShiftLeft") {
       heldModifiers.shiftLeft = true;
       recomputeModifiers();
@@ -330,7 +308,6 @@ export function usePiano() {
       return;
     }
 
-    // ── Layer cycling (Space) ──
     if (e.code === "Space") {
       e.preventDefault();
       const dir: 1 | -1 =
@@ -345,7 +322,6 @@ export function usePiano() {
     const key = normalizeKey(e.key);
     if (e.repeat && heldKeys.has(key)) return;
 
-    // ── Octave navigation ──
     if (isLeftOctaveUpKey(key)) {
       heldKeys.add(key);
       setLeftOctave((o) => Math.min(LEFT_OCTAVE_MAX, o + 1));
@@ -371,14 +347,12 @@ export function usePiano() {
       return;
     }
 
-    // ── Escape: reset octaves ──
     if (key === "escape") {
       setLeftOctave(LEFT_OCTAVE_DEFAULT);
       setRightOctave(RIGHT_OCTAVE_DEFAULT);
       return;
     }
 
-    // ── Regular piano keys ──
     if (!isPianoKey(key)) return;
 
     if (heldKeys.has(key)) return;
@@ -392,12 +366,7 @@ export function usePiano() {
         noteOn(midi, "left");
       }
     } else if (isRightPianoKey(key)) {
-      const midi = getMidiForKey(
-        key,
-        "right",
-        rightOctave(),
-        rightModifier(),
-      );
+      const midi = getMidiForKey(key, "right", rightOctave(), rightModifier());
       if (midi !== null) {
         e.preventDefault();
         keyToMidis.set(key, [midi]);

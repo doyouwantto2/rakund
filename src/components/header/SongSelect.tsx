@@ -59,11 +59,11 @@ export default function SongSelect(props: SongSelectProps) {
 
   return (
     <div class="shrink-0 relative">
-      {/* Song button */}
       <button
         onClick={() => setShowList((v) => !v)}
-        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${displayName() ? "text-zinc-200" : "text-zinc-400"
-          }`}
+        class={`flex items-center gap-2 bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-700 transition-colors shrink-0 cursor-pointer hover:bg-zinc-700 ${
+          displayName() ? "text-zinc-200" : "text-zinc-400"
+        }`}
       >
         <Show when={displayName()}>
           <span
@@ -95,7 +95,6 @@ export default function SongSelect(props: SongSelectProps) {
         </span>
       </button>
 
-      {/* Dropdown */}
       <Show when={showList()}>
         <div class="absolute top-full right-0 mt-3 z-50 w-[150%] bg-zinc-800 rounded-lg shadow-xl border border-zinc-700 max-h-[60vh] overflow-y-auto">
           <div class="p-1 w-full">
@@ -124,7 +123,6 @@ export default function SongSelect(props: SongSelectProps) {
 
                   return (
                     <div class="mb-1 border-b border-zinc-700/60 last:border-b-0">
-                      {/* Song row */}
                       <button
                         onClick={() => {
                           if (isOtherLoading()) return;
@@ -133,26 +131,27 @@ export default function SongSelect(props: SongSelectProps) {
                           }
                         }}
                         disabled={isOtherLoading()}
-                        class={`w-full text-left px-4 py-3 transition-colors group ${isActive()
-                          ? "bg-zinc-700/50"
-                          : isOtherLoading()
-                            ? "opacity-50 cursor-not-allowed"
-                            : "cursor-pointer hover:bg-zinc-700/30"
-                          }`}
+                        class={`w-full text-left px-4 py-3 transition-colors group ${
+                          isActive()
+                            ? "bg-zinc-700/50"
+                            : isOtherLoading()
+                              ? "opacity-50 cursor-not-allowed"
+                              : "cursor-pointer hover:bg-zinc-700/30"
+                        }`}
                       >
                         <div class="flex items-center gap-3">
-                          {/* Status dot */}
                           <span
-                            class={`w-2 h-2 rounded-full shrink-0 transition-colors ${isThisLoading()
-                              ? "bg-amber-400 animate-pulse"
-                              : isPlaying()
-                                ? "bg-emerald-400 shadow-[0_0_6px_2px_rgba(52,211,153,0.4)]"
-                                : isReady() || isPaused()
-                                  ? "bg-blue-400"
-                                  : isFinished()
-                                    ? "bg-zinc-400"
-                                    : "bg-zinc-600 group-hover:bg-zinc-400"
-                              }`}
+                            class={`w-2 h-2 rounded-full shrink-0 transition-colors ${
+                              isThisLoading()
+                                ? "bg-amber-400 animate-pulse"
+                                : isPlaying()
+                                  ? "bg-emerald-400 shadow-[0_0_6px_2px_rgba(52,211,153,0.4)]"
+                                  : isReady() || isPaused()
+                                    ? "bg-blue-400"
+                                    : isFinished()
+                                      ? "bg-zinc-400"
+                                      : "bg-zinc-600 group-hover:bg-zinc-400"
+                            }`}
                           />
                           <span class="text-sm font-medium text-zinc-200 truncate flex-1">
                             {song.display_name}
@@ -185,7 +184,6 @@ export default function SongSelect(props: SongSelectProps) {
                         </div>
                       </button>
 
-                      {/* Mode buttons — shown when this song is ready */}
                       <Show when={isReady()}>
                         <div class="px-4 pb-3 flex space-x-4 gap-2 mt-2">
                           <button
@@ -209,7 +207,6 @@ export default function SongSelect(props: SongSelectProps) {
                         </div>
                       </Show>
 
-                      {/* Stop button — shown when playing, paused, or finished */}
                       <Show when={isPlaying() || isPaused()}>
                         <div class="px-4 pb-3">
                           <button
