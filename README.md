@@ -6,7 +6,7 @@
 
 **Rakund** is a high-performance, cross-platform piano simulator built with a Rust backend and SolidJS frontend.
 
-Every note played doesn't just produce a sound; it renders a specific color and physical particle on the screen, creating a mathematically precise fusion of audio and visual data.
+It's original purpose is to help blindness people to play piano on the computer.
 
 ---
 
@@ -16,10 +16,10 @@ Every note played doesn't just produce a sound; it renders a specific color and 
 
 ### Preview
 
-| Manual Play Mode | Visualizer |
-| :---: | :---: |
+|                          Manual Play Mode                          |                             Visualizer                             |
+| :----------------------------------------------------------------: | :----------------------------------------------------------------: |
 | <img src="./examples/img/swappy-20260324-173943.png" width="400"/> | <img src="./examples/img/swappy-20260324-174920.png" width="400"/> |
-| *Clean UI for manual QWERTY/MIDI input.* | *Real-time color rendering based on note frequencies.* |
+|              _Clean UI for manual QWERTY/MIDI input._              |       _Real-time color rendering based on note frequencies._       |
 
 ---
 
